@@ -1020,6 +1020,8 @@
         let score = 0;
         let level = 1;
         let lastTime = 0;
+        let gameStartTime = 0;
+        let survivalTime = 0;
         let coins = parseInt(localStorage.getItem('waveslayers_coins') || '100');
         let coinsThisRound = 0;
         let currentWorldId = localStorage.getItem('waveslayers_current_world') || 'earth';
@@ -1457,6 +1459,22 @@
         let playerHealth = 100;
         let playerMaxHealth = 100;
         
+        function getEffectiveMaxHealth() {
+            let maxHealth = 100;
+            if (skillTree['health1']) maxHealth = 150;
+            if (skillTree['health2']) maxHealth = 200;
+            return maxHealth;
+        }
+        
+        function updatePlayerStats() {
+            const newMaxHealth = getEffectiveMaxHealth();
+            if (newMaxHealth !== playerMaxHealth) {
+                const healthRatio = playerHealth / playerMaxHealth;
+                playerMaxHealth = newMaxHealth;
+                playerHealth = Math.floor(playerMaxHealth * healthRatio);
+            }
+        }
+        
         // Input handling
         const keys = {};
         
@@ -1570,13 +1588,37 @@
                 this.y = canvas.height - 70;
                 this.width = 24;
                 this.height = 24;
-                this.speed = 6;
+                this.baseSpeed = 6;
+                this.speed = this.getEffectiveSpeed();
                 this.shootCooldown = 0;
                 this.invulnerable = 0;
                 this.powerLevel = 1;
             }
             
+            getEffectiveSpeed() {
+                let speedMultiplier = 1;
+                if (skillTree['speed1']) speedMultiplier *= 1.3;
+                if (skillTree['speed2']) speedMultiplier *= 1.6;
+                return this.baseSpeed * speedMultiplier;
+            }
+            
+            getFireRate() {
+                let fireRate = 150;
+                if (skillTree['firerate1']) fireRate *= 0.8;
+                if (skillTree['firerate2']) fireRate *= 0.6;
+                return fireRate;
+            }
+            
+            getDamageMultiplier() {
+                let damageMultiplier = 1;
+                if (skillTree['damage1']) damageMultiplier *= 1.2;
+                if (skillTree['damage2']) damageMultiplier *= 1.5;
+                return damageMultiplier;
+            }
+            
             update(deltaTime) {
+                this.speed = this.getEffectiveSpeed();
+                
                 if (keys['ArrowLeft'] || keys['a'] || keys['A']) this.x -= this.speed;
                 if (keys['ArrowRight'] || keys['d'] || keys['D']) this.x += this.speed;
                 if (keys['ArrowUp'] || keys['w'] || keys['W']) this.y -= this.speed;
@@ -1587,7 +1629,7 @@
                 
                 if ((keys[' '] || keys['Space']) && this.shootCooldown <= 0) {
                     this.shoot();
-                    this.shootCooldown = 150;
+                    this.shootCooldown = this.getFireRate();
                 }
                 
                 if (this.shootCooldown > 0) this.shootCooldown -= deltaTime;
@@ -1596,16 +1638,36 @@
             
             shoot() {
                 const world = worlds[currentWorldId];
+                const baseBullets = [];
+                
                 if (this.powerLevel === 1) {
-                    bullets.push(new Bullet(this.x + this.width/2 - 2, this.y, 0, -10, true));
+                    baseBullets.push({ x: this.x + this.width/2 - 2, y: this.y, vx: 0, vy: -10 });
                 } else if (this.powerLevel === 2) {
-                    bullets.push(new Bullet(this.x + this.width/2 - 6, this.y, 0, -10, true));
-                    bullets.push(new Bullet(this.x + this.width/2 + 2, this.y, 0, -10, true));
+                    baseBullets.push({ x: this.x + this.width/2 - 6, y: this.y, vx: 0, vy: -10 });
+                    baseBullets.push({ x: this.x + this.width/2 + 2, y: this.y, vx: 0, vy: -10 });
                 } else {
-                    bullets.push(new Bullet(this.x + this.width/2 - 2, this.y, 0, -10, true));
-                    bullets.push(new Bullet(this.x + this.width/2 - 12, this.y, -2, -10, true));
-                    bullets.push(new Bullet(this.x + this.width/2 + 8, this.y, 2, -10, true));
+                    baseBullets.push({ x: this.x + this.width/2 - 2, y: this.y, vx: 0, vy: -10 });
+                    baseBullets.push({ x: this.x + this.width/2 - 12, y: this.y, vx: -2, vy: -10 });
+                    baseBullets.push({ x: this.x + this.width/2 + 8, y: this.y, vx: 2, vy: -10 });
                 }
+                
+                // Apply multishot skill
+                if (skillTree['multishot']) {
+                    const extraBullets = [];
+                    baseBullets.forEach(bullet => {
+                        extraBullets.push({ x: bullet.x - 8, y: bullet.y, vx: bullet.vx - 1, vy: bullet.vy });
+                        extraBullets.push({ x: bullet.x + 8, y: bullet.y, vx: bullet.vx + 1, vy: bullet.vy });
+                    });
+                    baseBullets.push(...extraBullets);
+                }
+                
+                // Create bullets with damage multiplier
+                const damageMultiplier = this.getDamageMultiplier();
+                baseBullets.forEach(bulletData => {
+                    const bullet = new Bullet(bulletData.x, bulletData.y, bulletData.vx, bulletData.vy, true);
+                    bullet.damage *= damageMultiplier;
+                    bullets.push(bullet);
+                });
             }
             
             takeDamage(damage) {
@@ -1976,9 +2038,24 @@
                         if (enemy.takeDamage(bullet.damage)) {
                             const world = worlds[currentWorldId];
                             createExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, world.colors.enemies[0]);
-                            score += enemy.type * 10 * Math.ceil(world.difficulty);
+                            const scoreGained = enemy.type * 10 * Math.ceil(world.difficulty);
+                            score += scoreGained;
                             coins += enemy.coinValue;
                             coinsThisRound += enemy.coinValue;
+                            
+                            // Progression system updates
+                            addXP(scoreGained); // Gain XP equal to score
+                            achievementProgress.totalKills = (achievementProgress.totalKills || 0) + 1;
+                            achievementProgress.totalCoinsCollected = (achievementProgress.totalCoinsCollected || 0) + enemy.coinValue;
+                            achievementProgress.highScore = Math.max(achievementProgress.highScore || 0, score);
+                            
+                            // Update challenges
+                            updateChallenges('kills', 1);
+                            updateChallenges('coins', enemy.coinValue);
+                            updateChallenges('score', score);
+                            
+                            checkAchievements();
+                            
                             spawnPowerup(enemy.x + enemy.width/2, enemy.y + enemy.height/2);
                             enemies.splice(j, 1);
                         }
@@ -2035,6 +2112,11 @@
             } else if (type === 'health') {
                 playerHealth = Math.min(playerMaxHealth, playerHealth + 30);
             }
+            
+            // Progression system updates
+            achievementProgress.powerupsCollected = (achievementProgress.powerupsCollected || 0) + 1;
+            updateChallenges('powerups', 1);
+            checkAchievements();
         }
         
         function updateHealthBar() {
@@ -2063,6 +2145,21 @@
         function gameOver() {
             gameRunning = false;
             gameState = 'gameOver';
+            
+            // Calculate survival time
+            survivalTime = Math.floor((Date.now() - gameStartTime) / 1000);
+            
+            // Update progression
+            achievementProgress.longestSurvival = Math.max(achievementProgress.longestSurvival || 0, survivalTime);
+            achievementProgress.highScore = Math.max(achievementProgress.highScore || 0, score);
+            
+            // Update challenges
+            updateChallenges('survival', survivalTime);
+            updateChallenges('score', score);
+            
+            checkAchievements();
+            saveProgressionData();
+            
             document.getElementById('gameOver').style.display = 'block';
             document.getElementById('finalScore').textContent = score;
             document.getElementById('coinsEarned').textContent = coinsThisRound;
@@ -2082,8 +2179,13 @@
             isPaused = false;
             score = 0;
             level = 1;
+            
+            // Apply skill bonuses
+            updatePlayerStats();
             playerHealth = playerMaxHealth;
             coinsThisRound = 0;
+            gameStartTime = Date.now();
+            survivalTime = 0;
             
             player = new Player();
             bullets = [];
@@ -2197,6 +2299,12 @@
             if (coins >= world.price && !world.unlocked) {
                 coins -= world.price;
                 world.unlocked = true;
+                
+                // Update progression
+                achievementProgress.worldsUnlocked = (achievementProgress.worldsUnlocked || 1) + 1;
+                checkAchievements();
+                saveProgressionData();
+                
                 saveGameData();
                 updateCoinsDisplay();
                 renderWorldsGrid();
@@ -2267,6 +2375,600 @@
 Boa sorte, comandante! 🚀✨`);
         }
         
+        // ===== SISTEMA DE PROGRESSÃO =====
+        
+        // Dados dos Skills
+        const skillBranches = {
+            attack: {
+                name: 'Ataque',
+                icon: '⚔️',
+                color: '#ff4444',
+                skills: [
+                    { id: 'damage1', name: 'Força Básica', cost: 1, effect: 'damage', value: 1.2, description: '+20% Dano' },
+                    { id: 'damage2', name: 'Força Avançada', cost: 2, effect: 'damage', value: 1.5, description: '+50% Dano', requires: ['damage1'] },
+                    { id: 'firerate1', name: 'Tiro Rápido', cost: 1, effect: 'firerate', value: 0.8, description: '+25% Vel. Tiro' },
+                    { id: 'firerate2', name: 'Rajada', cost: 3, effect: 'firerate', value: 0.6, description: '+67% Vel. Tiro', requires: ['firerate1'] },
+                    { id: 'multishot', name: 'Tiro Múltiplo', cost: 5, effect: 'multishot', value: 2, description: 'Atira 2 projéteis', requires: ['damage2', 'firerate2'] }
+                ]
+            },
+            defense: {
+                name: 'Defesa',
+                icon: '🛡️',
+                color: '#4444ff',
+                skills: [
+                    { id: 'health1', name: 'Vida Extra', cost: 1, effect: 'health', value: 150, description: '+50% Vida Máxima' },
+                    { id: 'health2', name: 'Tanque', cost: 2, effect: 'health', value: 200, description: '+100% Vida Máxima', requires: ['health1'] },
+                    { id: 'shield1', name: 'Escudo Básico', cost: 2, effect: 'shield', value: 50, description: '+50% Escudo' },
+                    { id: 'shield2', name: 'Escudo Avançado', cost: 3, effect: 'shield', value: 100, description: '+100% Escudo', requires: ['shield1'] },
+                    { id: 'regen', name: 'Regeneração', cost: 4, effect: 'regen', value: 1, description: 'Regenera vida', requires: ['health2', 'shield2'] }
+                ]
+            },
+            speed: {
+                name: 'Velocidade',
+                icon: '⚡',
+                color: '#ffff44',
+                skills: [
+                    { id: 'speed1', name: 'Propulsão', cost: 1, effect: 'speed', value: 1.3, description: '+30% Velocidade' },
+                    { id: 'speed2', name: 'Turbina', cost: 2, effect: 'speed', value: 1.6, description: '+60% Velocidade', requires: ['speed1'] },
+                    { id: 'dash1', name: 'Dash Básico', cost: 2, effect: 'dash', value: 1, description: 'Habilidade Dash' },
+                    { id: 'dash2', name: 'Dash Avançado', cost: 3, effect: 'dash', value: 2, description: 'Dash mais rápido', requires: ['dash1'] },
+                    { id: 'teleport', name: 'Teletransporte', cost: 5, effect: 'teleport', value: 1, description: 'Teleporte instantâneo', requires: ['speed2', 'dash2'] }
+                ]
+            },
+            special: {
+                name: 'Especiais',
+                icon: '✨',
+                color: '#ff44ff',
+                skills: [
+                    { id: 'magnet1', name: 'Magnetismo', cost: 2, effect: 'magnet', value: 1.5, description: 'Atrai power-ups' },
+                    { id: 'magnet2', name: 'Super Ímã', cost: 3, effect: 'magnet', value: 3, description: 'Maior alcance', requires: ['magnet1'] },
+                    { id: 'luck1', name: 'Sorte', cost: 2, effect: 'luck', value: 1.5, description: '+50% drop rate' },
+                    { id: 'luck2', name: 'Super Sorte', cost: 4, effect: 'luck', value: 2.5, description: '+150% drop rate', requires: ['luck1'] },
+                    { id: 'ultimate', name: 'Ultimate', cost: 10, effect: 'ultimate', value: 1, description: 'Poder devastador', requires: ['magnet2', 'luck2'] }
+                ]
+            }
+        };
+        
+        // Dados das Conquistas
+        const achievementsList = [
+            { id: 'first_kill', name: 'Primeiro Sangue', icon: '🎯', description: 'Destrua seu primeiro inimigo', reward: { coins: 50, xp: 100 }, target: 1, type: 'kills' },
+            { id: 'kill_100', name: 'Caçador', icon: '🏹', description: 'Destrua 100 inimigos', reward: { coins: 200, xp: 500, gems: 10 }, target: 100, type: 'kills' },
+            { id: 'kill_1000', name: 'Exterminador', icon: '💀', description: 'Destrua 1000 inimigos', reward: { coins: 1000, xp: 2000, gems: 50 }, target: 1000, type: 'kills' },
+            { id: 'kill_10000', name: 'Lenda', icon: '👑', description: 'Destrua 10000 inimigos', reward: { coins: 5000, xp: 10000, gems: 200, darkMatter: 10 }, target: 10000, type: 'kills' },
+            
+            { id: 'score_1k', name: 'Novato', icon: '⭐', description: 'Atinja 1.000 pontos', reward: { coins: 100, xp: 200 }, target: 1000, type: 'score' },
+            { id: 'score_10k', name: 'Veterano', icon: '🌟', description: 'Atinja 10.000 pontos', reward: { coins: 500, xp: 1000, gems: 25 }, target: 10000, type: 'score' },
+            { id: 'score_100k', name: 'Mestre', icon: '💫', description: 'Atinja 100.000 pontos', reward: { coins: 2500, xp: 5000, gems: 100 }, target: 100000, type: 'score' },
+            { id: 'score_1m', name: 'Deus', icon: '🌌', description: 'Atinja 1.000.000 pontos', reward: { coins: 10000, xp: 20000, gems: 500, darkMatter: 50 }, target: 1000000, type: 'score' },
+            
+            { id: 'survival_30s', name: 'Sobrevivente', icon: '⏱️', description: 'Sobreviva 30 segundos', reward: { coins: 75, xp: 150 }, target: 30, type: 'survival' },
+            { id: 'survival_5m', name: 'Resistente', icon: '🕐', description: 'Sobreviva 5 minutos', reward: { coins: 300, xp: 600, gems: 15 }, target: 300, type: 'survival' },
+            { id: 'survival_15m', name: 'Imortal', icon: '♾️', description: 'Sobreviva 15 minutos', reward: { coins: 1500, xp: 3000, gems: 75, darkMatter: 5 }, target: 900, type: 'survival' },
+            
+            { id: 'collect_100_coins', name: 'Colecionador', icon: '💰', description: 'Colete 100 moedas', reward: { xp: 200, gems: 5 }, target: 100, type: 'coins_collected' },
+            { id: 'collect_1000_coins', name: 'Magnata', icon: '💎', description: 'Colete 1000 moedas', reward: { xp: 1000, gems: 50 }, target: 1000, type: 'coins_collected' },
+            
+            { id: 'unlock_world_2', name: 'Explorador', icon: '🌍', description: 'Desbloqueie o segundo mundo', reward: { coins: 200, xp: 400, gems: 20 }, target: 1, type: 'worlds_unlocked' },
+            { id: 'unlock_all_worlds', name: 'Conquistador', icon: '🏆', description: 'Desbloqueie todos os mundos', reward: { coins: 5000, xp: 10000, gems: 500, darkMatter: 100 }, target: 6, type: 'worlds_unlocked' },
+            
+            { id: 'powerup_collector', name: 'Energizado', icon: '⚡', description: 'Colete 50 power-ups', reward: { coins: 150, xp: 300, gems: 10 }, target: 50, type: 'powerups_collected' },
+            { id: 'speed_demon', name: 'Demônio da Velocidade', icon: '🏃', description: 'Invista todos os pontos em velocidade', reward: { coins: 1000, xp: 2000, gems: 100 }, target: 1, type: 'special' },
+            { id: 'tank_build', name: 'Tanque', icon: '🛡️', description: 'Invista todos os pontos em defesa', reward: { coins: 1000, xp: 2000, gems: 100 }, target: 1, type: 'special' },
+            { id: 'glass_cannon', name: 'Canhão de Vidro', icon: '💥', description: 'Invista todos os pontos em ataque', reward: { coins: 1000, xp: 2000, gems: 100 }, target: 1, type: 'special' }
+        ];
+        
+        // Funções de Menu
+        function openProgressionMenu() {
+            document.getElementById('progressionMenu').style.display = 'flex';
+            document.getElementById('mainMenu').style.display = 'none';
+            updateProgressionDisplay();
+            renderSkillTree();
+            renderDailyChallenges();
+            menuAnimationRunning = false;
+        }
+        
+        function closeProgressionMenu() {
+            document.getElementById('progressionMenu').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+            initMenuAnimation();
+        }
+        
+        function openAchievementsMenu() {
+            document.getElementById('achievementsMenu').style.display = 'flex';
+            document.getElementById('mainMenu').style.display = 'none';
+            updateAchievementsDisplay();
+            renderAchievements();
+            menuAnimationRunning = false;
+        }
+        
+        function closeAchievementsMenu() {
+            document.getElementById('achievementsMenu').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+            initMenuAnimation();
+        }
+        
+        function openBattlepassMenu() {
+            document.getElementById('battlepassMenu').style.display = 'flex';
+            document.getElementById('mainMenu').style.display = 'none';
+            updateBattlepassDisplay();
+            renderBattlepassTiers();
+            menuAnimationRunning = false;
+        }
+        
+        function closeBattlepassMenu() {
+            document.getElementById('battlepassMenu').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+            initMenuAnimation();
+        }
+        
+        // Funções de Progressão
+        function updateProgressionDisplay() {
+            document.getElementById('playerLevelDisplay').textContent = playerLevel;
+            document.getElementById('skillPointsDisplay').textContent = skillPoints;
+            document.getElementById('gemsDisplay').textContent = gems;
+            document.getElementById('darkMatterDisplay').textContent = darkMatter;
+            
+            // Atualizar barra de XP
+            const xpForCurrentLevel = getXPRequiredForLevel(playerLevel);
+            const xpForNextLevel = getXPRequiredForLevel(playerLevel + 1);
+            const xpProgress = playerXP - xpForCurrentLevel;
+            const xpNeeded = xpForNextLevel - xpForCurrentLevel;
+            const xpPercentage = (xpProgress / xpNeeded) * 100;
+            
+            document.getElementById('xpFill').style.width = xpPercentage + '%';
+            document.getElementById('xpText').textContent = `${xpProgress} / ${xpNeeded}`;
+        }
+        
+        function getXPRequiredForLevel(level) {
+            return Math.floor(100 * Math.pow(1.5, level - 1));
+        }
+        
+        function addXP(amount) {
+            playerXP += amount;
+            
+            // Check for level up
+            while (playerXP >= getXPRequiredForLevel(playerLevel + 1)) {
+                levelUp();
+            }
+            
+            // Add battle pass XP
+            battlePassXP += Math.floor(amount * 0.8);
+            
+            saveProgressionData();
+        }
+        
+        function levelUp() {
+            playerLevel++;
+            skillPoints += 2; // 2 skill points per level
+            
+            // Show level up notification
+            showNotification(`🎉 LEVEL UP! Nível ${playerLevel}`, '#ffff00');
+            
+            saveProgressionData();
+        }
+        
+        function renderSkillTree() {
+            const container = document.getElementById('skillTreeContainer');
+            container.innerHTML = '';
+            
+            Object.entries(skillBranches).forEach(([branchId, branch]) => {
+                const branchDiv = document.createElement('div');
+                branchDiv.className = 'skill-branch';
+                
+                const hasUnlockedSkill = branch.skills.some(skill => skillTree[skill.id]);
+                if (hasUnlockedSkill) {
+                    branchDiv.classList.add('unlocked');
+                }
+                
+                branchDiv.innerHTML = `
+                    <h3>${branch.icon} ${branch.name}</h3>
+                `;
+                
+                branch.skills.forEach(skill => {
+                    const skillNode = document.createElement('div');
+                    skillNode.className = 'skill-node';
+                    
+                    const isUnlocked = skillTree[skill.id] || false;
+                    const canUnlock = canUnlockSkill(skill);
+                    
+                    if (isUnlocked) {
+                        skillNode.classList.add('unlocked');
+                        skillNode.innerHTML = '✓';
+                    } else if (canUnlock && skillPoints >= skill.cost) {
+                        skillNode.classList.add('available');
+                        skillNode.innerHTML = skill.cost;
+                        skillNode.onclick = () => unlockSkill(skill.id);
+                    } else {
+                        skillNode.innerHTML = skill.cost;
+                    }
+                    
+                    skillNode.title = `${skill.name}\n${skill.description}\nCusto: ${skill.cost} pontos`;
+                    
+                    const costDiv = document.createElement('div');
+                    costDiv.className = 'skill-cost';
+                    costDiv.textContent = skill.cost;
+                    skillNode.appendChild(costDiv);
+                    
+                    branchDiv.appendChild(skillNode);
+                });
+                
+                container.appendChild(branchDiv);
+            });
+        }
+        
+        function canUnlockSkill(skill) {
+            if (!skill.requires) return true;
+            
+            return skill.requires.every(requiredSkill => skillTree[requiredSkill]);
+        }
+        
+        function unlockSkill(skillId) {
+            const skill = findSkillById(skillId);
+            if (!skill || skillPoints < skill.cost || !canUnlockSkill(skill)) return;
+            
+            skillPoints -= skill.cost;
+            skillTree[skillId] = true;
+            
+            showNotification(`🌟 Habilidade desbloqueada: ${skill.name}`, '#00ff00');
+            
+            saveProgressionData();
+            updateProgressionDisplay();
+            renderSkillTree();
+        }
+        
+        function findSkillById(skillId) {
+            for (const branch of Object.values(skillBranches)) {
+                const skill = branch.skills.find(s => s.id === skillId);
+                if (skill) return skill;
+            }
+            return null;
+        }
+        
+        function renderDailyChallenges() {
+            checkDailyReset();
+            
+            const container = document.getElementById('dailyChallengesContainer');
+            container.innerHTML = '';
+            
+            if (Object.keys(dailyChallenges).length === 0) {
+                resetDailyChallenges();
+            }
+            
+            Object.values(dailyChallenges).forEach(challenge => {
+                const challengeDiv = document.createElement('div');
+                challengeDiv.className = 'challenge-card';
+                
+                if (challenge.completed) {
+                    challengeDiv.classList.add('completed');
+                }
+                
+                const progress = Math.min(challenge.progress, challenge.target);
+                const progressPercent = (progress / challenge.target) * 100;
+                
+                challengeDiv.innerHTML = `
+                    <div class="challenge-title">${challenge.description}</div>
+                    <div class="challenge-description">Progresso: ${progress}/${challenge.target}</div>
+                    <div class="challenge-progress">
+                        <div class="challenge-progress-fill" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div class="challenge-reward">
+                        Recompensa: ${formatReward(challenge.reward)}
+                    </div>
+                `;
+                
+                container.appendChild(challengeDiv);
+            });
+        }
+        
+        function checkDailyReset() {
+            const today = new Date().toDateString();
+            if (lastDailyReset !== today) {
+                resetDailyChallenges();
+                lastDailyReset = today;
+                localStorage.setItem('waveslayers_last_daily_reset', lastDailyReset);
+            }
+        }
+        
+        function resetDailyChallenges() {
+            const challengeTemplates = [
+                { type: 'kills', targets: [10, 25, 50], rewards: [{ coins: 100, xp: 200 }, { coins: 250, xp: 500 }, { coins: 500, xp: 1000 }], descriptions: ['Destrua {target} inimigos', 'Destrua {target} inimigos', 'Destrua {target} inimigos'] },
+                { type: 'score', targets: [2000, 5000, 15000], rewards: [{ coins: 150, xp: 300 }, { coins: 400, xp: 800 }, { coins: 800, xp: 1600 }], descriptions: ['Atinja {target} pontos', 'Atinja {target} pontos', 'Atinja {target} pontos'] },
+                { type: 'survival', targets: [60, 180, 420], rewards: [{ coins: 200, xp: 400 }, { coins: 500, xp: 1000 }, { coins: 1000, xp: 2000 }], descriptions: ['Sobreviva {target} segundos', 'Sobreviva {target} segundos', 'Sobreviva {target} segundos'] },
+                { type: 'coins', targets: [50, 150, 300], rewards: [{ coins: 75, xp: 150, gems: 5 }, { coins: 200, xp: 400, gems: 15 }, { coins: 400, xp: 800, gems: 30 }], descriptions: ['Colete {target} moedas', 'Colete {target} moedas', 'Colete {target} moedas'] },
+                { type: 'powerups', targets: [5, 15, 30], rewards: [{ coins: 100, xp: 200, gems: 5 }, { coins: 300, xp: 600, gems: 20 }, { coins: 600, xp: 1200, gems: 40 }], descriptions: ['Colete {target} power-ups', 'Colete {target} power-ups', 'Colete {target} power-ups'] }
+            ];
+            
+            dailyChallenges = {};
+            const selectedTypes = [];
+            let challengeCount = 0;
+            
+            // Gerar 3 desafios únicos
+            while (challengeCount < 3 && selectedTypes.length < challengeTemplates.length) {
+                const template = challengeTemplates[Math.floor(Math.random() * challengeTemplates.length)];
+                if (!selectedTypes.includes(template.type)) {
+                    const difficulty = Math.floor(Math.random() * 3); // 0=fácil, 1=médio, 2=difícil
+                    const challengeId = `daily_${template.type}_${Date.now()}_${challengeCount}`;
+                    
+                    dailyChallenges[challengeId] = {
+                        id: challengeId,
+                        type: template.type,
+                        target: template.targets[difficulty],
+                        reward: template.rewards[difficulty],
+                        description: template.descriptions[difficulty].replace('{target}', template.targets[difficulty]),
+                        progress: 0,
+                        completed: false,
+                        difficulty: difficulty
+                    };
+                    
+                    selectedTypes.push(template.type);
+                    challengeCount++;
+                }
+            }
+            
+            saveProgressionData();
+        }
+        
+        function updateAchievementsDisplay() {
+            const unlockedCount = Object.keys(achievements).length;
+            const totalCount = achievementsList.length;
+            const achievementPoints = Object.values(achievements).reduce((total, ach) => total + (ach.points || 0), 0);
+            
+            document.getElementById('achievementsUnlocked').textContent = unlockedCount;
+            document.getElementById('achievementsTotal').textContent = totalCount;
+            document.getElementById('achievementPoints').textContent = achievementPoints;
+        }
+        
+        function renderAchievements() {
+            const container = document.getElementById('achievementsGrid');
+            container.innerHTML = '';
+            
+            achievementsList.forEach(achievement => {
+                const achievementDiv = document.createElement('div');
+                achievementDiv.className = 'achievement-card';
+                
+                const isUnlocked = achievements[achievement.id];
+                const progress = achievementProgress[achievement.id] || 0;
+                const progressPercent = Math.min((progress / achievement.target) * 100, 100);
+                
+                if (isUnlocked) {
+                    achievementDiv.classList.add('unlocked');
+                } else if (progress === 0) {
+                    achievementDiv.classList.add('hidden');
+                }
+                
+                achievementDiv.innerHTML = `
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div class="achievement-name">${achievement.name}</div>
+                    <div class="achievement-description">${achievement.description}</div>
+                    <div class="achievement-progress">
+                        <div class="achievement-progress-fill" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div style="text-align: center; margin: 10px 0; color: #ccc; font-size: 0.9em;">
+                        ${progress}/${achievement.target}
+                    </div>
+                    <div class="achievement-reward">
+                        ${isUnlocked ? '✓ DESBLOQUEADO' : `Recompensa: ${formatReward(achievement.reward)}`}
+                    </div>
+                `;
+                
+                container.appendChild(achievementDiv);
+            });
+        }
+        
+        function updateBattlepassDisplay() {
+            document.getElementById('battlepassLevelDisplay').textContent = battlePassLevel;
+            document.getElementById('battlepassStatus').textContent = battlePassPremium ? 'PREMIUM' : 'GRÁTIS';
+            
+            if (battlePassLevel < 50) {
+                const currentTier = battlePassTiers[battlePassLevel];
+                const xpProgress = battlePassXP - (battlePassLevel * 1000);
+                const xpNeeded = currentTier.xpRequired;
+                const xpPercentage = (xpProgress / xpNeeded) * 100;
+                
+                document.getElementById('battlepassXpFill').style.width = xpPercentage + '%';
+                document.getElementById('battlepassXpText').textContent = `${xpProgress} / ${xpNeeded}`;
+            } else {
+                document.getElementById('battlepassXpFill').style.width = '100%';
+                document.getElementById('battlepassXpText').textContent = 'MAX LEVEL';
+            }
+        }
+        
+        function renderBattlepassTiers() {
+            const container = document.getElementById('battlepassTiers');
+            container.innerHTML = '';
+            
+            battlePassTiers.forEach((tier, index) => {
+                const tierDiv = document.createElement('div');
+                tierDiv.className = 'battlepass-tier';
+                
+                if (battlePassLevel > index) {
+                    tierDiv.classList.add('unlocked');
+                } else if (battlePassLevel === index) {
+                    tierDiv.classList.add('current');
+                }
+                
+                tierDiv.innerHTML = `
+                    <div class="tier-info">
+                        <div class="tier-level">${tier.level}</div>
+                        <div class="tier-rewards">
+                            <div class="reward-item free">
+                                <div>GRÁTIS</div>
+                                <div>${formatReward(tier.freeReward)}</div>
+                            </div>
+                            <div class="reward-item premium">
+                                <div>PREMIUM</div>
+                                <div>${formatReward(tier.premiumReward)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(tierDiv);
+            });
+        }
+        
+        function upgradeBattlepass() {
+            if (!battlePassPremium && gems >= 500) {
+                gems -= 500;
+                battlePassPremium = true;
+                showNotification('🎯 Battle Pass Premium ativado!', '#ffaa00');
+                saveProgressionData();
+                updateBattlepassDisplay();
+            } else if (!battlePassPremium) {
+                showNotification('Você precisa de 500 gemas para o Battle Pass Premium', '#ff4444');
+            }
+        }
+        
+        function formatReward(reward) {
+            const parts = [];
+            if (reward.coins) parts.push(`${reward.coins}💰`);
+            if (reward.xp) parts.push(`${reward.xp}✨`);
+            if (reward.gems) parts.push(`${reward.gems}💎`);
+            if (reward.darkMatter) parts.push(`${reward.darkMatter}🌌`);
+            return parts.join(' ');
+        }
+        
+        function saveProgressionData() {
+            localStorage.setItem('waveslayers_player_level', playerLevel.toString());
+            localStorage.setItem('waveslayers_player_xp', playerXP.toString());
+            localStorage.setItem('waveslayers_skill_points', skillPoints.toString());
+            localStorage.setItem('waveslayers_gems', gems.toString());
+            localStorage.setItem('waveslayers_dark_matter', darkMatter.toString());
+            localStorage.setItem('waveslayers_skills', JSON.stringify(skillTree));
+            localStorage.setItem('waveslayers_achievements', JSON.stringify(achievements));
+            localStorage.setItem('waveslayers_achievement_progress', JSON.stringify(achievementProgress));
+            localStorage.setItem('waveslayers_daily_challenges', JSON.stringify(dailyChallenges));
+            localStorage.setItem('waveslayers_battlepass_level', battlePassLevel.toString());
+            localStorage.setItem('waveslayers_battlepass_xp', battlePassXP.toString());
+            localStorage.setItem('waveslayers_battlepass_premium', battlePassPremium.toString());
+        }
+        
+        function checkAchievements() {
+            achievementsList.forEach(achievement => {
+                if (achievements[achievement.id]) return; // Already unlocked
+                
+                let currentProgress = 0;
+                
+                switch (achievement.type) {
+                    case 'kills':
+                        currentProgress = achievementProgress.totalKills || 0;
+                        break;
+                    case 'score':
+                        currentProgress = achievementProgress.highScore || 0;
+                        break;
+                    case 'survival':
+                        currentProgress = achievementProgress.longestSurvival || 0;
+                        break;
+                    case 'coins_collected':
+                        currentProgress = achievementProgress.totalCoinsCollected || 0;
+                        break;
+                    case 'worlds_unlocked':
+                        currentProgress = achievementProgress.worldsUnlocked || 0;
+                        break;
+                    case 'powerups_collected':
+                        currentProgress = achievementProgress.powerupsCollected || 0;
+                        break;
+                }
+                
+                achievementProgress[achievement.id] = currentProgress;
+                
+                if (currentProgress >= achievement.target) {
+                    unlockAchievement(achievement);
+                }
+            });
+        }
+        
+        function unlockAchievement(achievement) {
+            achievements[achievement.id] = {
+                unlockedAt: Date.now(),
+                points: 10 + (achievement.target > 1000 ? 20 : 0)
+            };
+            
+            // Give rewards
+            if (achievement.reward.coins) {
+                coins += achievement.reward.coins;
+            }
+            if (achievement.reward.xp) {
+                addXP(achievement.reward.xp);
+            }
+            if (achievement.reward.gems) {
+                gems += achievement.reward.gems;
+            }
+            if (achievement.reward.darkMatter) {
+                darkMatter += achievement.reward.darkMatter;
+            }
+            
+            showNotification(`🏆 Conquista desbloqueada: ${achievement.name}`, '#ffaa00');
+            
+            saveProgressionData();
+        }
+        
+        function updateChallenges(type, amount = 1) {
+            Object.values(dailyChallenges).forEach(challenge => {
+                if (challenge.type === type && !challenge.completed) {
+                    challenge.progress += amount;
+                    
+                    if (challenge.progress >= challenge.target) {
+                        challenge.completed = true;
+                        
+                        // Give rewards
+                        if (challenge.reward.coins) {
+                            coins += challenge.reward.coins;
+                        }
+                        if (challenge.reward.xp) {
+                            addXP(challenge.reward.xp);
+                        }
+                        if (challenge.reward.gems) {
+                            gems += challenge.reward.gems;
+                        }
+                        
+                        showNotification(`✅ Desafio Concluído: ${challenge.description}`, '#00ff00');
+                    }
+                }
+            });
+            
+            saveProgressionData();
+        }
+        
+        function showNotification(message, color = '#ffffff') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.9);
+                color: ${color};
+                padding: 15px 25px;
+                border-radius: 10px;
+                border: 2px solid ${color};
+                font-family: 'Orbitron', monospace;
+                font-weight: bold;
+                z-index: 1000;
+                transform: translateX(400px);
+                transition: transform 0.5s ease;
+                box-shadow: 0 0 20px ${color}50;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            }, 3000);
+        }
+        
         // Initialize game
         function init() {
             player = new Player();
@@ -2293,6 +2995,21 @@ Boa sorte, comandante! 🚀✨`);
             });
             
             updateCoinsDisplay();
+            
+            // Initialize progression system
+            checkDailyReset();
+            
+            // Load achievement progress if not exists
+            if (!achievementProgress.totalKills) {
+                achievementProgress = {
+                    totalKills: 0,
+                    highScore: 0,
+                    longestSurvival: 0,
+                    totalCoinsCollected: 0,
+                    worldsUnlocked: 1,
+                    powerupsCollected: 0
+                };
+            }
         }
         
         // Game loop
