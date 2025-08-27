@@ -53,8 +53,76 @@ Sobreviva o máximo possível, destruindo naves inimigas e acumulando pontos. A 
 
 Possíveis melhorias para implementações futuras:
 
-- Sistema de power-ups
-- Mais tipos de inimigos
-- Efeitos sonoros e música de fundo
-- Sistema de níveis com objetivos específicos
-- Modo multiplayer local
+1. Sistema de Progressão Viciante
+* Experiência e Level Up: Sistema de XP que persiste entre partidas
+* Skill Tree: Árvore de habilidades com diferentes caminhos (Ataque, Defesa, Velocidade, Especiais)
+* Achievements/Conquistas: Sistema com 50+ conquistas desbloqueáveis
+* Daily Challenges: Desafios diários que dão recompensas especiais
+* Battle Pass: Sistema sazonal com recompensas exclusivas
+
+2. Arsenal Devastador
+* 15+ Tipos de Armas: Laser, Plasma, Mísseis teleguiados, Shotgun espacial, etc.
+* Sistema de Crafting: Combine materiais para criar armas únicas
+* Modificadores de Arma: Damage, velocidade, penetração, efeitos elementais
+* Armas Lendárias: Armas raras com habilidades especiais únicas
+
+3. Nave Customizável
+* 20+ Modelos de Nave: Cada uma com stats únicos
+* Sistema de Upgrade: Motor, escudo, armas, habilidades especiais
+* Skins Épicas: Skins animadas, holográficas, com partículas especiais
+* Modificações Visuais: Rastros, auras, efeitos de propulsão
+
+4. Inimigos Inteligentes
+* IA Adaptativa: Inimigos que aprendem padrões do jogador
+* 20+ Tipos Únicos: Cada um com mecânicas especiais
+* Chefes Épicos: Chefes gigantes com múltiplas fases e ataques especiais
+* Formações Táticas: Inimigos que se coordenam em ataques
+
+5. Mundos Dinâmicos
+* Eventos Ambientais: Tempestades de meteoros, buracos negros, anomalias
+* Backgrounds Interativos: Elementos que afetam o gameplay
+* Ciclos Dia/Noite: Diferentes inimigos e mecânicas por período
+* Biomas Especiais: Cada mundo com mecânicas únicas
+
+6. Power-ups Insanos
+* Transformações Temporárias: Vire um mecha, drone swarm, ou energia pura
+* Habilidades Ultimates: Ataques devastadores com cooldown
+* Combos de Power-ups: Combinações que criam efeitos únicos
+* Power-ups Raros: Efeitos que duram a partida inteira
+
+7. Sistema Social
+* Leaderboards Globais: Rankings por mundo, weekly, mensais
+* Sistema de Clãs: Forme grupos e compitam por recompensas
+* Eventos Comunitários: Todos os jogadores colaboram para objetivos globais
+* Share System: Compartilhe seus melhores momentos
+
+8. Economia Robusta
+* Múltiplas Moedas: Coins, Gems, Dark Matter, etc.
+* Marketplace: Troque itens com outros jogadores
+* Investimentos: Sistema bancário espacial que gera juros
+* Eventos Especiais: Double XP, drop rates aumentados
+
+9. Modos de Jogo Épicos
+* Survival Mode: Sobreviva ondas infinitas
+* Time Attack: Complete objetivos no menor tempo
+* Puzzle Mode: Destrua inimigos em sequências específicas
+* Boss Rush: Enfrente todos os chefes em sequência
+* Multiplayer Co-op: Até 4 jogadores online
+
+10. Tecnologias Futuristas
+* Sistema de Partículas Avançado: Explosões, raios, efeitos mágicos
+* Física Realista: Gravitação, momentum, colisões precisas
+* Shader Effects: Distorções espaciais, efeitos de luz, warping
+* Audio Dinâmico: Música que se adapta à intensidade da ação
+
+11. Meta-Game Profundo
+* Base Espacial: Construa e gerencie sua estação espacial
+* Research Lab: Pesquise tecnologias para desbloquear conteúdo
+* Fleet Management: Gerencie uma frota de naves autônomas
+* Galactic Map: Explore e conquiste setores da galáxia
+
+12. Elementos RPG
+* Character Classes: Piloto, Engenheiro, Soldado, Psíquico
+* Stats Persistentes: Força, Agilidade, Inteligência, Sorte
+* Equipment Sets: Conjuntos de equipamentos com bônus
+* Prestige System: Reset com bônus permanentes

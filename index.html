@@ -142,6 +142,391 @@
             overflow-y: auto;
         }
         
+        /* Menu de Progressão */
+        #progressionMenu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(20,0,40,0.95) 0%, rgba(60,0,40,0.95) 100%);
+            display: none;
+            flex-direction: column;
+            z-index: 99;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        /* Menu de Conquistas */
+        #achievementsMenu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(40,20,0,0.95) 0%, rgba(80,40,0,0.95) 100%);
+            display: none;
+            flex-direction: column;
+            z-index: 99;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        /* Menu Battle Pass */
+        #battlepassMenu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,40,20,0.95) 0%, rgba(0,80,40,0.95) 100%);
+            display: none;
+            flex-direction: column;
+            z-index: 99;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .progression-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .progression-header h2 {
+            font-size: 2.5em;
+            color: #ff00ff;
+            margin-bottom: 10px;
+        }
+        
+        .player-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0,50,100,0.8) 0%, rgba(50,0,100,0.8) 100%);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            min-width: 150px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: 900;
+            color: #ffff00;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-top: 5px;
+        }
+        
+        .xp-bar-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .xp-bar {
+            width: 80%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            border: 2px solid #00ffff;
+            overflow: hidden;
+            margin: 10px auto;
+            position: relative;
+        }
+        
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #ffff00, #ff8800);
+            transition: width 0.5s ease;
+            border-radius: 8px;
+        }
+        
+        .xp-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .skill-tree {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .skill-branch {
+            background: linear-gradient(135deg, rgba(0,30,60,0.8) 0%, rgba(30,0,60,0.8) 100%);
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .skill-branch.unlocked {
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0,255,255,0.3);
+        }
+        
+        .skill-branch h3 {
+            color: #00ffff;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .skill-node {
+            background: #222;
+            border: 2px solid #555;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .skill-node.unlocked {
+            border-color: #00ff00;
+            background: linear-gradient(45deg, #00aa00, #00ff00);
+            box-shadow: 0 0 10px rgba(0,255,0,0.5);
+        }
+        
+        .skill-node.available {
+            border-color: #ffff00;
+            background: linear-gradient(45deg, #aa8800, #ffff00);
+            animation: pulse 2s infinite;
+        }
+        
+        .skill-node:hover.available {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255,255,0,0.7);
+        }
+        
+        .skill-cost {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            color: #ffff00;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .achievement-card {
+            background: linear-gradient(135deg, rgba(60,30,0,0.8) 0%, rgba(100,50,0,0.8) 100%);
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-card.unlocked {
+            border-color: #ffaa00;
+            box-shadow: 0 0 15px rgba(255,170,0,0.3);
+        }
+        
+        .achievement-card.hidden {
+            opacity: 0.3;
+        }
+        
+        .achievement-icon {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .achievement-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffaa00;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .achievement-description {
+            color: #ccc;
+            font-size: 0.9em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .achievement-progress {
+            background: #333;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .achievement-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffaa00, #ff6600);
+            transition: width 0.3s ease;
+        }
+        
+        .achievement-reward {
+            text-align: center;
+            font-size: 0.9em;
+            color: #00ff00;
+            font-weight: bold;
+        }
+        
+        .battlepass-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .battlepass-level {
+            font-size: 3em;
+            color: #00ff00;
+            font-weight: 900;
+        }
+        
+        .battlepass-tier {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(0,50,30,0.8) 0%, rgba(0,80,50,0.8) 100%);
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .battlepass-tier.unlocked {
+            border-color: #00ff00;
+            box-shadow: 0 0 15px rgba(0,255,0,0.3);
+        }
+        
+        .battlepass-tier.current {
+            border-color: #ffff00;
+            box-shadow: 0 0 20px rgba(255,255,0,0.5);
+            animation: glow-yellow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow-yellow {
+            from { box-shadow: 0 0 20px rgba(255,255,0,0.5); }
+            to { box-shadow: 0 0 30px rgba(255,255,0,0.8); }
+        }
+        
+        .tier-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .tier-level {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #00ff00;
+            min-width: 50px;
+        }
+        
+        .tier-rewards {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .reward-item {
+            background: #333;
+            border: 2px solid #555;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .reward-item.free {
+            border-color: #00ff00;
+        }
+        
+        .reward-item.premium {
+            border-color: #ffaa00;
+        }
+        
+        .daily-challenges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .challenge-card {
+            background: linear-gradient(135deg, rgba(0,30,60,0.8) 0%, rgba(30,0,60,0.8) 100%);
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .challenge-card.completed {
+            border-color: #00ff00;
+            box-shadow: 0 0 15px rgba(0,255,0,0.3);
+        }
+        
+        .challenge-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+        
+        .challenge-description {
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+        
+        .challenge-progress {
+            background: #333;
+            border-radius: 10px;
+            height: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .challenge-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff, #0088ff);
+            transition: width 0.3s ease;
+        }
+        
+        .challenge-reward {
+            text-align: center;
+            font-weight: bold;
+            color: #ffff00;
+        }
+        
         .worlds-header {
             text-align: center;
             margin-bottom: 30px;
@@ -447,6 +832,9 @@
                 <p style="font-size: 1.2em; color: #ccc; margin-bottom: 40px;">Conquiste as Galáxias</p>
                 <button class="menu-button" onclick="startGame()">🚀 Iniciar Jogo</button>
                 <button class="menu-button" onclick="openWorldsMenu()">🌍 Mundos</button>
+                <button class="menu-button" onclick="openProgressionMenu()">⭐ Progressão</button>
+                <button class="menu-button" onclick="openAchievementsMenu()">🏆 Conquistas</button>
+                <button class="menu-button" onclick="openBattlepassMenu()">🎯 Battle Pass</button>
                 <button class="menu-button" onclick="showInstructions()">📋 Controles</button>
             </div>
         </div>
@@ -464,6 +852,110 @@
                 <!-- Mundos serão inseridos aqui dinamicamente -->
             </div>
             <button class="back-button" onclick="closeWorldsMenu()">← Voltar ao Menu</button>
+        </div>
+
+        <!-- Menu de Progressão -->
+        <div id="progressionMenu">
+            <div class="progression-header">
+                <h2>PROGRESSÃO DO PILOTO</h2>
+                <div class="player-stats">
+                    <div class="stat-card">
+                        <span class="stat-value" id="playerLevelDisplay">1</span>
+                        <div class="stat-label">Nível</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="skillPointsDisplay">0</span>
+                        <div class="stat-label">Pontos de Habilidade</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="gemsDisplay">0</span>
+                        <div class="stat-label">Gemas</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="darkMatterDisplay">0</span>
+                        <div class="stat-label">Matéria Escura</div>
+                    </div>
+                </div>
+                <div class="xp-bar-container">
+                    <div>Experiência para o próximo nível</div>
+                    <div class="xp-bar">
+                        <div class="xp-fill" id="xpFill"></div>
+                        <div class="xp-text" id="xpText">0 / 100</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="text-align: center; color: #ff00ff; margin-bottom: 20px;">ÁRVORE DE HABILIDADES</h3>
+            <div class="skill-tree" id="skillTreeContainer">
+                <!-- Skill tree será gerada dinamicamente -->
+            </div>
+            
+            <h3 style="text-align: center; color: #00ffff; margin-bottom: 20px;">DESAFIOS DIÁRIOS</h3>
+            <div class="daily-challenges" id="dailyChallengesContainer">
+                <!-- Desafios diários serão gerados dinamicamente -->
+            </div>
+            
+            <button class="back-button" onclick="closeProgressionMenu()">← Voltar ao Menu</button>
+        </div>
+
+        <!-- Menu de Conquistas -->
+        <div id="achievementsMenu">
+            <div class="progression-header">
+                <h2>🏆 CONQUISTAS</h2>
+                <div class="player-stats">
+                    <div class="stat-card">
+                        <span class="stat-value" id="achievementsUnlocked">0</span>
+                        <div class="stat-label">Desbloqueadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="achievementsTotal">50</span>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="achievementPoints">0</span>
+                        <div class="stat-label">Pontos de Conquista</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievements-grid" id="achievementsGrid">
+                <!-- Conquistas serão geradas dinamicamente -->
+            </div>
+            
+            <button class="back-button" onclick="closeAchievementsMenu()">← Voltar ao Menu</button>
+        </div>
+
+        <!-- Menu Battle Pass -->
+        <div id="battlepassMenu">
+            <div class="battlepass-header">
+                <h2>🎯 BATTLE PASS</h2>
+                <div class="battlepass-level">
+                    Nível <span id="battlepassLevelDisplay">0</span>
+                </div>
+                <div class="xp-bar-container">
+                    <div>Progresso do Battle Pass</div>
+                    <div class="xp-bar">
+                        <div class="xp-fill" id="battlepassXpFill"></div>
+                        <div class="xp-text" id="battlepassXpText">0 / 1000</div>
+                    </div>
+                </div>
+                <div class="player-stats">
+                    <div class="stat-card">
+                        <span class="stat-value">Temporada 1</span>
+                        <div class="stat-label">Galáxia Perdida</div>
+                    </div>
+                    <div class="stat-card" style="cursor: pointer;" onclick="upgradeBattlepass()">
+                        <span class="stat-value" id="battlepassStatus">GRÁTIS</span>
+                        <div class="stat-label">Status Premium</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="battlepassTiers">
+                <!-- Tiers do Battle Pass serão gerados dinamicamente -->
+            </div>
+            
+            <button class="back-button" onclick="closeBattlepassMenu()">← Voltar ao Menu</button>
         </div>
 
         <!-- Loading Screen -->
@@ -522,7 +1014,7 @@
         const ctx = canvas.getContext('2d');
         
         // Game state
-        let gameState = 'menu'; // 'menu', 'playing', 'paused', 'gameOver'
+        let gameState = 'menu'; // 'menu', 'playing', 'paused', 'gameOver', 'progression', 'achievements', 'battlepass'
         let gameRunning = false;
         let isPaused = false;
         let score = 0;
@@ -531,6 +1023,30 @@
         let coins = parseInt(localStorage.getItem('waveslayers_coins') || '100');
         let coinsThisRound = 0;
         let currentWorldId = localStorage.getItem('waveslayers_current_world') || 'earth';
+        
+        // Progression System
+        let playerLevel = parseInt(localStorage.getItem('waveslayers_player_level') || '1');
+        let playerXP = parseInt(localStorage.getItem('waveslayers_player_xp') || '0');
+        let skillPoints = parseInt(localStorage.getItem('waveslayers_skill_points') || '0');
+        let gems = parseInt(localStorage.getItem('waveslayers_gems') || '0');
+        let darkMatter = parseInt(localStorage.getItem('waveslayers_dark_matter') || '0');
+        
+        // Skill Tree
+        let skillTree = JSON.parse(localStorage.getItem('waveslayers_skills') || '{}');
+        
+        // Achievements System
+        let achievements = JSON.parse(localStorage.getItem('waveslayers_achievements') || '{}');
+        let achievementProgress = JSON.parse(localStorage.getItem('waveslayers_achievement_progress') || '{}');
+        
+        // Daily Challenges
+        let dailyChallenges = JSON.parse(localStorage.getItem('waveslayers_daily_challenges') || '{}');
+        let lastDailyReset = localStorage.getItem('waveslayers_last_daily_reset') || '';
+        
+        // Battle Pass
+        let battlePassLevel = parseInt(localStorage.getItem('waveslayers_battlepass_level') || '0');
+        let battlePassXP = parseInt(localStorage.getItem('waveslayers_battlepass_xp') || '0');
+        let battlePassPremium = localStorage.getItem('waveslayers_battlepass_premium') === 'true';
+        let battlePassSeason = localStorage.getItem('waveslayers_battlepass_season') || '1';
         
         // Menu animation objects
         let menuStars = [];
