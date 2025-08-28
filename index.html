@@ -203,6 +203,218 @@
             overflow-y: auto;
         }
         
+        .battlepass-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            border: 2px solid #00ff44;
+        }
+        
+        .battlepass-level {
+            font-size: 28px;
+            color: #FFD700;
+            font-weight: bold;
+            text-shadow: 0 0 10px #FFD700;
+            margin: 10px 0;
+        }
+        
+        .xp-bar-container {
+            margin: 20px 0;
+        }
+        
+        .xp-bar {
+            width: 100%;
+            height: 25px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 15px;
+            border: 2px solid #00ff44;
+            overflow: hidden;
+            position: relative;
+            margin-top: 10px;
+        }
+        
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff44, #00cc33);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 15px #00ff44;
+        }
+        
+        .xp-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+        
+        #battlepassTiers {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .battlepass-tier {
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #333;
+            transition: all 0.3s ease;
+        }
+        
+        .battlepass-tier.current-tier {
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+            transform: scale(1.02);
+        }
+        
+        .tier-level {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00ff44, #00cc33);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            margin-right: 20px;
+            border: 3px solid #fff;
+        }
+        
+        .tier-rewards {
+            flex: 1;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .reward-track {
+            flex: 1;
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid #666;
+        }
+        
+        .reward-track.premium-track.unlocked {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,165,0,0.1));
+        }
+        
+        .reward-track.premium-track.locked {
+            opacity: 0.5;
+            border-color: #999;
+        }
+        
+        .reward-header {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        
+        .free-track .reward-header {
+            background: #00ff44;
+            color: black;
+        }
+        
+        .premium-track .reward-header {
+            background: #FFD700;
+            color: black;
+        }
+        
+        .reward-item {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .reward-item.locked {
+            opacity: 0.5;
+            filter: grayscale(100%);
+        }
+        
+        .reward-item.available {
+            background: rgba(0,255,68,0.1);
+            border: 1px solid #00ff44;
+        }
+        
+        .claim-button {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #00ff44;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .claim-button:hover:not(:disabled) {
+            background: #00cc33;
+            transform: translateY(-2px);
+        }
+        
+        .claim-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .claim-button.claimed {
+            background: #666;
+            color: #ccc;
+        }
+        
+        .claim-button.premium {
+            background: #FFD700;
+        }
+        
+        .claim-button.premium:hover:not(:disabled) {
+            background: #FFA500;
+        }
+        
+        .premium-upgrade {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.2));
+            border-radius: 12px;
+            border: 2px solid #FFD700;
+        }
+        
+        .upgrade-premium-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: black;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: none;
+        }
+        
+        .upgrade-premium-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255,215,0,0.4);
+        }
+        
         /* Menu Arsenal */
         #arsenalMenu {
             position: absolute;
@@ -1816,6 +2028,7 @@
         let battlePassXP = parseInt(localStorage.getItem('waveslayers_battlepass_xp') || '0');
         let battlePassPremium = localStorage.getItem('waveslayers_battlepass_premium') === 'true';
         let battlePassSeason = localStorage.getItem('waveslayers_battlepass_season') || '1';
+        let battlePassClaimedRewards = JSON.parse(localStorage.getItem('waveslayers_battlepass_claimed') || '[]');
         
         // Ship Customization System
         let currentShipId = localStorage.getItem('waveslayers_current_ship') || 'interceptor';
@@ -2771,6 +2984,115 @@
             }
         };
         
+        // Battle Pass System
+        const battlePassTiers = [
+            // Tier 1-10
+            { level: 1, xpRequired: 100, freeReward: { coins: 50 }, premiumReward: { coins: 100, gems: 5 } },
+            { level: 2, xpRequired: 150, freeReward: { coins: 75 }, premiumReward: { coins: 150, xp: 200 } },
+            { level: 3, xpRequired: 200, freeReward: { xp: 100 }, premiumReward: { coins: 200, gems: 10 } },
+            { level: 4, xpRequired: 250, freeReward: { coins: 100 }, premiumReward: { skin: 'gold' } },
+            { level: 5, xpRequired: 300, freeReward: { gems: 5 }, premiumReward: { coins: 300, gems: 15, darkMatter: 1 } },
+            
+            { level: 6, xpRequired: 400, freeReward: { coins: 125 }, premiumReward: { ship: 'fighter' } },
+            { level: 7, xpRequired: 500, freeReward: { xp: 200 }, premiumReward: { coins: 400, gems: 20 } },
+            { level: 8, xpRequired: 600, freeReward: { coins: 150 }, premiumReward: { effect: 'trail_fire' } },
+            { level: 9, xpRequired: 700, freeReward: { gems: 8 }, premiumReward: { coins: 500, xp: 500 } },
+            { level: 10, xpRequired: 800, freeReward: { coins: 200 }, premiumReward: { skin: 'stealth', gems: 25 } },
+            
+            // Tier 11-20
+            { level: 11, xpRequired: 1000, freeReward: { xp: 300 }, premiumReward: { ship: 'scout' } },
+            { level: 12, xpRequired: 1200, freeReward: { coins: 250 }, premiumReward: { coins: 600, gems: 30 } },
+            { level: 13, xpRequired: 1400, freeReward: { gems: 10 }, premiumReward: { effect: 'aura_energy' } },
+            { level: 14, xpRequired: 1600, freeReward: { coins: 300 }, premiumReward: { coins: 700, darkMatter: 3 } },
+            { level: 15, xpRequired: 1800, freeReward: { darkMatter: 1 }, premiumReward: { skin: 'neon', gems: 35 } },
+            
+            { level: 16, xpRequired: 2000, freeReward: { coins: 350 }, premiumReward: { ship: 'destroyer' } },
+            { level: 17, xpRequired: 2200, freeReward: { gems: 12 }, premiumReward: { coins: 800, xp: 800 } },
+            { level: 18, xpRequired: 2400, freeReward: { xp: 500 }, premiumReward: { effect: 'portal' } },
+            { level: 19, xpRequired: 2600, freeReward: { coins: 400 }, premiumReward: { coins: 900, gems: 40 } },
+            { level: 20, xpRequired: 2800, freeReward: { gems: 15 }, premiumReward: { skin: 'plasma', darkMatter: 5 } },
+            
+            // Tier 21-30
+            { level: 21, xpRequired: 3200, freeReward: { coins: 450 }, premiumReward: { ship: 'stealth' } },
+            { level: 22, xpRequired: 3600, freeReward: { darkMatter: 2 }, premiumReward: { coins: 1000, gems: 45 } },
+            { level: 23, xpRequired: 4000, freeReward: { coins: 500 }, premiumReward: { effect: 'lightning' } },
+            { level: 24, xpRequired: 4400, freeReward: { gems: 18 }, premiumReward: { coins: 1200, xp: 1000 } },
+            { level: 25, xpRequired: 4800, freeReward: { xp: 700 }, premiumReward: { ship: 'bomber', gems: 50 } },
+            
+            { level: 26, xpRequired: 5400, freeReward: { coins: 600 }, premiumReward: { skin: 'hologram' } },
+            { level: 27, xpRequired: 6000, freeReward: { gems: 20 }, premiumReward: { coins: 1500, darkMatter: 8 } },
+            { level: 28, xpRequired: 6600, freeReward: { darkMatter: 3 }, premiumReward: { effect: 'galaxy' } },
+            { level: 29, xpRequired: 7200, freeReward: { coins: 700 }, premiumReward: { coins: 1800, gems: 60 } },
+            { level: 30, xpRequired: 8000, freeReward: { gems: 25 }, premiumReward: { ship: 'vortex', darkMatter: 10 } },
+            
+            // Tier 31-40 (Epic Rewards)
+            { level: 31, xpRequired: 9000, freeReward: { coins: 800 }, premiumReward: { ship: 'phoenix' } },
+            { level: 32, xpRequired: 10000, freeReward: { darkMatter: 4 }, premiumReward: { coins: 2000, gems: 70 } },
+            { level: 33, xpRequired: 11000, freeReward: { gems: 30 }, premiumReward: { skin: 'void' } },
+            { level: 34, xpRequired: 12000, freeReward: { coins: 1000 }, premiumReward: { coins: 2500, darkMatter: 15 } },
+            { level: 35, xpRequired: 13000, freeReward: { xp: 1000 }, premiumReward: { ship: 'quantum', gems: 80 } },
+            
+            { level: 36, xpRequired: 14500, freeReward: { gems: 35 }, premiumReward: { coins: 3000, xp: 2000 } },
+            { level: 37, xpRequired: 16000, freeReward: { darkMatter: 5 }, premiumReward: { specialTitle: 'Destruidor Galáctico' } },
+            { level: 38, xpRequired: 17500, freeReward: { coins: 1200 }, premiumReward: { coins: 3500, gems: 90 } },
+            { level: 39, xpRequired: 19000, freeReward: { gems: 40 }, premiumReward: { ship: 'titan' } },
+            { level: 40, xpRequired: 20000, freeReward: { darkMatter: 8 }, premiumReward: { coins: 4000, darkMatter: 25 } },
+            
+            // Tier 41-50 (Legendary Rewards)
+            { level: 41, xpRequired: 22000, freeReward: { coins: 1500 }, premiumReward: { ship: 'void' } },
+            { level: 42, xpRequired: 24000, freeReward: { gems: 45 }, premiumReward: { coins: 4500, gems: 100 } },
+            { level: 43, xpRequired: 26000, freeReward: { darkMatter: 10 }, premiumReward: { exclusiveEffect: 'cosmic_storm' } },
+            { level: 44, xpRequired: 28000, freeReward: { coins: 1800 }, premiumReward: { coins: 5000, xp: 3000 } },
+            { level: 45, xpRequired: 30000, freeReward: { gems: 50 }, premiumReward: { exclusiveSkin: 'cosmic_emperor' } },
+            
+            { level: 46, xpRequired: 33000, freeReward: { darkMatter: 12 }, premiumReward: { coins: 6000, gems: 120 } },
+            { level: 47, xpRequired: 36000, freeReward: { coins: 2000 }, premiumReward: { specialTitle: 'Imperador Cósmico' } },
+            { level: 48, xpRequired: 39000, freeReward: { gems: 60 }, premiumReward: { coins: 7000, darkMatter: 40 } },
+            { level: 49, xpRequired: 42000, freeReward: { darkMatter: 15 }, premiumReward: { exclusiveShip: 'ascension_proto' } },
+            { level: 50, xpRequired: 50000, freeReward: { gems: 100, darkMatter: 20 }, premiumReward: { ship: 'godmode', exclusiveTitle: 'Deus das Galáxias', coins: 10000, gems: 200, darkMatter: 100 } }
+        ];
+        
+        // Battle Pass Exclusive Items
+        const battlePassExclusives = {
+            // Exclusive Ships
+            ascension_proto: {
+                id: 'ascension_proto',
+                name: 'Protótipo Ascensão',
+                description: 'Versão experimental da nave definitiva',
+                rarity: 'exclusive',
+                stats: {
+                    speed: 9,
+                    health: 400,
+                    damage: 90,
+                    fireRate: 60,
+                    shield: 150
+                },
+                abilities: ['Modo Experimental', 'Energia Infinita', 'Transcendência'],
+                sprite: '🌟'
+            },
+            
+            // Exclusive Skins
+            cosmic_emperor: {
+                id: 'cosmic_emperor',
+                name: 'Imperador Cósmico',
+                description: 'Skin exclusiva para os conquistadores das galáxias',
+                rarity: 'exclusive',
+                colors: ['#FFD700', '#FF6B35', '#9B59B6', '#3498DB'],
+                animated: true,
+                holographic: true,
+                exclusive: true
+            },
+            
+            // Exclusive Effects
+            cosmic_storm: {
+                id: 'cosmic_storm',
+                name: 'Tempestade Cósmica',
+                description: 'Tempestade de energia cósmica ao redor da nave',
+                rarity: 'exclusive',
+                exclusive: true
+            }
+        };
+        
         // Player class
         class Player {
             constructor() {
@@ -3336,6 +3658,7 @@
                             
                             // Progression system updates
                             addXP(scoreGained); // Gain XP equal to score
+                            addBattlePassXP(Math.floor(scoreGained / 2)); // Battle Pass XP = half of score XP
                             achievementProgress.totalKills = (achievementProgress.totalKills || 0) + 1;
                             achievementProgress.totalCoinsCollected = (achievementProgress.totalCoinsCollected || 0) + enemy.coinValue;
                             achievementProgress.highScore = Math.max(achievementProgress.highScore || 0, score);
@@ -3457,11 +3780,254 @@
             saveGameData();
         }
         
+        // Battle Pass Functions
+        function updateBattlePassProgress() {
+            const currentTier = battlePassTiers.find(tier => tier.level === battlePassLevel);
+            const nextTier = battlePassTiers.find(tier => tier.level === battlePassLevel + 1);
+            
+            if (!currentTier) return;
+            
+            // Verifica se pode subir de nível
+            if (nextTier && battlePassXP >= currentTier.xpRequired) {
+                battlePassLevel++;
+                battlePassXP -= currentTier.xpRequired;
+                
+                // Efeito visual de level up
+                showNotification(`🎉 Battle Pass Nível ${battlePassLevel}! Novas recompensas disponíveis!`);
+                updateBattlePassProgress(); // Recursivo para múltiplos níveis
+            }
+        }
+        
+        function addBattlePassXP(amount) {
+            battlePassXP += amount;
+            updateBattlePassProgress();
+            saveGameData();
+        }
+        
+        function claimBattlePassReward(tier, isPremium = false) {
+            const rewardKey = `${tier}-${isPremium ? 'premium' : 'free'}`;
+            
+            if (battlePassClaimedRewards.includes(rewardKey)) {
+                showNotification('❌ Recompensa já coletada!');
+                return false;
+            }
+            
+            const tierData = battlePassTiers.find(t => t.level === tier);
+            if (!tierData || tier > battlePassLevel) {
+                showNotification('❌ Nível não alcançado ainda!');
+                return false;
+            }
+            
+            if (isPremium && !battlePassPremium) {
+                showNotification('❌ Versão Premium necessária!');
+                return false;
+            }
+            
+            const reward = isPremium ? tierData.premiumReward : tierData.freeReward;
+            
+            // Aplicar recompensas
+            if (reward.coins) {
+                coins += reward.coins;
+                showNotification(`💰 +${reward.coins} Moedas!`);
+            }
+            
+            if (reward.gems) {
+                gems += reward.gems;
+                showNotification(`💎 +${reward.gems} Gemas!`);
+            }
+            
+            if (reward.darkMatter) {
+                if (!playerStats.darkMatter) playerStats.darkMatter = 0;
+                playerStats.darkMatter += reward.darkMatter;
+                showNotification(`🌌 +${reward.darkMatter} Matéria Escura!`);
+            }
+            
+            if (reward.xp) {
+                playerStats.experience += reward.xp;
+                showNotification(`⭐ +${reward.xp} XP!`);
+            }
+            
+            if (reward.ship) {
+                if (shipModels[reward.ship]) {
+                    shipModels[reward.ship].unlocked = true;
+                    showNotification(`🚀 Nova nave desbloqueada: ${shipModels[reward.ship].name}!`);
+                }
+            }
+            
+            if (reward.skin) {
+                if (shipSkins[reward.skin]) {
+                    shipSkins[reward.skin].unlocked = true;
+                    showNotification(`🎨 Nova skin desbloqueada: ${shipSkins[reward.skin].name}!`);
+                }
+            }
+            
+            if (reward.effect) {
+                if (visualEffects[reward.effect]) {
+                    visualEffects[reward.effect].unlocked = true;
+                    showNotification(`✨ Novo efeito visual: ${visualEffects[reward.effect].name}!`);
+                }
+            }
+            
+            if (reward.exclusiveShip) {
+                if (battlePassExclusives[reward.exclusiveShip]) {
+                    // Adiciona nave exclusiva ao inventário
+                    if (!playerStats.exclusiveItems) playerStats.exclusiveItems = {};
+                    playerStats.exclusiveItems[reward.exclusiveShip] = true;
+                    showNotification(`🌟 EXCLUSIVA! ${battlePassExclusives[reward.exclusiveShip].name}!`);
+                }
+            }
+            
+            if (reward.exclusiveSkin) {
+                if (battlePassExclusives[reward.exclusiveSkin]) {
+                    if (!playerStats.exclusiveItems) playerStats.exclusiveItems = {};
+                    playerStats.exclusiveItems[reward.exclusiveSkin] = true;
+                    showNotification(`🌟 SKIN EXCLUSIVA! ${battlePassExclusives[reward.exclusiveSkin].name}!`);
+                }
+            }
+            
+            if (reward.specialTitle) {
+                if (!playerStats.titles) playerStats.titles = [];
+                playerStats.titles.push(reward.specialTitle);
+                showNotification(`👑 Novo título: ${reward.specialTitle}!`);
+            }
+            
+            battlePassClaimedRewards.push(rewardKey);
+            saveGameData();
+            return true;
+        }
+        
+        function buyBattlePassPremium() {
+            if (gems >= 500) {
+                gems -= 500;
+                battlePassPremium = true;
+                showNotification('🌟 Battle Pass Premium ativado! Recompensas especiais liberadas!');
+                saveGameData();
+                return true;
+            } else {
+                showNotification('❌ Você precisa de 500 gemas para o Battle Pass Premium!');
+                return false;
+            }
+        }
+        
+        function resetBattlePass() {
+            // Novo season
+            battlePassSeason++;
+            battlePassLevel = 1;
+            battlePassXP = 0;
+            battlePassPremium = false;
+            battlePassClaimedRewards = [];
+            
+            showNotification(`🎊 Nova temporada do Battle Pass! Season ${battlePassSeason}`);
+            saveGameData();
+        }
+        
         function saveGameData() {
             localStorage.setItem('waveslayers_coins', coins.toString());
+            localStorage.setItem('waveslayers_gems', gems.toString());
             localStorage.setItem('waveslayers_current_world', currentWorldId);
             const unlockedWorldIds = Object.keys(worlds).filter(id => worlds[id].unlocked);
             localStorage.setItem('waveslayers_unlocked_worlds', JSON.stringify(unlockedWorldIds));
+            
+            // Save Battle Pass data
+            localStorage.setItem('waveslayers_battlepass_level', battlePassLevel.toString());
+            localStorage.setItem('waveslayers_battlepass_xp', battlePassXP.toString());
+            localStorage.setItem('waveslayers_battlepass_premium', battlePassPremium.toString());
+            localStorage.setItem('waveslayers_battlepass_season', battlePassSeason.toString());
+            localStorage.setItem('waveslayers_battlepass_claimed', JSON.stringify(battlePassClaimedRewards));
+            
+            // Save ship customization data
+            localStorage.setItem('waveslayers_current_ship', currentShip);
+            localStorage.setItem('waveslayers_ship_models', JSON.stringify(shipModels));
+            localStorage.setItem('waveslayers_ship_skins', JSON.stringify(shipSkins));
+            localStorage.setItem('waveslayers_visual_effects', JSON.stringify(visualEffects));
+            localStorage.setItem('waveslayers_ship_upgrades', JSON.stringify(shipUpgrades));
+            localStorage.setItem('waveslayers_current_skin', currentSkin);
+            localStorage.setItem('waveslayers_current_effect', currentEffect);
+            
+            // Save player stats
+            localStorage.setItem('waveslayers_player_stats', JSON.stringify(playerStats));
+        }
+        
+        function loadGameData() {
+            // Load basic data
+            const savedCoins = localStorage.getItem('waveslayers_coins');
+            if (savedCoins) coins = parseInt(savedCoins);
+            
+            const savedGems = localStorage.getItem('waveslayers_gems');
+            if (savedGems) gems = parseInt(savedGems);
+            
+            const savedWorld = localStorage.getItem('waveslayers_current_world');
+            if (savedWorld) currentWorldId = savedWorld;
+            
+            const savedUnlockedWorlds = localStorage.getItem('waveslayers_unlocked_worlds');
+            if (savedUnlockedWorlds) {
+                const unlockedIds = JSON.parse(savedUnlockedWorlds);
+                unlockedIds.forEach(id => {
+                    if (worlds[id]) worlds[id].unlocked = true;
+                });
+            }
+            
+            // Load Battle Pass data
+            const savedBPLevel = localStorage.getItem('waveslayers_battlepass_level');
+            if (savedBPLevel) battlePassLevel = parseInt(savedBPLevel);
+            
+            const savedBPXP = localStorage.getItem('waveslayers_battlepass_xp');
+            if (savedBPXP) battlePassXP = parseInt(savedBPXP);
+            
+            const savedBPPremium = localStorage.getItem('waveslayers_battlepass_premium');
+            if (savedBPPremium) battlePassPremium = savedBPPremium === 'true';
+            
+            const savedBPSeason = localStorage.getItem('waveslayers_battlepass_season');
+            if (savedBPSeason) battlePassSeason = parseInt(savedBPSeason);
+            
+            const savedBPClaimed = localStorage.getItem('waveslayers_battlepass_claimed');
+            if (savedBPClaimed) battlePassClaimedRewards = JSON.parse(savedBPClaimed);
+            
+            // Load ship customization data
+            const savedCurrentShip = localStorage.getItem('waveslayers_current_ship');
+            if (savedCurrentShip) currentShip = savedCurrentShip;
+            
+            const savedShipModels = localStorage.getItem('waveslayers_ship_models');
+            if (savedShipModels) {
+                const loadedModels = JSON.parse(savedShipModels);
+                Object.keys(loadedModels).forEach(key => {
+                    if (shipModels[key]) {
+                        shipModels[key].unlocked = loadedModels[key].unlocked;
+                    }
+                });
+            }
+            
+            const savedShipSkins = localStorage.getItem('waveslayers_ship_skins');
+            if (savedShipSkins) {
+                const loadedSkins = JSON.parse(savedShipSkins);
+                Object.keys(loadedSkins).forEach(key => {
+                    if (shipSkins[key]) {
+                        shipSkins[key].unlocked = loadedSkins[key].unlocked;
+                    }
+                });
+            }
+            
+            const savedVisualEffects = localStorage.getItem('waveslayers_visual_effects');
+            if (savedVisualEffects) {
+                const loadedEffects = JSON.parse(savedVisualEffects);
+                Object.keys(loadedEffects).forEach(key => {
+                    if (visualEffects[key]) {
+                        visualEffects[key].unlocked = loadedEffects[key].unlocked;
+                    }
+                });
+            }
+            
+            const savedUpgrades = localStorage.getItem('waveslayers_ship_upgrades');
+            if (savedUpgrades) shipUpgrades = JSON.parse(savedUpgrades);
+            
+            const savedCurrentSkin = localStorage.getItem('waveslayers_current_skin');
+            if (savedCurrentSkin) currentSkin = savedCurrentSkin;
+            
+            const savedCurrentEffect = localStorage.getItem('waveslayers_current_effect');
+            if (savedCurrentEffect) currentEffect = savedCurrentEffect;
+            
+            const savedPlayerStats = localStorage.getItem('waveslayers_player_stats');
+            if (savedPlayerStats) playerStats = {...playerStats, ...JSON.parse(savedPlayerStats)};
         }
         
         function startGame() {
@@ -3790,6 +4356,116 @@ Boa sorte, comandante! 🚀✨`);
             document.getElementById('battlepassMenu').style.display = 'none';
             document.getElementById('mainMenu').style.display = 'flex';
             initMenuAnimation();
+        }
+        
+        function updateBattlepassDisplay() {
+            // Atualizar nível
+            document.getElementById('battlepassLevelDisplay').textContent = battlePassLevel;
+            
+            // Atualizar status premium
+            const statusElement = document.getElementById('battlepassStatus');
+            if (battlePassPremium) {
+                statusElement.textContent = 'PREMIUM';
+                statusElement.style.color = '#FFD700';
+            } else {
+                statusElement.textContent = 'GRÁTIS';
+                statusElement.style.color = '#FFFFFF';
+            }
+            
+            // Atualizar barra de XP
+            const currentTier = battlePassTiers.find(tier => tier.level === battlePassLevel);
+            const nextTier = battlePassTiers.find(tier => tier.level === battlePassLevel + 1);
+            
+            if (currentTier && nextTier) {
+                const xpProgress = (battlePassXP / currentTier.xpRequired) * 100;
+                document.getElementById('battlepassXpFill').style.width = Math.min(xpProgress, 100) + '%';
+                document.getElementById('battlepassXpText').textContent = `${battlePassXP} / ${currentTier.xpRequired}`;
+            } else if (battlePassLevel >= 50) {
+                document.getElementById('battlepassXpFill').style.width = '100%';
+                document.getElementById('battlepassXpText').textContent = 'MÁXIMO';
+            }
+        }
+        
+        function renderBattlepassTiers() {
+            const tiersContainer = document.getElementById('battlepassTiers');
+            tiersContainer.innerHTML = '';
+            
+            battlePassTiers.forEach((tier, index) => {
+                const tierElement = document.createElement('div');
+                tierElement.className = 'battlepass-tier';
+                tierElement.innerHTML = `
+                    <div class="tier-level">${tier.level}</div>
+                    <div class="tier-rewards">
+                        <div class="reward-track free-track">
+                            <div class="reward-header">GRÁTIS</div>
+                            <div class="reward-item ${battlePassLevel >= tier.level ? 'available' : 'locked'}">
+                                ${formatReward(tier.freeReward)}
+                                <button 
+                                    class="claim-button ${battlePassClaimedRewards.includes(`${tier.level}-free`) ? 'claimed' : ''}"
+                                    onclick="claimBattlePassReward(${tier.level}, false)"
+                                    ${battlePassLevel < tier.level || battlePassClaimedRewards.includes(`${tier.level}-free`) ? 'disabled' : ''}
+                                >
+                                    ${battlePassClaimedRewards.includes(`${tier.level}-free`) ? '✓' : 'Coletar'}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="reward-track premium-track ${battlePassPremium ? 'unlocked' : 'locked'}">
+                            <div class="reward-header">PREMIUM</div>
+                            <div class="reward-item ${battlePassLevel >= tier.level ? 'available' : 'locked'}">
+                                ${formatReward(tier.premiumReward)}
+                                <button 
+                                    class="claim-button premium ${battlePassClaimedRewards.includes(`${tier.level}-premium`) ? 'claimed' : ''}"
+                                    onclick="claimBattlePassReward(${tier.level}, true)"
+                                    ${battlePassLevel < tier.level || battlePassClaimedRewards.includes(`${tier.level}-premium`) || !battlePassPremium ? 'disabled' : ''}
+                                >
+                                    ${battlePassClaimedRewards.includes(`${tier.level}-premium`) ? '✓' : 'Coletar'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Highlight current level
+                if (tier.level === battlePassLevel) {
+                    tierElement.classList.add('current-tier');
+                }
+                
+                tiersContainer.appendChild(tierElement);
+            });
+            
+            // Add premium upgrade button if not premium
+            if (!battlePassPremium) {
+                const upgradeButton = document.createElement('div');
+                upgradeButton.className = 'premium-upgrade';
+                upgradeButton.innerHTML = `
+                    <button class="upgrade-premium-button" onclick="buyBattlePassPremium()">
+                        🌟 UPGRADE PARA PREMIUM - 500 💎
+                    </button>
+                `;
+                tiersContainer.appendChild(upgradeButton);
+            }
+        }
+        
+        function formatReward(reward) {
+            let rewardText = [];
+            
+            if (reward.coins) rewardText.push(`💰 ${reward.coins}`);
+            if (reward.gems) rewardText.push(`💎 ${reward.gems}`);
+            if (reward.darkMatter) rewardText.push(`🌌 ${reward.darkMatter}`);
+            if (reward.xp) rewardText.push(`⭐ ${reward.xp} XP`);
+            if (reward.ship) rewardText.push(`🚀 ${shipModels[reward.ship]?.name || reward.ship}`);
+            if (reward.skin) rewardText.push(`🎨 ${shipSkins[reward.skin]?.name || reward.skin}`);
+            if (reward.effect) rewardText.push(`✨ ${visualEffects[reward.effect]?.name || reward.effect}`);
+            if (reward.exclusiveShip) rewardText.push(`🌟 ${battlePassExclusives[reward.exclusiveShip]?.name || reward.exclusiveShip}`);
+            if (reward.exclusiveSkin) rewardText.push(`🌟 ${battlePassExclusives[reward.exclusiveSkin]?.name || reward.exclusiveSkin}`);
+            if (reward.specialTitle) rewardText.push(`👑 ${reward.specialTitle}`);
+            if (reward.exclusiveTitle) rewardText.push(`🏆 ${reward.exclusiveTitle}`);
+            
+            return rewardText.join('<br>');
+        }
+        
+        function upgradeBattlepass() {
+            buyBattlePassPremium();
         }
         
         // Ship Customization Menu Functions
@@ -4647,6 +5323,9 @@ Boa sorte, comandante! 🚀✨`);
         // Initialize game
         function init() {
             player = new Player();
+            
+            // Load saved game data
+            loadGameData();
             
             // Create stars
             for (let i = 0; i < 120; i++) {
