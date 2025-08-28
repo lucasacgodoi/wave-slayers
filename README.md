@@ -40,14 +40,10 @@ Sobreviva o máximo possível, destruindo naves inimigas e acumulando pontos. A 
 ## Tecnologias Utilizadas
 
 - HTML5
-- CSS3
-- JavaScript (Canvas API)
 
 ## Estrutura do Projeto
 
-- `index.html`: Estrutura básica da página
-- `style.css`: Estilos e aparência visual
-- `game.js`: Toda a lógica do jogo
+- `index.html`
 
 ## Desenvolvimento Futuro
 
