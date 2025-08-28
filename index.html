@@ -219,6 +219,363 @@
             padding: 20px;
             overflow-y: auto;
         }
+
+        /* Menu de Naves */
+        #shipCustomizationMenu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,30,60,0.95) 0%, rgba(30,0,60,0.95) 100%);
+            display: none;
+            flex-direction: column;
+            z-index: 99;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .ship-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .ship-header h2 {
+            font-size: 2.5em;
+            color: #00ffff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .ship-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .ship-tab {
+            background: linear-gradient(45deg, #004466, #0066aa);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #333;
+        }
+
+        .ship-tab.active {
+            background: linear-gradient(45deg, #0088cc, #00aaff);
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0,255,255,0.5);
+        }
+
+        .ship-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,255,255,0.3);
+        }
+
+        .ships-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .ship-card {
+            background: linear-gradient(135deg, rgba(0,50,100,0.3) 0%, rgba(0,30,60,0.3) 100%);
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ship-card.equipped {
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0,255,0,0.4);
+        }
+
+        .ship-card.legendary {
+            border-color: #ff6600;
+            box-shadow: 0 0 20px rgba(255,102,0,0.4);
+            background: linear-gradient(135deg, rgba(255,102,0,0.1) 0%, rgba(200,50,0,0.1) 100%);
+        }
+
+        .ship-card.epic {
+            border-color: #9932cc;
+            box-shadow: 0 0 20px rgba(153,50,204,0.4);
+            background: linear-gradient(135deg, rgba(153,50,204,0.1) 0%, rgba(100,20,150,0.1) 100%);
+        }
+
+        .ship-card.rare {
+            border-color: #0080ff;
+            box-shadow: 0 0 20px rgba(0,128,255,0.4);
+            background: linear-gradient(135deg, rgba(0,128,255,0.1) 0%, rgba(0,80,200,0.1) 100%);
+        }
+
+        .ship-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,255,255,0.2);
+        }
+
+        .ship-preview {
+            width: 100%;
+            height: 120px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #444;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ship-model {
+            font-size: 3em;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .ship-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .ship-description {
+            color: #ccc;
+            font-size: 0.9em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .ship-stats {
+            margin-bottom: 15px;
+        }
+
+        .ship-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .ship-stat-bar {
+            width: 100px;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .ship-stat-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #ffff00, #ff6600);
+            transition: width 0.3s ease;
+        }
+
+        .ship-abilities {
+            margin-bottom: 15px;
+        }
+
+        .ship-ability {
+            background: rgba(0,255,255,0.1);
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 5px 0;
+            font-size: 0.85em;
+            color: #00ffff;
+        }
+
+        .ship-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .ship-action {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .ship-action:hover {
+            transform: translateY(-2px);
+        }
+
+        .ship-action.equipped {
+            background: linear-gradient(45deg, #00aa00, #00ff00);
+            color: #000;
+        }
+
+        .ship-action.equip {
+            background: linear-gradient(45deg, #0066aa, #00aaff);
+            color: #fff;
+        }
+
+        .ship-action.upgrade {
+            background: linear-gradient(45deg, #aa6600, #ff9900);
+            color: #fff;
+        }
+
+        .ship-action.unlock {
+            background: linear-gradient(45deg, #666, #999);
+            color: #fff;
+        }
+
+        .ship-action:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .upgrade-section {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .upgrade-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upgrade-header h3 {
+            color: #ffaa00;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .upgrade-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .upgrade-category {
+            background: rgba(255,170,0,0.1);
+            border: 2px solid #ffaa00;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .upgrade-category h4 {
+            color: #ffaa00;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .upgrade-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+        .upgrade-option.equipped {
+            border-color: #00ff00;
+            background: rgba(0,255,0,0.1);
+        }
+
+        .upgrade-option:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .upgrade-cost {
+            color: #ffaa00;
+            font-weight: bold;
+        }
+
+        .skins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .skin-card {
+            background: linear-gradient(135deg, rgba(100,0,100,0.3) 0%, rgba(50,0,100,0.3) 100%);
+            border: 2px solid #666;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skin-card.equipped {
+            border-color: #00ff00;
+            box-shadow: 0 0 15px rgba(0,255,0,0.3);
+        }
+
+        .skin-card.animated {
+            border-color: #ff6600;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .skin-card.holographic {
+            border-color: #9932cc;
+            background: linear-gradient(45deg, rgba(153,50,204,0.2), rgba(255,0,255,0.2), rgba(0,255,255,0.2));
+            background-size: 400% 400%;
+            animation: hologram 3s ease-in-out infinite;
+        }
+
+        @keyframes hologram {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .skin-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.2);
+        }
+
+        .skin-preview {
+            width: 100%;
+            height: 80px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+        }
+
+        .skin-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .skin-rarity {
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+
+        .ship-tab-content {
+            display: block;
+        }
         
         .arsenal-header {
             text-align: center;
@@ -1165,9 +1522,9 @@
                 <div class="menu-buttons-container">
                     <button class="menu-button" onclick="startGame()">🚀 Iniciar Jogo</button>
                     <button class="menu-button" onclick="openWorldsMenu()">🌍 Mundos</button>
+                    <button class="menu-button" onclick="openShipCustomizationMenu()">🛸 Naves</button>
                     <button class="menu-button" onclick="openProgressionMenu()">⭐ Progressão</button>
-                    <button class="menu-button" onclick="openAchievementsMenu()">🏆 Conquistas</button>
-                    <button class="menu-button" onclick="openBattlepassMenu()">🎯 Battle Pass</button>
+                    <button class="menu-button" onclick="openAchievementsMenu()">� Conquistas</button>
                     <button class="menu-button" onclick="showInstructions()">📋 Controles</button>
                 </div>
             </div>
@@ -1292,6 +1649,82 @@
             <button class="back-button" onclick="closeBattlepassMenu()">← Voltar ao Menu</button>
         </div>
 
+        <!-- Menu de Customização de Naves -->
+        <div id="shipCustomizationMenu">
+            <div class="ship-header">
+                <h2>🛸 HANGAR DE NAVES</h2>
+                <div class="player-stats">
+                    <div class="stat-card">
+                        <span class="stat-value" id="currentShipName">Interceptor</span>
+                        <div class="stat-label">Nave Atual</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="shipsUnlocked">1</span>
+                        <div class="stat-label">Naves Desbloqueadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="skinsUnlocked">3</span>
+                        <div class="stat-label">Skins Desbloqueadas</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ship-tabs">
+                <button class="ship-tab active" onclick="switchShipTab('models')">🚁 Modelos</button>
+                <button class="ship-tab" onclick="switchShipTab('upgrades')">⚙️ Upgrades</button>
+                <button class="ship-tab" onclick="switchShipTab('skins')">🎨 Skins</button>
+                <button class="ship-tab" onclick="switchShipTab('effects')">✨ Efeitos</button>
+            </div>
+            
+            <!-- Aba de Modelos -->
+            <div id="modelsTab" class="ship-tab-content">
+                <div class="ships-grid" id="shipsGrid">
+                    <!-- Naves serão geradas dinamicamente -->
+                </div>
+            </div>
+            
+            <!-- Aba de Upgrades -->
+            <div id="upgradesTab" class="ship-tab-content" style="display: none;">
+                <div class="upgrade-section">
+                    <div class="upgrade-header">
+                        <h3>🔧 SISTEMA DE UPGRADES</h3>
+                        <p>Melhore sua nave com componentes avançados</p>
+                    </div>
+                    <div class="upgrade-categories" id="upgradeCategories">
+                        <!-- Categorias de upgrade serão geradas dinamicamente -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Aba de Skins -->
+            <div id="skinsTab" class="ship-tab-content" style="display: none;">
+                <div class="upgrade-section">
+                    <div class="upgrade-header">
+                        <h3>🎨 SKINS ÉPICAS</h3>
+                        <p>Personalize o visual da sua nave</p>
+                    </div>
+                    <div class="skins-grid" id="skinsGrid">
+                        <!-- Skins serão geradas dinamicamente -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Aba de Efeitos -->
+            <div id="effectsTab" class="ship-tab-content" style="display: none;">
+                <div class="upgrade-section">
+                    <div class="upgrade-header">
+                        <h3>✨ EFEITOS VISUAIS</h3>
+                        <p>Rastros, auras e modificações visuais</p>
+                    </div>
+                    <div class="skins-grid" id="effectsGrid">
+                        <!-- Efeitos serão gerados dinamicamente -->
+                    </div>
+                </div>
+            </div>
+            
+            <button class="back-button" onclick="closeShipCustomizationMenu()">← Voltar ao Menu</button>
+        </div>
+
         <!-- Loading Screen -->
         <div id="loadingScreen">
             <div class="loading-spinner"></div>
@@ -1383,6 +1816,15 @@
         let battlePassXP = parseInt(localStorage.getItem('waveslayers_battlepass_xp') || '0');
         let battlePassPremium = localStorage.getItem('waveslayers_battlepass_premium') === 'true';
         let battlePassSeason = localStorage.getItem('waveslayers_battlepass_season') || '1';
+        
+        // Ship Customization System
+        let currentShipId = localStorage.getItem('waveslayers_current_ship') || 'interceptor';
+        let unlockedShips = JSON.parse(localStorage.getItem('waveslayers_unlocked_ships') || '["interceptor"]');
+        let shipUpgrades = JSON.parse(localStorage.getItem('waveslayers_ship_upgrades') || '{}');
+        let currentSkinId = localStorage.getItem('waveslayers_current_skin') || 'default';
+        let unlockedSkins = JSON.parse(localStorage.getItem('waveslayers_unlocked_skins') || '["default", "blue", "red"]');
+        let currentEffectId = localStorage.getItem('waveslayers_current_effect') || 'none';
+        let unlockedEffects = JSON.parse(localStorage.getItem('waveslayers_unlocked_effects') || '["none"]');
         
         // Menu animation objects
         let menuStars = [];
@@ -1915,6 +2357,420 @@
             }
         });
         
+        // Ship Models System
+        const shipModels = {
+            // Naves Básicas
+            interceptor: {
+                id: 'interceptor',
+                name: 'Interceptor',
+                description: 'Nave básica e confiável. Boa para iniciantes.',
+                rarity: 'common',
+                price: 0,
+                unlocked: true,
+                stats: {
+                    speed: 6,
+                    health: 100,
+                    damage: 25,
+                    fireRate: 150,
+                    shield: 0
+                },
+                abilities: ['Manobra Básica'],
+                sprite: '🛸'
+            },
+            fighter: {
+                id: 'fighter',
+                name: 'Caça Estelar',
+                description: 'Nave de combate com maior poder de fogo.',
+                rarity: 'common',
+                price: 500,
+                unlocked: false,
+                stats: {
+                    speed: 5,
+                    health: 120,
+                    damage: 35,
+                    fireRate: 120,
+                    shield: 20
+                },
+                abilities: ['Rajada Dupla', 'Escudo Básico'],
+                sprite: '🚁'
+            },
+            scout: {
+                id: 'scout',
+                name: 'Explorador',
+                description: 'Nave rápida e ágil, perfeita para evasão.',
+                rarity: 'common',
+                price: 400,
+                unlocked: false,
+                stats: {
+                    speed: 8,
+                    health: 80,
+                    damage: 20,
+                    fireRate: 100,
+                    shield: 10
+                },
+                abilities: ['Velocidade Máxima', 'Evasão'],
+                sprite: '✈️'
+            },
+            
+            // Naves Raras
+            destroyer: {
+                id: 'destroyer',
+                name: 'Destruidor',
+                description: 'Nave pesada com poder de fogo devastador.',
+                rarity: 'rare',
+                price: 1200,
+                unlocked: false,
+                stats: {
+                    speed: 4,
+                    health: 180,
+                    damage: 50,
+                    fireRate: 200,
+                    shield: 40
+                },
+                abilities: ['Tiro Perfurador', 'Casco Reforçado', 'Escudo Avançado'],
+                sprite: '🚀'
+            },
+            stealth: {
+                id: 'stealth',
+                name: 'Furtiva',
+                description: 'Tecnologia de camuflagem e ataques surpresa.',
+                rarity: 'rare',
+                price: 1000,
+                unlocked: false,
+                stats: {
+                    speed: 7,
+                    health: 90,
+                    damage: 40,
+                    fireRate: 80,
+                    shield: 15
+                },
+                abilities: ['Camuflagem', 'Ataque Crítico', 'Furtividade'],
+                sprite: '👻'
+            },
+            bomber: {
+                id: 'bomber',
+                name: 'Bombardeiro',
+                description: 'Especialista em ataques de área devastadores.',
+                rarity: 'rare',
+                price: 1500,
+                unlocked: false,
+                stats: {
+                    speed: 3,
+                    health: 200,
+                    damage: 60,
+                    fireRate: 300,
+                    shield: 50
+                },
+                abilities: ['Mísseis Explosivos', 'Bombardeio', 'Casco Blindado'],
+                sprite: '💣'
+            },
+            
+            // Naves Épicas
+            vortex: {
+                id: 'vortex',
+                name: 'Vórtice',
+                description: 'Manipula energia espacial para ataques únicos.',
+                rarity: 'epic',
+                price: 2500,
+                unlocked: false,
+                stats: {
+                    speed: 6,
+                    health: 150,
+                    damage: 45,
+                    fireRate: 120,
+                    shield: 60
+                },
+                abilities: ['Vórtice Energético', 'Distorção Temporal', 'Campo de Força'],
+                sprite: '🌀'
+            },
+            phoenix: {
+                id: 'phoenix',
+                name: 'Fênix',
+                description: 'Renascimento automático e poder crescente.',
+                rarity: 'epic',
+                price: 3000,
+                unlocked: false,
+                stats: {
+                    speed: 5,
+                    health: 160,
+                    damage: 55,
+                    fireRate: 100,
+                    shield: 40
+                },
+                abilities: ['Renascimento', 'Chamas Eternas', 'Poder Crescente'],
+                sprite: '🔥'
+            },
+            quantum: {
+                id: 'quantum',
+                name: 'Quantum',
+                description: 'Tecnologia quântica avançada e teletransporte.',
+                rarity: 'epic',
+                price: 3500,
+                unlocked: false,
+                stats: {
+                    speed: 8,
+                    health: 120,
+                    damage: 50,
+                    fireRate: 90,
+                    shield: 80
+                },
+                abilities: ['Teletransporte', 'Duplicação Quântica', 'Fase Fantasma'],
+                sprite: '⚛️'
+            },
+            
+            // Naves Lendárias
+            titan: {
+                id: 'titan',
+                name: 'Titã',
+                description: 'A máquina de guerra definitiva.',
+                rarity: 'legendary',
+                price: 5000,
+                unlocked: false,
+                stats: {
+                    speed: 4,
+                    health: 300,
+                    damage: 80,
+                    fireRate: 150,
+                    shield: 100
+                },
+                abilities: ['Modo Berserk', 'Canhão Titânico', 'Escudo Indestrutível', 'Regeneração'],
+                sprite: '🤖'
+            },
+            void: {
+                id: 'void',
+                name: 'Devorador do Vazio',
+                description: 'Consome energia dos inimigos para se fortalecer.',
+                rarity: 'legendary',
+                price: 6000,
+                unlocked: false,
+                stats: {
+                    speed: 6,
+                    health: 200,
+                    damage: 70,
+                    fireRate: 80,
+                    shield: 120
+                },
+                abilities: ['Drenar Vida', 'Buraco Negro', 'Absorção Energética', 'Void Walk'],
+                sprite: '🕳️'
+            },
+            godmode: {
+                id: 'godmode',
+                name: 'Ascensão',
+                description: 'Transcendeu os limites da tecnologia conhecida.',
+                rarity: 'legendary',
+                price: 10000,
+                unlocked: false,
+                stats: {
+                    speed: 10,
+                    health: 500,
+                    damage: 100,
+                    fireRate: 50,
+                    shield: 200
+                },
+                abilities: ['Modo Deus', 'Onipresença', 'Destruição Total', 'Imortalidade', 'Criação'],
+                sprite: '👑'
+            }
+        };
+        
+        // Ship Upgrades System
+        const upgradeCategories = {
+            engine: {
+                name: 'Motor',
+                icon: '🚀',
+                upgrades: {
+                    basic: { name: 'Motor Básico', cost: 0, speedBonus: 0, equipped: true },
+                    improved: { name: 'Motor Melhorado', cost: 200, speedBonus: 1, equipped: false },
+                    advanced: { name: 'Motor Avançado', cost: 500, speedBonus: 2, equipped: false },
+                    quantum: { name: 'Motor Quântico', cost: 1000, speedBonus: 4, equipped: false }
+                }
+            },
+            shield: {
+                name: 'Escudo',
+                icon: '🛡️',
+                upgrades: {
+                    none: { name: 'Sem Escudo', cost: 0, shieldBonus: 0, equipped: true },
+                    basic: { name: 'Escudo Básico', cost: 300, shieldBonus: 50, equipped: false },
+                    enhanced: { name: 'Escudo Reforçado', cost: 600, shieldBonus: 100, equipped: false },
+                    quantum: { name: 'Escudo Quântico', cost: 1200, shieldBonus: 200, equipped: false }
+                }
+            },
+            weapons: {
+                name: 'Armas',
+                icon: '⚔️',
+                upgrades: {
+                    basic: { name: 'Laser Básico', cost: 0, damageBonus: 0, equipped: true },
+                    plasma: { name: 'Canhão Plasma', cost: 400, damageBonus: 15, equipped: false },
+                    photon: { name: 'Torpedos Fóton', cost: 800, damageBonus: 30, equipped: false },
+                    antimatter: { name: 'Canhão Antimatéria', cost: 1500, damageBonus: 50, equipped: false }
+                }
+            },
+            hull: {
+                name: 'Casco',
+                icon: '🔧',
+                upgrades: {
+                    basic: { name: 'Casco Básico', cost: 0, healthBonus: 0, equipped: true },
+                    reinforced: { name: 'Casco Reforçado', cost: 350, healthBonus: 50, equipped: false },
+                    armored: { name: 'Casco Blindado', cost: 700, healthBonus: 100, equipped: false },
+                    nanotube: { name: 'Nanotubos de Carbono', cost: 1400, healthBonus: 200, equipped: false }
+                }
+            }
+        };
+        
+        // Ship Skins System
+        const shipSkins = {
+            default: {
+                id: 'default',
+                name: 'Padrão',
+                description: 'Visual clássico da nave',
+                rarity: 'common',
+                price: 0,
+                unlocked: true,
+                colors: ['#00ccff', '#ffffff'],
+                animated: false
+            },
+            blue: {
+                id: 'blue',
+                name: 'Azul Glacial',
+                description: 'Tons de azul gelado',
+                rarity: 'common',
+                price: 0,
+                unlocked: true,
+                colors: ['#0080ff', '#40a0ff'],
+                animated: false
+            },
+            red: {
+                id: 'red',
+                name: 'Vermelho Fogo',
+                description: 'Chamas vermelhas intensas',
+                rarity: 'common',
+                price: 0,
+                unlocked: true,
+                colors: ['#ff4040', '#ff8080'],
+                animated: false
+            },
+            gold: {
+                id: 'gold',
+                name: 'Dourado Real',
+                description: 'Luxo e elegância',
+                rarity: 'rare',
+                price: 800,
+                unlocked: false,
+                colors: ['#ffd700', '#ffff80'],
+                animated: false
+            },
+            stealth: {
+                id: 'stealth',
+                name: 'Modo Furtivo',
+                description: 'Camuflagem ativa',
+                rarity: 'rare',
+                price: 1000,
+                unlocked: false,
+                colors: ['#404040', '#808080'],
+                animated: false
+            },
+            neon: {
+                id: 'neon',
+                name: 'Neon Cyberpunk',
+                description: 'Luzes neon pulsantes',
+                rarity: 'epic',
+                price: 1500,
+                unlocked: false,
+                colors: ['#ff00ff', '#00ffff'],
+                animated: true
+            },
+            plasma: {
+                id: 'plasma',
+                name: 'Plasma Energético',
+                description: 'Energia pura visível',
+                rarity: 'epic',
+                price: 2000,
+                unlocked: false,
+                colors: ['#8040ff', '#ff40ff'],
+                animated: true
+            },
+            hologram: {
+                id: 'hologram',
+                name: 'Holograma',
+                description: 'Projeção holográfica',
+                rarity: 'legendary',
+                price: 3000,
+                unlocked: false,
+                colors: ['#40ffff', '#ff40ff', '#ffff40'],
+                animated: true,
+                holographic: true
+            },
+            void: {
+                id: 'void',
+                name: 'Essência do Vazio',
+                description: 'Absorve a luz ao redor',
+                rarity: 'legendary',
+                price: 4000,
+                unlocked: false,
+                colors: ['#200020', '#800080'],
+                animated: true
+            }
+        };
+        
+        // Visual Effects System
+        const visualEffects = {
+            none: {
+                id: 'none',
+                name: 'Nenhum',
+                description: 'Sem efeitos adicionais',
+                rarity: 'common',
+                price: 0,
+                unlocked: true
+            },
+            trail_basic: {
+                id: 'trail_basic',
+                name: 'Rastro Básico',
+                description: 'Rastro simples de partículas',
+                rarity: 'common',
+                price: 300,
+                unlocked: false
+            },
+            trail_fire: {
+                id: 'trail_fire',
+                name: 'Rastro de Fogo',
+                description: 'Chamas ardentes atrás da nave',
+                rarity: 'rare',
+                price: 600,
+                unlocked: false
+            },
+            aura_energy: {
+                id: 'aura_energy',
+                name: 'Aura Energética',
+                description: 'Campo de energia ao redor da nave',
+                rarity: 'rare',
+                price: 800,
+                unlocked: false
+            },
+            portal: {
+                id: 'portal',
+                name: 'Portal Dimensional',
+                description: 'Portais se abrem durante o movimento',
+                rarity: 'epic',
+                price: 1200,
+                unlocked: false
+            },
+            lightning: {
+                id: 'lightning',
+                name: 'Raios Elétricos',
+                description: 'Descargas elétricas constantes',
+                rarity: 'epic',
+                price: 1500,
+                unlocked: false
+            },
+            galaxy: {
+                id: 'galaxy',
+                name: 'Essência Galáctica',
+                description: 'Estrelas e nebulosas orbitam a nave',
+                rarity: 'legendary',
+                price: 2500,
+                unlocked: false
+            }
+        };
+        
         // Player class
         class Player {
             constructor() {
@@ -1922,11 +2778,28 @@
                 this.y = canvas.height - 70;
                 this.width = 24;
                 this.height = 24;
-                this.baseSpeed = 6;
+                
+                // Initialize with current ship stats
+                const ship = shipModels[currentShipId];
+                this.baseSpeed = ship.stats.speed;
+                this.baseDamage = ship.stats.damage;
+                this.baseFireRate = ship.stats.fireRate;
+                
                 this.speed = this.getEffectiveSpeed();
                 this.shootCooldown = 0;
                 this.invulnerable = 0;
                 this.powerLevel = 1;
+                
+                // Update player health based on ship
+                this.updateFromShip();
+            }
+            
+            updateFromShip() {
+                const ship = shipModels[currentShipId];
+                playerMaxHealth = ship.stats.health;
+                
+                // Apply upgrades if they exist
+                updatePlayerFromShip();
             }
             
             getEffectiveSpeed() {
@@ -1937,7 +2810,7 @@
             }
             
             getFireRate() {
-                let fireRate = 150;
+                let fireRate = this.baseFireRate || 150;
                 if (skillTree['firerate1']) fireRate *= 0.8;
                 if (skillTree['firerate2']) fireRate *= 0.6;
                 return fireRate;
@@ -1995,11 +2868,14 @@
                     baseBullets.push(...extraBullets);
                 }
                 
-                // Create bullets with damage multiplier
+                // Create bullets with base damage from ship + multipliers
+                const baseDamage = this.baseDamage || 25;
                 const damageMultiplier = this.getDamageMultiplier();
+                const finalDamage = baseDamage * damageMultiplier;
+                
                 baseBullets.forEach(bulletData => {
                     const bullet = new Bullet(bulletData.x, bulletData.y, bulletData.vx, bulletData.vy, true);
-                    bullet.damage *= damageMultiplier;
+                    bullet.damage = finalDamage;
                     bullets.push(bullet);
                 });
             }
@@ -2039,19 +2915,100 @@
                     '      **      '
                 ];
                 
+                // Get current skin colors
+                const currentSkin = shipSkins[currentSkinId];
+                const primaryColor = currentSkin.colors[0] || '#00ccff';
+                const secondaryColor = currentSkin.colors[1] || primaryColor;
+                
                 const pixelSize = 2;
                 for (let y = 0; y < pixels.length; y++) {
                     for (let x = 0; x < pixels[y].length; x++) {
                         if (pixels[y][x] === '*') {
-                            ctx.fillStyle = '#00ccff';
+                            // Alternate between primary and secondary colors for effect
+                            const useSecondary = (x + y) % 3 === 0;
+                            ctx.fillStyle = useSecondary ? secondaryColor : primaryColor;
+                            
+                            // Add glow effect for special skins
+                            if (currentSkin.animated) {
+                                ctx.shadowColor = primaryColor;
+                                ctx.shadowBlur = 5;
+                            }
+                            
                             ctx.fillRect(
                                 this.x + x * pixelSize,
                                 this.y + y * pixelSize,
                                 pixelSize,
                                 pixelSize
                             );
+                            
+                            ctx.shadowBlur = 0;
                         }
                     }
+                }
+                
+                // Draw visual effects
+                this.drawVisualEffects();
+            }
+            
+            drawVisualEffects() {
+                const effect = visualEffects[currentEffectId];
+                if (!effect || effect.id === 'none') return;
+                
+                const centerX = this.x + this.width / 2;
+                const centerY = this.y + this.height / 2;
+                
+                switch(effect.id) {
+                    case 'trail_basic':
+                        // Basic particle trail
+                        if (Math.random() < 0.3) {
+                            particles.push(new Particle(
+                                centerX + (Math.random() - 0.5) * this.width,
+                                this.y + this.height,
+                                0, 2,
+                                '#ffffff',
+                                500
+                            ));
+                        }
+                        break;
+                        
+                    case 'trail_fire':
+                        // Fire trail
+                        if (Math.random() < 0.5) {
+                            const colors = ['#ff4400', '#ff8800', '#ffaa00'];
+                            particles.push(new Particle(
+                                centerX + (Math.random() - 0.5) * this.width,
+                                this.y + this.height,
+                                (Math.random() - 0.5) * 2, 
+                                2 + Math.random() * 2,
+                                colors[Math.floor(Math.random() * colors.length)],
+                                300 + Math.random() * 200
+                            ));
+                        }
+                        break;
+                        
+                    case 'aura_energy':
+                        // Energy aura
+                        ctx.strokeStyle = '#00ffff';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.arc(centerX, centerY, this.width/2 + 5 + Math.sin(Date.now() * 0.01) * 3, 0, Math.PI * 2);
+                        ctx.stroke();
+                        break;
+                        
+                    case 'lightning':
+                        // Lightning effects
+                        if (Math.random() < 0.1) {
+                            ctx.strokeStyle = '#ffffff';
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(centerX, centerY);
+                            ctx.lineTo(
+                                centerX + (Math.random() - 0.5) * 40,
+                                centerY + (Math.random() - 0.5) * 40
+                            );
+                            ctx.stroke();
+                        }
+                        break;
                 }
             }
         }
@@ -2835,6 +3792,390 @@ Boa sorte, comandante! 🚀✨`);
             initMenuAnimation();
         }
         
+        // Ship Customization Menu Functions
+        function openShipCustomizationMenu() {
+            document.getElementById('shipCustomizationMenu').style.display = 'flex';
+            document.getElementById('mainMenu').style.display = 'none';
+            updateShipCustomizationDisplay();
+            renderShipModels();
+            menuAnimationRunning = false;
+        }
+        
+        function closeShipCustomizationMenu() {
+            document.getElementById('shipCustomizationMenu').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+            initMenuAnimation();
+        }
+        
+        function switchShipTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.ship-tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.ship-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab and mark as active
+            document.getElementById(tabName + 'Tab').style.display = 'block';
+            event.target.classList.add('active');
+            
+            // Render content based on tab
+            switch(tabName) {
+                case 'models':
+                    renderShipModels();
+                    break;
+                case 'upgrades':
+                    renderShipUpgrades();
+                    break;
+                case 'skins':
+                    renderShipSkins();
+                    break;
+                case 'effects':
+                    renderVisualEffects();
+                    break;
+            }
+        }
+        
+        function updateShipCustomizationDisplay() {
+            const currentShip = shipModels[currentShipId];
+            document.getElementById('currentShipName').textContent = currentShip.name;
+            document.getElementById('shipsUnlocked').textContent = unlockedShips.length;
+            document.getElementById('skinsUnlocked').textContent = unlockedSkins.length;
+        }
+        
+        function renderShipModels() {
+            const container = document.getElementById('shipsGrid');
+            container.innerHTML = '';
+            
+            Object.values(shipModels).forEach(ship => {
+                const shipCard = document.createElement('div');
+                shipCard.className = `ship-card ${ship.rarity}`;
+                if (ship.id === currentShipId) shipCard.classList.add('equipped');
+                
+                const isUnlocked = unlockedShips.includes(ship.id);
+                const canAfford = coins >= ship.price;
+                
+                shipCard.innerHTML = `
+                    <div class="ship-preview">
+                        <div class="ship-model">${ship.sprite}</div>
+                    </div>
+                    <div class="ship-name">${ship.name}</div>
+                    <div class="ship-description">${ship.description}</div>
+                    <div class="ship-stats">
+                        <div class="ship-stat">
+                            <span>Velocidade:</span>
+                            <div class="ship-stat-bar">
+                                <div class="ship-stat-fill" style="width: ${(ship.stats.speed / 10) * 100}%"></div>
+                            </div>
+                        </div>
+                        <div class="ship-stat">
+                            <span>Vida:</span>
+                            <div class="ship-stat-bar">
+                                <div class="ship-stat-fill" style="width: ${(ship.stats.health / 500) * 100}%"></div>
+                            </div>
+                        </div>
+                        <div class="ship-stat">
+                            <span>Dano:</span>
+                            <div class="ship-stat-bar">
+                                <div class="ship-stat-fill" style="width: ${(ship.stats.damage / 100) * 100}%"></div>
+                            </div>
+                        </div>
+                        <div class="ship-stat">
+                            <span>Escudo:</span>
+                            <div class="ship-stat-bar">
+                                <div class="ship-stat-fill" style="width: ${(ship.stats.shield / 200) * 100}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ship-abilities">
+                        ${ship.abilities.map(ability => `<div class="ship-ability">${ability}</div>`).join('')}
+                    </div>
+                    <div class="ship-actions">
+                        ${ship.id === currentShipId ? 
+                            '<button class="ship-action equipped">✓ Equipada</button>' :
+                            isUnlocked ? 
+                                '<button class="ship-action equip" onclick="equipShip(\'' + ship.id + '\')">🚀 Equipar</button>' :
+                                '<button class="ship-action unlock" onclick="unlockShip(\'' + ship.id + '\')" ' + 
+                                (!canAfford ? 'disabled' : '') + '>💰 ' + ship.price + ' Moedas</button>'
+                        }
+                    </div>
+                `;
+                
+                container.appendChild(shipCard);
+            });
+        }
+        
+        function renderShipUpgrades() {
+            const container = document.getElementById('upgradeCategories');
+            container.innerHTML = '';
+            
+            Object.entries(upgradeCategories).forEach(([categoryId, category]) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'upgrade-category';
+                
+                categoryDiv.innerHTML = `
+                    <h4>${category.icon} ${category.name}</h4>
+                    ${Object.entries(category.upgrades).map(([upgradeId, upgrade]) => `
+                        <div class="upgrade-option ${getUpgradeEquipped(categoryId) === upgradeId ? 'equipped' : ''}" 
+                             onclick="equipUpgrade('${categoryId}', '${upgradeId}')">
+                            <span>${upgrade.name}</span>
+                            <span class="upgrade-cost">${upgrade.cost > 0 ? upgrade.cost + ' 💰' : 'Grátis'}</span>
+                        </div>
+                    `).join('')}
+                `;
+                
+                container.appendChild(categoryDiv);
+            });
+        }
+        
+        function renderShipSkins() {
+            const container = document.getElementById('skinsGrid');
+            container.innerHTML = '';
+            
+            Object.values(shipSkins).forEach(skin => {
+                const skinCard = document.createElement('div');
+                skinCard.className = `skin-card ${skin.rarity}`;
+                if (skin.id === currentSkinId) skinCard.classList.add('equipped');
+                if (skin.animated) skinCard.classList.add('animated');
+                if (skin.holographic) skinCard.classList.add('holographic');
+                
+                const isUnlocked = unlockedSkins.includes(skin.id);
+                const canAfford = coins >= skin.price;
+                
+                skinCard.innerHTML = `
+                    <div class="skin-preview" style="background: linear-gradient(45deg, ${skin.colors.join(', ')});">
+                        ${shipModels[currentShipId].sprite}
+                    </div>
+                    <div class="skin-name">${skin.name}</div>
+                    <div class="skin-rarity">${skin.description}</div>
+                    <div class="ship-actions">
+                        ${skin.id === currentSkinId ? 
+                            '<button class="ship-action equipped">✓ Equipada</button>' :
+                            isUnlocked ? 
+                                '<button class="ship-action equip" onclick="equipSkin(\'' + skin.id + '\')">🎨 Equipar</button>' :
+                                '<button class="ship-action unlock" onclick="unlockSkin(\'' + skin.id + '\')" ' + 
+                                (!canAfford ? 'disabled' : '') + '>💰 ' + skin.price + ' Moedas</button>'
+                        }
+                    </div>
+                `;
+                
+                skinCard.onclick = () => {
+                    if (isUnlocked && skin.id !== currentSkinId) {
+                        equipSkin(skin.id);
+                    } else if (!isUnlocked && canAfford) {
+                        unlockSkin(skin.id);
+                    }
+                };
+                
+                container.appendChild(skinCard);
+            });
+        }
+        
+        function renderVisualEffects() {
+            const container = document.getElementById('effectsGrid');
+            container.innerHTML = '';
+            
+            Object.values(visualEffects).forEach(effect => {
+                const effectCard = document.createElement('div');
+                effectCard.className = `skin-card ${effect.rarity}`;
+                if (effect.id === currentEffectId) effectCard.classList.add('equipped');
+                
+                const isUnlocked = unlockedEffects.includes(effect.id);
+                const canAfford = coins >= effect.price;
+                
+                effectCard.innerHTML = `
+                    <div class="skin-preview">
+                        ✨
+                    </div>
+                    <div class="skin-name">${effect.name}</div>
+                    <div class="skin-rarity">${effect.description}</div>
+                    <div class="ship-actions">
+                        ${effect.id === currentEffectId ? 
+                            '<button class="ship-action equipped">✓ Equipado</button>' :
+                            isUnlocked ? 
+                                '<button class="ship-action equip" onclick="equipEffect(\'' + effect.id + '\')">✨ Equipar</button>' :
+                                '<button class="ship-action unlock" onclick="unlockEffect(\'' + effect.id + '\')" ' + 
+                                (!canAfford ? 'disabled' : '') + '>💰 ' + effect.price + ' Moedas</button>'
+                        }
+                    </div>
+                `;
+                
+                container.appendChild(effectCard);
+            });
+        }
+        
+        // Ship Management Functions
+        function equipShip(shipId) {
+            if (!unlockedShips.includes(shipId)) return;
+            
+            currentShipId = shipId;
+            localStorage.setItem('waveslayers_current_ship', currentShipId);
+            
+            // Update player stats
+            if (player) {
+                updatePlayerFromShip();
+            }
+            
+            showNotification(`🛸 Nave ${shipModels[shipId].name} equipada!`, '#00ffff');
+            updateShipCustomizationDisplay();
+            renderShipModels();
+        }
+        
+        function unlockShip(shipId) {
+            const ship = shipModels[shipId];
+            if (!ship || coins < ship.price || unlockedShips.includes(shipId)) return;
+            
+            coins -= ship.price;
+            unlockedShips.push(shipId);
+            
+            localStorage.setItem('waveslayers_coins', coins.toString());
+            localStorage.setItem('waveslayers_unlocked_ships', JSON.stringify(unlockedShips));
+            
+            showNotification(`🛸 Nave ${ship.name} desbloqueada!`, '#00ff00');
+            updateShipCustomizationDisplay();
+            renderShipModels();
+            updateCoinsDisplay();
+        }
+        
+        function equipSkin(skinId) {
+            if (!unlockedSkins.includes(skinId)) return;
+            
+            currentSkinId = skinId;
+            localStorage.setItem('waveslayers_current_skin', currentSkinId);
+            
+            showNotification(`🎨 Skin ${shipSkins[skinId].name} equipada!`, '#ff6600');
+            renderShipSkins();
+        }
+        
+        function unlockSkin(skinId) {
+            const skin = shipSkins[skinId];
+            if (!skin || coins < skin.price || unlockedSkins.includes(skinId)) return;
+            
+            coins -= skin.price;
+            unlockedSkins.push(skinId);
+            
+            localStorage.setItem('waveslayers_coins', coins.toString());
+            localStorage.setItem('waveslayers_unlocked_skins', JSON.stringify(unlockedSkins));
+            
+            showNotification(`🎨 Skin ${skin.name} desbloqueada!`, '#ff6600');
+            renderShipSkins();
+            updateCoinsDisplay();
+        }
+        
+        function equipEffect(effectId) {
+            if (!unlockedEffects.includes(effectId)) return;
+            
+            currentEffectId = effectId;
+            localStorage.setItem('waveslayers_current_effect', currentEffectId);
+            
+            showNotification(`✨ Efeito ${visualEffects[effectId].name} equipado!`, '#9932cc');
+            renderVisualEffects();
+        }
+        
+        function unlockEffect(effectId) {
+            const effect = visualEffects[effectId];
+            if (!effect || coins < effect.price || unlockedEffects.includes(effectId)) return;
+            
+            coins -= effect.price;
+            unlockedEffects.push(effectId);
+            
+            localStorage.setItem('waveslayers_coins', coins.toString());
+            localStorage.setItem('waveslayers_unlocked_effects', JSON.stringify(unlockedEffects));
+            
+            showNotification(`✨ Efeito ${effect.name} desbloqueado!`, '#9932cc');
+            renderVisualEffects();
+            updateCoinsDisplay();
+        }
+        
+        function getUpgradeEquipped(categoryId) {
+            if (!shipUpgrades[currentShipId]) {
+                shipUpgrades[currentShipId] = {};
+            }
+            
+            const shipUpgrade = shipUpgrades[currentShipId][categoryId];
+            return shipUpgrade || Object.keys(upgradeCategories[categoryId].upgrades)[0];
+        }
+        
+        function equipUpgrade(categoryId, upgradeId) {
+            const upgrade = upgradeCategories[categoryId].upgrades[upgradeId];
+            if (!upgrade || coins < upgrade.cost) return;
+            
+            // Check if already equipped
+            if (getUpgradeEquipped(categoryId) === upgradeId) return;
+            
+            // Deduct cost
+            if (upgrade.cost > 0) {
+                coins -= upgrade.cost;
+                localStorage.setItem('waveslayers_coins', coins.toString());
+                updateCoinsDisplay();
+            }
+            
+            // Equip upgrade
+            if (!shipUpgrades[currentShipId]) {
+                shipUpgrades[currentShipId] = {};
+            }
+            shipUpgrades[currentShipId][categoryId] = upgradeId;
+            
+            localStorage.setItem('waveslayers_ship_upgrades', JSON.stringify(shipUpgrades));
+            
+            showNotification(`⚙️ ${upgrade.name} equipado!`, '#ffaa00');
+            renderShipUpgrades();
+            
+            // Update player stats
+            if (player) {
+                updatePlayerFromShip();
+            }
+        }
+        
+        function updatePlayerFromShip() {
+            const ship = shipModels[currentShipId];
+            if (!ship || !player) return;
+            
+            // Base stats from ship
+            player.baseSpeed = ship.stats.speed;
+            player.baseDamage = ship.stats.damage;
+            player.baseFireRate = ship.stats.fireRate;
+            playerMaxHealth = ship.stats.health;
+            
+            // Apply upgrades
+            if (shipUpgrades[currentShipId]) {
+                const upgrades = shipUpgrades[currentShipId];
+                
+                // Engine upgrade
+                if (upgrades.engine) {
+                    const engineUpgrade = upgradeCategories.engine.upgrades[upgrades.engine];
+                    if (engineUpgrade) {
+                        player.baseSpeed += engineUpgrade.speedBonus || 0;
+                    }
+                }
+                
+                // Weapon upgrade
+                if (upgrades.weapons) {
+                    const weaponUpgrade = upgradeCategories.weapons.upgrades[upgrades.weapons];
+                    if (weaponUpgrade) {
+                        player.baseDamage += weaponUpgrade.damageBonus || 0;
+                    }
+                }
+                
+                // Hull upgrade
+                if (upgrades.hull) {
+                    const hullUpgrade = upgradeCategories.hull.upgrades[upgrades.hull];
+                    if (hullUpgrade) {
+                        playerMaxHealth += hullUpgrade.healthBonus || 0;
+                    }
+                }
+            }
+            
+            // Maintain health ratio
+            const healthRatio = playerHealth / playerMaxHealth;
+            playerHealth = Math.floor(playerMaxHealth * healthRatio);
+            
+            updateHealthBar();
+        }
+        
         // Funções de Progressão
         function updateProgressionDisplay() {
             document.getElementById('playerLevelDisplay').textContent = playerLevel;
@@ -3332,6 +4673,25 @@ Boa sorte, comandante! 🚀✨`);
             
             // Initialize progression system
             checkDailyReset();
+            
+            // Initialize ship customization system
+            // Ensure current ship is unlocked
+            if (!unlockedShips.includes(currentShipId)) {
+                currentShipId = 'interceptor';
+                localStorage.setItem('waveslayers_current_ship', currentShipId);
+            }
+            
+            // Ensure current skin is unlocked
+            if (!unlockedSkins.includes(currentSkinId)) {
+                currentSkinId = 'default';
+                localStorage.setItem('waveslayers_current_skin', currentSkinId);
+            }
+            
+            // Ensure current effect is unlocked
+            if (!unlockedEffects.includes(currentEffectId)) {
+                currentEffectId = 'none';
+                localStorage.setItem('waveslayers_current_effect', currentEffectId);
+            }
             
             // Load achievement progress if not exists
             if (!achievementProgress.totalKills) {
