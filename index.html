@@ -1610,6 +1610,72 @@
             color: #00ffff;
             text-align: center;
         }
+        
+        /* Advanced effects HUD */
+        .effects-hud {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            color: #00ffff;
+            min-width: 200px;
+        }
+        
+        .effect-status {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        .effect-active {
+            color: #ffff00;
+            text-shadow: 0 0 5px #ffff00;
+        }
+        
+        .effect-cooldown {
+            color: #ff6666;
+        }
+        
+        /* Notification system */
+        .notification {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid currentColor;
+            border-radius: 10px;
+            padding: 15px 25px;
+            font-family: 'Orbitron', monospace;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            z-index: 500;
+            animation: notificationPop 2s ease-out;
+            pointer-events: none;
+        }
+        
+        @keyframes notificationPop {
+            0% { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.5); 
+            }
+            20% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1.1); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(1); 
+            }
+        }
     </style>
 </head>
 <body>
@@ -2390,6 +2456,21 @@
         let powerups = [];
         let stars = [];
         
+        // ===== SISTEMA DE PARTÍCULAS AVANÇADO =====
+        let advancedParticles = [];
+        let particleGroups = [];
+        
+        // ===== FÍSICA REALISTA =====
+        let gravityWells = [];
+        let physicsObjects = [];
+        
+        // ===== SISTEMA DE ÁUDIO DINÂMICO =====
+        let audioContext;
+        let currentIntensity = 0;
+        let targetIntensity = 0;
+        let musicGain;
+        let sfxGain;
+        
         // Timers
         let enemySpawnTimer = 0;
         let powerupSpawnTimer = 0;
@@ -2917,6 +2998,11 @@
                 this.invulnerable = 0;
                 this.powerLevel = 1;
                 
+                // Special ability properties
+                this.specialCooldown = 0;
+                this.flameMode = 0;
+                this.berserkMode = 0;
+                
                 // Update player health based on ship
                 this.updateFromShip();
             }
@@ -2966,8 +3052,214 @@
                     this.shootCooldown = this.getFireRate();
                 }
                 
+                // Activate special ability with X key
+                if (keys['x'] || keys['X']) {
+                    this.activateSpecialAbility();
+                }
+                
+                // Create ship trail effects based on current effect
+                this.createTrailEffects();
+                
+                // Update special mode timers
+                if (this.specialCooldown > 0) this.specialCooldown -= deltaTime;
+                if (this.flameMode > 0) {
+                    this.flameMode -= deltaTime;
+                    if (this.flameMode <= 0) {
+                        // Reset damage multiplier
+                        const ship = shipModels[currentShipId];
+                        this.baseDamage = ship.stats.damage;
+                        showNotification('🔥 Chamas Eternas terminaram', '#ff8800');
+                    }
+                }
+                if (this.berserkMode > 0) {
+                    this.berserkMode -= deltaTime;
+                    if (this.berserkMode <= 0) {
+                        // Reset all stats
+                        const ship = shipModels[currentShipId];
+                        this.baseSpeed = ship.stats.speed;
+                        this.baseDamage = ship.stats.damage;
+                        this.baseFireRate = ship.stats.fireRate;
+                        showNotification('😈 Modo Berserk terminou', '#ff8800');
+                    }
+                }
+                
                 if (this.shootCooldown > 0) this.shootCooldown -= deltaTime;
                 if (this.invulnerable > 0) this.invulnerable -= deltaTime;
+            }
+            
+            activateSpecialAbility() {
+                const ship = shipModels[currentShipId];
+                const abilities = ship.abilities || [];
+                
+                // Cooldown check (prevent spam)
+                if (this.specialCooldown > 0) return;
+                this.specialCooldown = 3000; // 3 second cooldown
+                
+                abilities.forEach(ability => {
+                    switch(ability) {
+                        case 'Vórtice Energético':
+                            this.createVortexAttack();
+                            break;
+                        case 'Teletransporte':
+                            this.teleportAttack();
+                            break;
+                        case 'Buraco Negro':
+                            this.createBlackHole();
+                            break;
+                        case 'Campo de Força':
+                            this.createForceField();
+                            break;
+                        case 'Mísseis Explosivos':
+                            this.launchExplosiveMissiles();
+                            break;
+                        case 'Chamas Eternas':
+                            this.activateFlameMode();
+                            break;
+                        case 'Modo Berserk':
+                            this.activateBerserkMode();
+                            break;
+                    }
+                });
+            }
+            
+            createVortexAttack() {
+                // Create energy vortex that pulls in enemies
+                const vortex = new GravityWell(this.x + this.width/2, this.y - 50, 200, 80);
+                gravityWells.push(vortex);
+                
+                createWarpEffect(this.x + this.width/2, this.y - 50);
+                showNotification('🌀 VÓRTICE ENERGÉTICO ATIVADO!', '#8000ff');
+            }
+            
+            teleportAttack() {
+                // Teleport behind random enemy and deal damage
+                if (enemies.length > 0) {
+                    const targetEnemy = enemies[Math.floor(Math.random() * enemies.length)];
+                    createWarpEffect(this.x + this.width/2, this.y + this.height/2);
+                    
+                    this.x = targetEnemy.x - this.width;
+                    this.y = targetEnemy.y;
+                    
+                    createWarpEffect(this.x + this.width/2, this.y + this.height/2);
+                    createAdvancedExplosion(targetEnemy.x, targetEnemy.y, '#ff00ff', 1.5);
+                    
+                    if (targetEnemy.takeDamage) {
+                        targetEnemy.takeDamage(this.baseDamage * 3);
+                    }
+                    
+                    showNotification('⚛️ TELETRANSPORTE!', '#ff00ff');
+                }
+            }
+            
+            createBlackHole() {
+                // Create massive gravity well
+                const blackHole = new GravityWell(canvas.width/2, canvas.height/2, 500, 150);
+                gravityWells.push(blackHole);
+                
+                createWarpEffect(canvas.width/2, canvas.height/2);
+                showNotification('🕳️ BURACO NEGRO CRIADO!', '#400040');
+            }
+            
+            createForceField() {
+                // Create protective shield around player
+                createShieldEffect(this.x + this.width/2, this.y + this.height/2, 50);
+                this.invulnerable = 5000; // 5 seconds of invulnerability
+                showNotification('🛡️ CAMPO DE FORÇA ATIVO!', '#00ffff');
+            }
+            
+            launchExplosiveMissiles() {
+                // Launch 8 missiles in all directions
+                for (let i = 0; i < 8; i++) {
+                    const angle = (Math.PI * 2 * i) / 8;
+                    const missile = new Bullet(
+                        this.x + this.width/2,
+                        this.y + this.height/2,
+                        Math.cos(angle) * 8,
+                        Math.sin(angle) * 8,
+                        true
+                    );
+                    missile.damage = this.baseDamage * 2;
+                    missile.explosive = true;
+                    bullets.push(missile);
+                    
+                    createLaserEffect(
+                        this.x + this.width/2,
+                        this.y + this.height/2,
+                        this.x + this.width/2 + Math.cos(angle) * 30,
+                        this.y + this.height/2 + Math.sin(angle) * 30,
+                        '#ff6600'
+                    );
+                }
+                showNotification('💣 MÍSSEIS EXPLOSIVOS!', '#ff6600');
+            }
+            
+            activateFlameMode() {
+                // Enhance all attacks for 10 seconds
+                this.flameMode = 10000;
+                this.baseDamage *= 2;
+                showNotification('🔥 CHAMAS ETERNAS!', '#ff4400');
+            }
+            
+            activateBerserkMode() {
+                // Increase all stats temporarily
+                this.berserkMode = 8000;
+                this.baseSpeed *= 1.5;
+                this.baseDamage *= 1.8;
+                this.baseFireRate *= 0.5; // Faster firing
+                showNotification('😈 MODO BERSERK!', '#ff0000');
+            }
+            
+            createTrailEffects() {
+                if (currentEffectId === 'trail_fire') {
+                    const trail = new AdvancedParticle(
+                        this.x + this.width/2 + (Math.random() - 0.5) * this.width,
+                        this.y + this.height,
+                        {
+                            vx: (Math.random() - 0.5) * 2,
+                            vy: Math.random() * 3 + 1,
+                            color: Math.random() < 0.5 ? '#ff4400' : '#ff8800',
+                            life: 500,
+                            size: 3,
+                            type: 'circle',
+                            gravity: true,
+                            fadeType: 'ease-out'
+                        }
+                    );
+                    advancedParticles.push(trail);
+                } else if (currentEffectId === 'aura_energy') {
+                    const aura = new AdvancedParticle(
+                        this.x + this.width/2,
+                        this.y + this.height/2,
+                        {
+                            vx: (Math.random() - 0.5) * 4,
+                            vy: (Math.random() - 0.5) * 4,
+                            color: '#00ffff',
+                            life: 800,
+                            size: 2,
+                            type: 'star',
+                            glowSize: 8,
+                            shaderType: 'wave'
+                        }
+                    );
+                    advancedParticles.push(aura);
+                } else if (currentEffectId === 'lightning') {
+                    if (Math.random() < 0.3) {
+                        const lightning = new AdvancedParticle(
+                            this.x + this.width/2 + (Math.random() - 0.5) * 40,
+                            this.y + this.height/2 + (Math.random() - 0.5) * 40,
+                            {
+                                vx: 0, vy: 0,
+                                color: '#ffffff',
+                                life: 150,
+                                size: 1,
+                                type: 'spark',
+                                glowSize: 15,
+                                fadeType: 'ease-in'
+                            }
+                        );
+                        advancedParticles.push(lightning);
+                    }
+                }
             }
             
             shoot() {
@@ -3004,7 +3296,36 @@
                     const bullet = new Bullet(bulletData.x, bulletData.y, bulletData.vx, bulletData.vy, true);
                     bullet.damage = finalDamage;
                     bullets.push(bullet);
+                    
+                    // Create advanced visual effects for shooting
+                    createLaserEffect(
+                        bulletData.x + 2, 
+                        bulletData.y, 
+                        bulletData.x + 2, 
+                        bulletData.y - 20, 
+                        '#00ffff'
+                    );
+                    
+                    // Muzzle flash effect
+                    const muzzleFlash = new ParticleSystem(bulletData.x + 2, bulletData.y, {
+                        count: 5,
+                        spread: Math.PI / 3,
+                        speed: 3,
+                        life: 200,
+                        size: 2,
+                        color: '#ffff00',
+                        type: 'spark',
+                        direction: Math.PI / 2,
+                        fadeType: 'ease-out'
+                    });
+                    muzzleFlash.emit();
+                    particleGroups.push(muzzleFlash);
                 });
+                
+                // Play laser sound
+                if (dynamicAudio.initialized) {
+                    dynamicAudio.playLaser();
+                }
             }
             
             takeDamage(damage) {
@@ -3013,7 +3334,14 @@
                     this.invulnerable = 1500;
                     createExplosion(this.x + this.width/2, this.y + this.height/2, '#ff0000', 8);
                     
+                    // Advanced damage effects
+                    createAdvancedExplosion(this.x + this.width/2, this.y + this.height/2, '#ff3333', 0.8);
+                    createShieldEffect(this.x + this.width/2, this.y + this.height/2, 25);
+                    
                     if (playerHealth <= 0) {
+                        // Death explosion
+                        createAdvancedExplosion(this.x + this.width/2, this.y + this.height/2, '#ff0000', 2.0);
+                        createWarpEffect(this.x + this.width/2, this.y + this.height/2);
                         gameOver();
                     }
                 }
@@ -3151,6 +3479,7 @@
                 this.height = 8;
                 this.isPlayer = isPlayer;
                 this.damage = isPlayer ? 25 : 20;
+                this.explosive = false; // New property for explosive bullets
             }
             
             update() {
@@ -3160,13 +3489,57 @@
             
             draw() {
                 const world = worlds[currentWorldId];
-                ctx.fillStyle = this.isPlayer ? '#ffff00' : world.colors.enemies[0];
+                let color = this.isPlayer ? '#ffff00' : world.colors.enemies[0];
+                
+                // Different color for explosive bullets
+                if (this.explosive) {
+                    color = '#ff6600';
+                }
+                
+                ctx.fillStyle = color;
                 ctx.fillRect(this.x, this.y, this.width, this.height);
                 
-                ctx.shadowColor = this.isPlayer ? '#ffff00' : world.colors.enemies[0];
-                ctx.shadowBlur = 5;
+                ctx.shadowColor = color;
+                ctx.shadowBlur = this.explosive ? 8 : 5;
                 ctx.fillRect(this.x, this.y, this.width, this.height);
                 ctx.shadowBlur = 0;
+                
+                // Trail effect for explosive bullets
+                if (this.explosive) {
+                    const trail = new AdvancedParticle(
+                        this.x + this.width/2, 
+                        this.y + this.height/2, 
+                        {
+                            vx: -this.vx * 0.3 + (Math.random() - 0.5) * 2,
+                            vy: -this.vy * 0.3 + (Math.random() - 0.5) * 2,
+                            color: '#ff8800',
+                            life: 300,
+                            size: 2,
+                            type: 'circle',
+                            fadeType: 'ease-out'
+                        }
+                    );
+                    advancedParticles.push(trail);
+                }
+            }
+            
+            explode() {
+                if (this.explosive) {
+                    createAdvancedExplosion(this.x + this.width/2, this.y + this.height/2, '#ff6600', 1.5);
+                    
+                    // Damage nearby enemies
+                    enemies.forEach(enemy => {
+                        const dx = enemy.x + enemy.width/2 - (this.x + this.width/2);
+                        const dy = enemy.y + enemy.height/2 - (this.y + this.height/2);
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 60) { // Explosion radius
+                            if (enemy.takeDamage) {
+                                enemy.takeDamage(this.damage * 2);
+                            }
+                        }
+                    });
+                }
             }
             
             isOffScreen() {
@@ -4469,6 +4842,508 @@
             }
         }
         
+        // ===== SISTEMA DE PARTÍCULAS AVANÇADO =====
+        
+        class AdvancedParticle {
+            constructor(x, y, options = {}) {
+                this.x = x;
+                this.y = y;
+                this.vx = options.vx || (Math.random() - 0.5) * 5;
+                this.vy = options.vy || (Math.random() - 0.5) * 5;
+                this.ax = options.ax || 0;
+                this.ay = options.ay || 0;
+                this.color = options.color || '#ffffff';
+                this.life = options.life || 1000;
+                this.maxLife = this.life;
+                this.size = options.size || 2;
+                this.maxSize = this.size;
+                this.type = options.type || 'normal';
+                this.glowSize = options.glowSize || 0;
+                this.rotation = options.rotation || 0;
+                this.rotationSpeed = options.rotationSpeed || 0;
+                this.fadeType = options.fadeType || 'linear';
+                this.scale = options.scale || 1;
+                this.scaleVel = options.scaleVel || 0;
+                this.gravity = options.gravity || false;
+                this.bounce = options.bounce || false;
+                this.trail = options.trail || false;
+                this.trailPoints = [];
+                
+                // Shader effects
+                this.shaderType = options.shaderType || 'none';
+                this.waveOffset = Math.random() * Math.PI * 2;
+                this.pulseSpeed = options.pulseSpeed || 1;
+            }
+            
+            update(deltaTime) {
+                const dt = deltaTime / 16;
+                
+                // Physics
+                this.vx += this.ax * dt;
+                this.vy += this.ay * dt;
+                
+                // Gravity
+                if (this.gravity) {
+                    this.vy += 0.1 * dt;
+                }
+                
+                // Store trail point
+                if (this.trail && this.trailPoints.length < 10) {
+                    this.trailPoints.push({ x: this.x, y: this.y, time: this.maxLife - this.life });
+                }
+                
+                // Update position
+                this.x += this.vx * dt;
+                this.y += this.vy * dt;
+                
+                // Bounce off edges
+                if (this.bounce) {
+                    if (this.x <= 0 || this.x >= canvas.width) {
+                        this.vx *= -0.8;
+                        this.x = Math.max(0, Math.min(canvas.width, this.x));
+                    }
+                    if (this.y <= 0 || this.y >= canvas.height) {
+                        this.vy *= -0.8;
+                        this.y = Math.max(0, Math.min(canvas.height, this.y));
+                    }
+                }
+                
+                // Update properties
+                this.life -= deltaTime;
+                this.rotation += this.rotationSpeed * dt;
+                this.scale += this.scaleVel * dt;
+                this.scale = Math.max(0, this.scale);
+                
+                // Update size based on life and fade type
+                const lifeRatio = this.life / this.maxLife;
+                switch (this.fadeType) {
+                    case 'linear':
+                        this.size = this.maxSize * lifeRatio * this.scale;
+                        break;
+                    case 'ease-out':
+                        this.size = this.maxSize * Math.sqrt(lifeRatio) * this.scale;
+                        break;
+                    case 'ease-in':
+                        this.size = this.maxSize * (lifeRatio * lifeRatio) * this.scale;
+                        break;
+                    case 'pulse':
+                        const pulse = Math.sin((1 - lifeRatio) * Math.PI * 4 * this.pulseSpeed) * 0.3 + 0.7;
+                        this.size = this.maxSize * lifeRatio * pulse * this.scale;
+                        break;
+                }
+                
+                // Clean old trail points
+                this.trailPoints = this.trailPoints.filter(point => 
+                    (this.maxLife - this.life) - point.time < 500
+                );
+            }
+            
+            draw() {
+                if (this.life <= 0) return;
+                
+                const alpha = Math.max(0, Math.min(1, this.life / this.maxLife));
+                
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                
+                // Draw trail
+                if (this.trail && this.trailPoints.length > 1) {
+                    for (let i = 1; i < this.trailPoints.length; i++) {
+                        const point = this.trailPoints[i];
+                        const prevPoint = this.trailPoints[i - 1];
+                        const trailAlpha = alpha * (i / this.trailPoints.length) * 0.5;
+                        
+                        ctx.globalAlpha = trailAlpha;
+                        ctx.strokeStyle = this.color;
+                        ctx.lineWidth = this.size * 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(prevPoint.x, prevPoint.y);
+                        ctx.lineTo(point.x, point.y);
+                        ctx.stroke();
+                    }
+                    ctx.globalAlpha = alpha;
+                }
+                
+                // Apply shader effects
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                
+                switch (this.shaderType) {
+                    case 'wave':
+                        const waveX = Math.sin((Date.now() * 0.01 + this.waveOffset) * this.pulseSpeed) * 2;
+                        ctx.translate(waveX, 0);
+                        break;
+                    case 'distort':
+                        const distortScale = 1 + Math.sin(Date.now() * 0.005 + this.waveOffset) * 0.1;
+                        ctx.scale(distortScale, 1 / distortScale);
+                        break;
+                }
+                
+                // Draw glow effect
+                if (this.glowSize > 0) {
+                    const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.glowSize);
+                    gradient.addColorStop(0, this.color);
+                    gradient.addColorStop(1, this.color.replace('rgb', 'rgba').replace(')', ', 0)'));
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(-this.glowSize, -this.glowSize, this.glowSize * 2, this.glowSize * 2);
+                }
+                
+                // Draw particle based on type
+                switch (this.type) {
+                    case 'normal':
+                        ctx.fillStyle = this.color;
+                        ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                        break;
+                    case 'circle':
+                        ctx.fillStyle = this.color;
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.size/2, 0, Math.PI * 2);
+                        ctx.fill();
+                        break;
+                    case 'star':
+                        this.drawStar(0, 0, this.size/2, 5);
+                        break;
+                    case 'spark':
+                        ctx.strokeStyle = this.color;
+                        ctx.lineWidth = this.size * 0.3;
+                        ctx.beginPath();
+                        ctx.moveTo(-this.size/2, 0);
+                        ctx.lineTo(this.size/2, 0);
+                        ctx.moveTo(0, -this.size/2);
+                        ctx.lineTo(0, this.size/2);
+                        ctx.stroke();
+                        break;
+                }
+                
+                ctx.restore();
+            }
+            
+            drawStar(x, y, radius, points) {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                for (let i = 0; i < points * 2; i++) {
+                    const angle = (i * Math.PI) / points;
+                    const r = i % 2 === 0 ? radius : radius * 0.5;
+                    const px = x + Math.cos(angle) * r;
+                    const py = y + Math.sin(angle) * r;
+                    if (i === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            isDead() {
+                return this.life <= 0;
+            }
+        }
+        
+        class ParticleSystem {
+            constructor(x, y, config) {
+                this.x = x;
+                this.y = y;
+                this.particles = [];
+                this.config = {
+                    count: 10,
+                    spread: Math.PI / 4,
+                    speed: 5,
+                    life: 1000,
+                    size: 2,
+                    color: '#ffffff',
+                    gravity: false,
+                    type: 'normal',
+                    direction: -Math.PI / 2,
+                    ...config
+                };
+                this.active = true;
+                this.duration = config.duration || -1;
+                this.age = 0;
+            }
+            
+            emit(count = null) {
+                const particleCount = count || this.config.count;
+                for (let i = 0; i < particleCount; i++) {
+                    const angle = this.config.direction + (Math.random() - 0.5) * this.config.spread;
+                    const speed = this.config.speed * (0.5 + Math.random() * 0.5);
+                    
+                    const particle = new AdvancedParticle(this.x, this.y, {
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        color: this.config.color,
+                        life: this.config.life * (0.5 + Math.random() * 0.5),
+                        size: this.config.size * (0.5 + Math.random() * 0.5),
+                        type: this.config.type,
+                        gravity: this.config.gravity,
+                        glowSize: this.config.glowSize || 0,
+                        shaderType: this.config.shaderType || 'none',
+                        trail: this.config.trail || false,
+                        fadeType: this.config.fadeType || 'linear'
+                    });
+                    
+                    this.particles.push(particle);
+                    advancedParticles.push(particle);
+                }
+            }
+            
+            update(deltaTime) {
+                this.age += deltaTime;
+                
+                if (this.duration > 0 && this.age >= this.duration) {
+                    this.active = false;
+                }
+                
+                // Update particles
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const particle = this.particles[i];
+                    particle.update(deltaTime);
+                    
+                    if (particle.life <= 0) {
+                        this.particles.splice(i, 1);
+                    }
+                }
+            }
+            
+            draw() {
+                this.particles.forEach(particle => particle.draw());
+            }
+            
+            isDead() {
+                return !this.active && this.particles.length === 0;
+            }
+        }
+        
+        // ===== FÍSICA REALISTA =====
+        
+        class GravityWell {
+            constructor(x, y, strength, radius) {
+                this.x = x;
+                this.y = y;
+                this.strength = strength;
+                this.radius = radius;
+                this.visualRadius = 0;
+                this.maxVisualRadius = radius;
+                this.active = true;
+                this.life = 5000; // 5 seconds
+                this.maxLife = this.life;
+            }
+            
+            update(deltaTime) {
+                this.life -= deltaTime;
+                this.visualRadius = Math.min(this.maxVisualRadius, this.visualRadius + deltaTime * 0.1);
+                
+                if (this.life <= 0) {
+                    this.active = false;
+                }
+                
+                // Apply gravity to all physics objects
+                [...bullets, ...enemies, ...enemyBullets, ...advancedParticles].forEach(obj => {
+                    if (!obj || !obj.x) return;
+                    
+                    const dx = this.x - obj.x;
+                    const dy = this.y - obj.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < this.radius && distance > 5) {
+                        const force = this.strength / (distance * distance);
+                        const angle = Math.atan2(dy, dx);
+                        
+                        if (obj.vx !== undefined && obj.vy !== undefined) {
+                            obj.vx += Math.cos(angle) * force * 0.1;
+                            obj.vy += Math.sin(angle) * force * 0.1;
+                        } else if (obj.dx !== undefined && obj.dy !== undefined) {
+                            obj.dx += Math.cos(angle) * force * 0.1;
+                            obj.dy += Math.sin(angle) * force * 0.1;
+                        }
+                    }
+                });
+            }
+            
+            draw() {
+                const alpha = this.life / this.maxLife;
+                ctx.save();
+                ctx.globalAlpha = alpha * 0.3;
+                
+                // Draw gravitational field
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.visualRadius);
+                gradient.addColorStop(0, 'rgba(128, 0, 255, 0.8)');
+                gradient.addColorStop(0.7, 'rgba(64, 0, 128, 0.4)');
+                gradient.addColorStop(1, 'rgba(32, 0, 64, 0)');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.visualRadius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Draw center
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = '#8000ff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.restore();
+            }
+        }
+        
+        // ===== SISTEMA DE ÁUDIO DINÂMICO =====
+        
+        class DynamicAudio {
+            constructor() {
+                this.context = null;
+                this.masterGain = null;
+                this.musicGain = null;
+                this.sfxGain = null;
+                this.initialized = false;
+                
+                this.currentIntensity = 0;
+                this.targetIntensity = 0;
+                this.intensitySmoothing = 0.95;
+                
+                // Audio nodes for dynamic music
+                this.oscillators = [];
+                this.filters = [];
+            }
+            
+            async initialize() {
+                if (this.initialized) return;
+                
+                try {
+                    this.context = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    // Create gain nodes
+                    this.masterGain = this.context.createGain();
+                    this.musicGain = this.context.createGain();
+                    this.sfxGain = this.context.createGain();
+                    
+                    // Connect audio graph
+                    this.musicGain.connect(this.masterGain);
+                    this.sfxGain.connect(this.masterGain);
+                    this.masterGain.connect(this.context.destination);
+                    
+                    // Set initial volumes
+                    this.masterGain.gain.value = 0.7;
+                    this.musicGain.gain.value = 0.5;
+                    this.sfxGain.gain.value = 0.8;
+                    
+                    this.initialized = true;
+                    this.startDynamicMusic();
+                    
+                } catch (error) {
+                    console.warn('Audio initialization failed:', error);
+                }
+            }
+            
+            startDynamicMusic() {
+                if (!this.initialized) return;
+                
+                // Create base ambient layer
+                this.createAmbientLayer();
+                
+                // Start the dynamic music loop
+                this.updateDynamicMusic();
+            }
+            
+            createAmbientLayer() {
+                if (!this.context) return;
+                
+                const oscillator1 = this.context.createOscillator();
+                const oscillator2 = this.context.createOscillator();
+                const filter = this.context.createBiquadFilter();
+                const gain = this.context.createGain();
+                
+                oscillator1.type = 'sine';
+                oscillator1.frequency.value = 55; // Low A
+                oscillator2.type = 'sine';
+                oscillator2.frequency.value = 110; // A above
+                
+                filter.type = 'lowpass';
+                filter.frequency.value = 800;
+                filter.Q.value = 1;
+                
+                gain.gain.value = 0.1;
+                
+                oscillator1.connect(filter);
+                oscillator2.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.musicGain);
+                
+                oscillator1.start();
+                oscillator2.start();
+                
+                this.oscillators.push({ osc1: oscillator1, osc2: oscillator2, gain, filter });
+            }
+            
+            updateDynamicMusic() {
+                if (!this.initialized) return;
+                
+                // Smooth intensity transition
+                this.currentIntensity += (this.targetIntensity - this.currentIntensity) * (1 - this.intensitySmoothing);
+                
+                // Update music layers based on intensity
+                this.oscillators.forEach(layer => {
+                    if (layer.gain) {
+                        const baseVolume = 0.1;
+                        const intensityVolume = this.currentIntensity * 0.3;
+                        layer.gain.gain.setValueAtTime(baseVolume + intensityVolume, this.context.currentTime);
+                        
+                        // Adjust filter frequency based on intensity
+                        if (layer.filter) {
+                            const baseFreq = 800;
+                            const intensityFreq = this.currentIntensity * 1200;
+                            layer.filter.frequency.setValueAtTime(baseFreq + intensityFreq, this.context.currentTime);
+                        }
+                    }
+                });
+                
+                // Continue updating
+                requestAnimationFrame(() => this.updateDynamicMusic());
+            }
+            
+            setIntensity(intensity) {
+                this.targetIntensity = Math.max(0, Math.min(1, intensity));
+            }
+            
+            playSound(frequency, duration = 100, type = 'square', volume = 0.1) {
+                if (!this.initialized) return;
+                
+                const oscillator = this.context.createOscillator();
+                const gain = this.context.createGain();
+                
+                oscillator.type = type;
+                oscillator.frequency.value = frequency;
+                
+                gain.gain.value = volume;
+                gain.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + duration / 1000);
+                
+                oscillator.connect(gain);
+                gain.connect(this.sfxGain);
+                
+                oscillator.start();
+                oscillator.stop(this.context.currentTime + duration / 1000);
+            }
+            
+            playExplosion() {
+                this.playSound(150, 200, 'sawtooth', 0.3);
+                setTimeout(() => this.playSound(100, 300, 'square', 0.2), 50);
+            }
+            
+            playLaser() {
+                this.playSound(800, 150, 'square', 0.1);
+                setTimeout(() => this.playSound(600, 100, 'sine', 0.05), 75);
+            }
+            
+            playPowerUp() {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        this.playSound(400 + i * 100, 100, 'sine', 0.1);
+                    }, i * 50);
+                }
+            }
+        }
+        
+        // Initialize audio system
+        const dynamicAudio = new DynamicAudio();
+        
         // Star background
         class Star {
             constructor() {
@@ -4534,6 +5409,7 @@
         
         // Game functions
         function createExplosion(x, y, color, count = 10) {
+            // Original particle system
             for (let i = 0; i < count; i++) {
                 const angle = (Math.PI * 2 * i) / count;
                 const speed = Math.random() * 5 + 2;
@@ -4544,6 +5420,197 @@
                     color,
                     500 + Math.random() * 500
                 ));
+            }
+            
+            // Advanced particle system
+            createAdvancedExplosion(x, y, color, count);
+        }
+        
+        // ===== EFEITOS AVANÇADOS =====
+        
+        function createAdvancedExplosion(x, y, color = '#ff6600', intensity = 1) {
+            const particleCount = Math.floor(20 * intensity);
+            
+            // Main explosion burst
+            const explosionSystem = new ParticleSystem(x, y, {
+                count: particleCount,
+                spread: Math.PI * 2,
+                speed: 8 * intensity,
+                life: 800,
+                size: 4 * intensity,
+                color: color,
+                type: 'circle',
+                glowSize: 10 * intensity,
+                fadeType: 'ease-out',
+                shaderType: 'wave'
+            });
+            explosionSystem.emit();
+            particleGroups.push(explosionSystem);
+            
+            // Sparks
+            const sparkSystem = new ParticleSystem(x, y, {
+                count: Math.floor(15 * intensity),
+                spread: Math.PI * 2,
+                speed: 12 * intensity,
+                life: 600,
+                size: 2,
+                color: '#ffff00',
+                type: 'spark',
+                gravity: true,
+                trail: true,
+                fadeType: 'linear'
+            });
+            sparkSystem.emit();
+            particleGroups.push(sparkSystem);
+            
+            // Shockwave
+            const shockwave = new AdvancedParticle(x, y, {
+                vx: 0, vy: 0,
+                color: color,
+                life: 500,
+                size: 2,
+                type: 'circle',
+                scaleVel: 0.5 * intensity,
+                fadeType: 'ease-in'
+            });
+            advancedParticles.push(shockwave);
+            
+            // Create gravity well for large explosions
+            if (intensity > 1.5) {
+                const well = new GravityWell(x, y, 100 * intensity, 80 * intensity);
+                gravityWells.push(well);
+            }
+            
+            // Play explosion sound
+            if (dynamicAudio.initialized) {
+                dynamicAudio.playExplosion();
+            }
+        }
+        
+        function createLaserEffect(x1, y1, x2, y2, color = '#00ffff') {
+            const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+            const particleCount = Math.floor(distance / 10);
+            
+            for (let i = 0; i < particleCount; i++) {
+                const t = i / particleCount;
+                const px = x1 + (x2 - x1) * t;
+                const py = y1 + (y2 - y1) * t;
+                
+                const sparkle = new AdvancedParticle(px, py, {
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    color: color,
+                    life: 200,
+                    size: 1,
+                    type: 'star',
+                    glowSize: 5,
+                    fadeType: 'pulse'
+                });
+                advancedParticles.push(sparkle);
+            }
+            
+            // Play laser sound
+            if (dynamicAudio.initialized) {
+                dynamicAudio.playLaser();
+            }
+        }
+        
+        function createShieldEffect(x, y, radius = 30) {
+            for (let i = 0; i < 8; i++) {
+                const angle = (Math.PI * 2 * i) / 8;
+                const px = x + Math.cos(angle) * radius;
+                const py = y + Math.sin(angle) * radius;
+                
+                const shield = new AdvancedParticle(px, py, {
+                    vx: 0, vy: 0,
+                    color: '#00ffff',
+                    life: 1000,
+                    size: 3,
+                    type: 'circle',
+                    glowSize: 8,
+                    rotationSpeed: 0.05,
+                    fadeType: 'pulse',
+                    shaderType: 'wave'
+                });
+                advancedParticles.push(shield);
+            }
+        }
+        
+        function createWarpEffect(x, y) {
+            // Spiral particles
+            for (let i = 0; i < 30; i++) {
+                const angle = (i / 30) * Math.PI * 4;
+                const radius = (i / 30) * 50;
+                const px = x + Math.cos(angle) * radius;
+                const py = y + Math.sin(angle) * radius;
+                
+                const warp = new AdvancedParticle(px, py, {
+                    vx: -Math.cos(angle) * 3,
+                    vy: -Math.sin(angle) * 3,
+                    color: '#ff00ff',
+                    life: 1500,
+                    size: 2,
+                    type: 'star',
+                    glowSize: 6,
+                    shaderType: 'distort',
+                    trail: true
+                });
+                advancedParticles.push(warp);
+            }
+            
+            // Central portal
+            const portal = new AdvancedParticle(x, y, {
+                vx: 0, vy: 0,
+                color: '#8000ff',
+                life: 2000,
+                size: 10,
+                type: 'circle',
+                scaleVel: -0.01,
+                glowSize: 20,
+                shaderType: 'wave'
+            });
+            advancedParticles.push(portal);
+        }
+        
+        function createEnvironmentalEffects() {
+            // Floating space debris
+            if (Math.random() < 0.02) {
+                const debris = new AdvancedParticle(
+                    Math.random() * canvas.width, 
+                    -10, 
+                    {
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: Math.random() * 3 + 1,
+                        color: '#666666',
+                        life: 10000,
+                        size: Math.random() * 4 + 2,
+                        type: 'normal',
+                        rotationSpeed: (Math.random() - 0.5) * 0.1,
+                        gravity: true
+                    }
+                );
+                advancedParticles.push(debris);
+            }
+            
+            // Energy wisps
+            if (Math.random() < 0.01) {
+                const wisp = new AdvancedParticle(
+                    Math.random() * canvas.width,
+                    canvas.height + 10,
+                    {
+                        vx: (Math.random() - 0.5) * 1,
+                        vy: -Math.random() * 2 - 1,
+                        color: '#40ffff',
+                        life: 8000,
+                        size: 3,
+                        type: 'circle',
+                        glowSize: 10,
+                        shaderType: 'wave',
+                        trail: true,
+                        fadeType: 'pulse'
+                    }
+                );
+                advancedParticles.push(wisp);
             }
         }
         
@@ -4895,9 +5962,23 @@
                         
                         bullets.splice(i, 1);
                         
+                        // Trigger explosion if bullet is explosive
+                        if (bullet.explosive) {
+                            bullet.explode();
+                        }
+                        
                         if (enemy.takeDamage(bullet.damage)) {
                             // Enemy defeated
+                            const explosionIntensity = enemy.typeData.isBoss ? 2.5 : 1;
                             createExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, enemy.color, 10);
+                            
+                            // Advanced explosion effect
+                            createAdvancedExplosion(
+                                enemy.x + enemy.width/2, 
+                                enemy.y + enemy.height/2, 
+                                enemy.color, 
+                                explosionIntensity
+                            );
                             
                             const scoreGained = enemy.value;
                             score += scoreGained;
@@ -4914,6 +5995,9 @@
                                 coins += bonusCoins;
                                 coinsThisRound += bonusCoins;
                                 addXP(scoreGained * 3); // Triple XP for bosses
+                                
+                                // Create massive explosion for boss
+                                createWarpEffect(enemy.x + enemy.width/2, enemy.y + enemy.height/2);
                             } else {
                                 addXP(scoreGained);
                             }
@@ -5038,8 +6122,34 @@
         function collectPowerup(type) {
             if (type === 'weapon') {
                 player.powerLevel = Math.min(3, player.powerLevel + 1);
+                // Weapon upgrade effect
+                createAdvancedExplosion(player.x + player.width/2, player.y + player.height/2, '#ffff00', 1.2);
+                createShieldEffect(player.x + player.width/2, player.y + player.height/2, 35);
             } else if (type === 'health') {
                 playerHealth = Math.min(playerMaxHealth, playerHealth + 30);
+                // Health restoration effect
+                createAdvancedExplosion(player.x + player.width/2, player.y + player.height/2, '#00ff00', 1.0);
+                
+                // Healing particles
+                const healSystem = new ParticleSystem(player.x + player.width/2, player.y + player.height/2, {
+                    count: 15,
+                    spread: Math.PI * 2,
+                    speed: 2,
+                    life: 1500,
+                    size: 3,
+                    color: '#00ff88',
+                    type: 'circle',
+                    glowSize: 8,
+                    gravity: false,
+                    fadeType: 'pulse'
+                });
+                healSystem.emit();
+                particleGroups.push(healSystem);
+            }
+            
+            // Play power-up sound
+            if (dynamicAudio.initialized) {
+                dynamicAudio.playPowerUp();
             }
             
             // Progression system updates
@@ -5347,6 +6457,7 @@
 🚀 MOVIMENTO:
 • WASD ou Setas: Mover nave
 • Espaço: Atirar
+• X: Habilidade Especial da Nave
 • P: Pausar/Despausar
 
 💰 SISTEMA DE MOEDAS:
@@ -5362,6 +6473,12 @@
 • Cada mundo tem inimigos únicos
 • Dificuldade aumenta por mundo
 • Explore galáxias distantes!
+
+🚀 TECNOLOGIAS FUTURISTAS:
+• Sistema de Partículas Avançado
+• Física Realística com Gravidade
+• Efeitos Shader Dinâmicos
+• Áudio Dinâmico Adaptativo
 
 Boa sorte, comandante! 🚀✨`);
         }
@@ -6308,40 +7425,19 @@ Boa sorte, comandante! 🚀✨`);
         function showNotification(message, color = '#ffffff') {
             // Create notification element
             const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: rgba(0, 0, 0, 0.9);
-                color: ${color};
-                padding: 15px 25px;
-                border-radius: 10px;
-                border: 2px solid ${color};
-                font-family: 'Orbitron', monospace;
-                font-weight: bold;
-                z-index: 1000;
-                transform: translateX(400px);
-                transition: transform 0.5s ease;
-                box-shadow: 0 0 20px ${color}50;
-            `;
+            notification.className = 'notification';
+            notification.style.color = color;
+            notification.style.borderColor = color;
             notification.textContent = message;
             
-            document.body.appendChild(notification);
+            document.getElementById('gameContainer').appendChild(notification);
             
-            // Animate in
+            // Remove after animation
             setTimeout(() => {
-                notification.style.transform = 'translateX(0)';
-            }, 100);
-            
-            // Animate out and remove
-            setTimeout(() => {
-                notification.style.transform = 'translateX(400px)';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 500);
-            }, 3000);
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 2000);
         }
         
         // Initialize game
@@ -6352,6 +7448,9 @@ Boa sorte, comandante! 🚀✨`);
             for (let i = 0; i < 120; i++) {
                 stars.push(new Star());
             }
+            
+            // Initialize advanced systems
+            dynamicAudio.initialize();
             
             // Initialize menu animation
             initMenuAnimation();
@@ -6364,6 +7463,13 @@ Boa sorte, comandante! 🚀✨`);
                 }
                 e.preventDefault();
             });
+            
+            // Initialize audio on first user interaction
+            window.addEventListener('click', () => {
+                if (!dynamicAudio.initialized) {
+                    dynamicAudio.initialize();
+                }
+            }, { once: true });
             
             window.addEventListener('keyup', (e) => {
                 keys[e.key] = false;
@@ -6466,6 +7572,37 @@ Boa sorte, comandante! 🚀✨`);
                     particle.draw();
                     return !particle.isDead();
                 });
+                
+                // Update advanced particles and systems
+                advancedParticles = advancedParticles.filter(particle => {
+                    particle.update(deltaTime);
+                    particle.draw();
+                    return !particle.isDead();
+                });
+                
+                particleGroups = particleGroups.filter(system => {
+                    system.update(deltaTime);
+                    system.draw();
+                    return !system.isDead();
+                });
+                
+                // Update gravity wells
+                gravityWells = gravityWells.filter(well => {
+                    well.update(deltaTime);
+                    well.draw();
+                    return well.active;
+                });
+                
+                // Create environmental effects
+                createEnvironmentalEffects();
+                
+                // Update dynamic audio based on game intensity
+                const enemyCount = enemies.length;
+                const bulletCount = bullets.length + enemyBullets.length;
+                const gameIntensity = Math.min(1, (enemyCount * 0.1 + bulletCount * 0.05 + (bossActive ? 0.5 : 0)));
+                if (dynamicAudio.initialized) {
+                    dynamicAudio.setIntensity(gameIntensity);
+                }
                 
                 // Update powerups
                 powerups = powerups.filter(powerup => {
