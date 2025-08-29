@@ -22,11 +22,18 @@ Um jogo 2D em pixel art onde o jogador controla uma nave espacial, enfrenta onda
 
 ## Estrutura dos Arquivos
 
-- `index.html` - Página de entrada que redireciona para o detector
-- `detector.html` - Sistema de detecção de dispositivo e redirecionamento
-- `desktop.html` - Versão completa para computadores
+- `detector.html` - **Ponto de entrada principal** - Sistema de detecção de dispositivo e redirecionamento
+- `index.html` - Versão completa para computadores (PC)
 - `mobile.html` - Versão otimizada para dispositivos móveis
 - `README.md` - Documentação do projeto
+
+## Como Acessar
+
+1. **Acesse `detector.html`** como ponto de entrada principal
+2. O sistema detectará automaticamente seu dispositivo
+3. Você será redirecionado para a versão apropriada:
+   - **PC** → `index.html` 
+   - **Mobile** → `mobile.html`
 
 ## Como Jogar
 
@@ -51,7 +58,7 @@ Sobreviva o máximo possível, destruindo naves inimigas e acumulando pontos. A 
 ## Como Executar
 
 1. Clone ou baixe este repositório
-2. Abra o arquivo `index.html` em um navegador web moderno
+2. Abra o arquivo `detector.html` em um navegador web moderno
 3. O sistema detectará automaticamente seu dispositivo e carregará a versão apropriada
 4. Divirta-se!
 
