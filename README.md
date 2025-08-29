@@ -1,11 +1,12 @@
-# Jogo de Nave Espacial em Pixel Art
+# WaveSlayers - Jogo de Nave Espacial Multiplataforma
 
-Um jogo 2D em pixel art onde o jogador controla uma nave espacial, enfrenta ondas de inimigos e tenta sobreviver o máximo possível.
+Um jogo 2D em pixel art onde o jogador controla uma nave espacial, enfrenta ondas de inimigos e tenta sobreviver o máximo possível. Funciona tanto em computadores quanto em dispositivos móveis com controles adaptados.
 
 ## Características
 
-- Controles para movimentação da nave (cima, baixo, esquerda, direita)
-- Mecânica de tiro para atacar naves inimigas
+### Gameplay
+- Controles para movimentação da nave (WASD/setas no PC, D-pad virtual no mobile)
+- Mecânica de tiro para atacar naves inimigas (espaço no PC, botão de tiro no mobile)
 - Inimigos que aparecem em ondas e se movem em direção ao jogador
 - Sistema de progressão com aumento gradual de dificuldade:
   - Inimigos mais rápidos
@@ -14,36 +15,67 @@ Um jogo 2D em pixel art onde o jogador controla uma nave espacial, enfrenta onda
 - Estilo visual em pixel art para todos os elementos do jogo
 - Feedback visual quando inimigos são destruídos
 
+### Multiplataforma
+- **Detecção Automática**: O jogo detecta automaticamente se você está em um computador ou dispositivo móvel
+- **Versão PC**: Controles tradicionais com teclado (WASD/setas + espaço)
+- **Versão Mobile**: Interface touch otimizada com D-pad virtual e botão de tiro
+
+## Estrutura dos Arquivos
+
+- `index.html` - Página de entrada que redireciona para o detector
+- `detector.html` - Sistema de detecção de dispositivo e redirecionamento
+- `desktop.html` - Versão completa para computadores
+- `mobile.html` - Versão otimizada para dispositivos móveis
+- `README.md` - Documentação do projeto
+
 ## Como Jogar
 
-### Controles
-
-- **Setas direcionais**: Movimentam a nave (cima, baixo, esquerda, direita)
+### Controles PC
+- **WASD ou Setas direcionais**: Movimentam a nave
 - **Barra de espaço**: Dispara tiros
+- **P**: Pausar/Despausar
+
+### Controles Mobile
+- **D-pad virtual**: Movimenta a nave (setas direcionais na tela)
+- **Botão vermelho**: Dispara tiros
+- **Botão ⏸️**: Pausar/Despausar
 
 ### Objetivo
-
 Sobreviva o máximo possível, destruindo naves inimigas e acumulando pontos. A dificuldade aumenta a cada onda de inimigos.
 
 ### Pontuação
-
 - Inimigo básico: 10 pontos
-- Inimigo avançado: 20 pontos
+- Inimigo avançado: 20 pontos  
 - Inimigo chefe: 50 pontos
 
 ## Como Executar
 
 1. Clone ou baixe este repositório
 2. Abra o arquivo `index.html` em um navegador web moderno
-3. Divirta-se!
+3. O sistema detectará automaticamente seu dispositivo e carregará a versão apropriada
+4. Divirta-se!
 
 ## Tecnologias Utilizadas
 
-- HTML5
+- HTML5 Canvas para renderização
+- CSS3 para styling e responsividade
+- JavaScript ES6+ para lógica do jogo
+- Touch Events API para controles móveis
+- User Agent Detection para identificação de dispositivos
 
-## Estrutura do Projeto
+## Características Mobile
 
-- `index.html`
+### Otimizações para Touch
+- Interface adaptada para telas menores
+- Controles virtuais otimizados para dedos
+- Prevenção de scrolling e zoom indesejados
+- Suporte a orientação retrato e paisagem
+- Feedback visual aprimorado para toques
+
+### Performance
+- Canvas redimensionado dinamicamente para diferentes telas
+- Controles responsivos com diferentes tamanhos de tela
+- Otimização de eventos touch para melhor resposta
 
 ## Desenvolvimento Futuro
 

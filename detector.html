@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaveSlayers - Detectando Dispositivo...</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e);
+            font-family: 'Orbitron', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .loading-container {
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .logo {
+            font-size: 3em;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 20px #00ffff;
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        .loading-text {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 255, 255, 0.3);
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #00ffff; }
+            to { text-shadow: 0 0 30px #00ffff, 0 0 40px #00ffff; }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Background stars */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="logo">WAVESLAYERS</div>
+        <div class="loading-text">Detectando dispositivo...</div>
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script>
+        // Criar estrelas de fundo
+        function createStars() {
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                document.body.appendChild(star);
+            }
+        }
+        
+        // Função para detectar dispositivo móvel
+        function isMobileDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+            // Verifica user agent
+            const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
+            const isMobileUA = mobileRegex.test(userAgent.toLowerCase());
+            
+            // Verifica largura da tela
+            const isMobileScreen = window.innerWidth <= 768;
+            
+            // Verifica se é touch device
+            const isTouchDevice = ('ontouchstart' in window) || 
+                                 (navigator.maxTouchPoints > 0) || 
+                                 (navigator.msMaxTouchPoints > 0);
+            
+            // Verifica orientação (específico para móveis)
+            const hasOrientation = typeof window.orientation !== 'undefined';
+            
+            return isMobileUA || (isMobileScreen && isTouchDevice) || hasOrientation;
+        }
+        
+        // Função para redirecionar
+        function redirectToAppropriateVersion() {
+            const isMobile = isMobileDevice();
+            
+            console.log('Dispositivo detectado:', isMobile ? 'Mobile' : 'Desktop');
+            console.log('User Agent:', navigator.userAgent);
+            console.log('Largura da tela:', window.innerWidth);
+            console.log('Touch device:', 'ontouchstart' in window);
+            
+            setTimeout(() => {
+                if (isMobile) {
+                    window.location.href = 'mobile.html';
+                } else {
+                    window.location.href = 'desktop.html';
+                }
+            }, 2000); // Aguarda 2 segundos para mostrar a tela de loading
+        }
+        
+        // Inicializar
+        createStars();
+        
+        // Aguardar um pouco para garantir que tudo carregou
+        window.addEventListener('load', () => {
+            setTimeout(redirectToAppropriateVersion, 500);
+        });
+        
+        // Fallback caso o evento load não dispare
+        setTimeout(redirectToAppropriateVersion, 3000);
+    </script>
+</body>
+</html>
