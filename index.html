@@ -203,218 +203,6 @@
             overflow-y: auto;
         }
         
-        .battlepass-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            border: 2px solid #00ff44;
-        }
-        
-        .battlepass-level {
-            font-size: 28px;
-            color: #FFD700;
-            font-weight: bold;
-            text-shadow: 0 0 10px #FFD700;
-            margin: 10px 0;
-        }
-        
-        .xp-bar-container {
-            margin: 20px 0;
-        }
-        
-        .xp-bar {
-            width: 100%;
-            height: 25px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 15px;
-            border: 2px solid #00ff44;
-            overflow: hidden;
-            position: relative;
-            margin-top: 10px;
-        }
-        
-        .xp-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00ff44, #00cc33);
-            border-radius: 15px;
-            transition: width 0.5s ease;
-            box-shadow: 0 0 15px #00ff44;
-        }
-        
-        .xp-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-        }
-        
-        #battlepassTiers {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .battlepass-tier {
-            display: flex;
-            align-items: center;
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            padding: 15px;
-            border: 2px solid #333;
-            transition: all 0.3s ease;
-        }
-        
-        .battlepass-tier.current-tier {
-            border-color: #FFD700;
-            box-shadow: 0 0 20px rgba(255,215,0,0.3);
-            transform: scale(1.02);
-        }
-        
-        .tier-level {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #00ff44, #00cc33);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-            margin-right: 20px;
-            border: 3px solid #fff;
-        }
-        
-        .tier-rewards {
-            flex: 1;
-            display: flex;
-            gap: 20px;
-        }
-        
-        .reward-track {
-            flex: 1;
-            background: rgba(0,0,0,0.4);
-            border-radius: 8px;
-            padding: 15px;
-            border: 2px solid #666;
-        }
-        
-        .reward-track.premium-track.unlocked {
-            border-color: #FFD700;
-            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,165,0,0.1));
-        }
-        
-        .reward-track.premium-track.locked {
-            opacity: 0.5;
-            border-color: #999;
-        }
-        
-        .reward-header {
-            font-size: 14px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 10px;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        
-        .free-track .reward-header {
-            background: #00ff44;
-            color: black;
-        }
-        
-        .premium-track .reward-header {
-            background: #FFD700;
-            color: black;
-        }
-        
-        .reward-item {
-            text-align: center;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        
-        .reward-item.locked {
-            opacity: 0.5;
-            filter: grayscale(100%);
-        }
-        
-        .reward-item.available {
-            background: rgba(0,255,68,0.1);
-            border: 1px solid #00ff44;
-        }
-        
-        .claim-button {
-            width: 100%;
-            padding: 8px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
-            background: #00ff44;
-            color: black;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .claim-button:hover:not(:disabled) {
-            background: #00cc33;
-            transform: translateY(-2px);
-        }
-        
-        .claim-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .claim-button.claimed {
-            background: #666;
-            color: #ccc;
-        }
-        
-        .claim-button.premium {
-            background: #FFD700;
-        }
-        
-        .claim-button.premium:hover:not(:disabled) {
-            background: #FFA500;
-        }
-        
-        .premium-upgrade {
-            text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.2));
-            border-radius: 12px;
-            border: 2px solid #FFD700;
-        }
-        
-        .upgrade-premium-button {
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: black;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-shadow: none;
-        }
-        
-        .upgrade-premium-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255,215,0,0.4);
-        }
-        
         /* Menu Arsenal */
         #arsenalMenu {
             position: absolute;
@@ -1627,6 +1415,111 @@
             border-radius: 50%;
         }
         
+        /* Wave and Boss UI */
+        #waveInfo {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            text-align: center;
+            z-index: 10;
+            display: none;
+        }
+        
+        .wave-number {
+            font-size: 1.5em;
+            color: #ffaa00;
+            margin-bottom: 5px;
+        }
+        
+        .enemies-remaining {
+            font-size: 0.9em;
+            color: #ff6666;
+        }
+        
+        .boss-warning {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,0,0,0.9);
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px solid #ffaa00;
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 1.8em;
+            text-align: center;
+            z-index: 100;
+            animation: pulseWarning 1s ease-in-out infinite;
+            display: none;
+        }
+        
+        @keyframes pulseWarning {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+        
+        /* AI Learning Indicator */
+        .ai-indicator {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(100,0,150,0.8);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #aa44ff;
+            color: #aa44ff;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8em;
+            z-index: 10;
+            display: none;
+        }
+        
+        .ai-indicator.active {
+            animation: aiPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes aiPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        /* Enemy Type Indicator */
+        .enemy-indicator {
+            position: absolute;
+            top: 80px;
+            left: 15px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ff6666;
+            color: #ff6666;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8em;
+            z-index: 10;
+            display: none;
+            max-width: 200px;
+        }
+        
+        .enemy-type {
+            font-weight: bold;
+            color: #ffaa00;
+        }
+        
+        .enemy-description {
+            font-size: 0.7em;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+        
         #gameOver {
             position: absolute;
             top: 50%;
@@ -1973,6 +1866,28 @@
             </div>
         </div>
         
+        <!-- Wave Information -->
+        <div id="waveInfo">
+            <div class="wave-number">ONDA <span id="waveNumber">1</span></div>
+            <div class="enemies-remaining">Inimigos: <span id="enemiesRemaining">0</span></div>
+        </div>
+        
+        <!-- Boss Warning -->
+        <div id="bossWarning" class="boss-warning">
+            ⚠️ CHEFE APROXIMANDO ⚠️
+        </div>
+        
+        <!-- AI Learning Indicator -->
+        <div id="aiIndicator" class="ai-indicator">
+            🤖 IA APRENDENDO...
+        </div>
+        
+        <!-- Enemy Type Indicator -->
+        <div id="enemyIndicator" class="enemy-indicator">
+            <div class="enemy-type" id="enemyTypeName">Tipo de Inimigo</div>
+            <div class="enemy-description" id="enemyTypeDescription">Descrição do inimigo</div>
+        </div>
+        
         <button class="world-select-btn" id="worldSelectBtn" onclick="openWorldsMenu()">🌍 Mundos</button>
         
         <div id="gameOver">
@@ -2028,7 +1943,6 @@
         let battlePassXP = parseInt(localStorage.getItem('waveslayers_battlepass_xp') || '0');
         let battlePassPremium = localStorage.getItem('waveslayers_battlepass_premium') === 'true';
         let battlePassSeason = localStorage.getItem('waveslayers_battlepass_season') || '1';
-        let battlePassClaimedRewards = JSON.parse(localStorage.getItem('waveslayers_battlepass_claimed') || '[]');
         
         // Ship Customization System
         let currentShipId = localStorage.getItem('waveslayers_current_ship') || 'interceptor';
@@ -2984,115 +2898,6 @@
             }
         };
         
-        // Battle Pass System
-        const battlePassTiers = [
-            // Tier 1-10
-            { level: 1, xpRequired: 100, freeReward: { coins: 50 }, premiumReward: { coins: 100, gems: 5 } },
-            { level: 2, xpRequired: 150, freeReward: { coins: 75 }, premiumReward: { coins: 150, xp: 200 } },
-            { level: 3, xpRequired: 200, freeReward: { xp: 100 }, premiumReward: { coins: 200, gems: 10 } },
-            { level: 4, xpRequired: 250, freeReward: { coins: 100 }, premiumReward: { skin: 'gold' } },
-            { level: 5, xpRequired: 300, freeReward: { gems: 5 }, premiumReward: { coins: 300, gems: 15, darkMatter: 1 } },
-            
-            { level: 6, xpRequired: 400, freeReward: { coins: 125 }, premiumReward: { ship: 'fighter' } },
-            { level: 7, xpRequired: 500, freeReward: { xp: 200 }, premiumReward: { coins: 400, gems: 20 } },
-            { level: 8, xpRequired: 600, freeReward: { coins: 150 }, premiumReward: { effect: 'trail_fire' } },
-            { level: 9, xpRequired: 700, freeReward: { gems: 8 }, premiumReward: { coins: 500, xp: 500 } },
-            { level: 10, xpRequired: 800, freeReward: { coins: 200 }, premiumReward: { skin: 'stealth', gems: 25 } },
-            
-            // Tier 11-20
-            { level: 11, xpRequired: 1000, freeReward: { xp: 300 }, premiumReward: { ship: 'scout' } },
-            { level: 12, xpRequired: 1200, freeReward: { coins: 250 }, premiumReward: { coins: 600, gems: 30 } },
-            { level: 13, xpRequired: 1400, freeReward: { gems: 10 }, premiumReward: { effect: 'aura_energy' } },
-            { level: 14, xpRequired: 1600, freeReward: { coins: 300 }, premiumReward: { coins: 700, darkMatter: 3 } },
-            { level: 15, xpRequired: 1800, freeReward: { darkMatter: 1 }, premiumReward: { skin: 'neon', gems: 35 } },
-            
-            { level: 16, xpRequired: 2000, freeReward: { coins: 350 }, premiumReward: { ship: 'destroyer' } },
-            { level: 17, xpRequired: 2200, freeReward: { gems: 12 }, premiumReward: { coins: 800, xp: 800 } },
-            { level: 18, xpRequired: 2400, freeReward: { xp: 500 }, premiumReward: { effect: 'portal' } },
-            { level: 19, xpRequired: 2600, freeReward: { coins: 400 }, premiumReward: { coins: 900, gems: 40 } },
-            { level: 20, xpRequired: 2800, freeReward: { gems: 15 }, premiumReward: { skin: 'plasma', darkMatter: 5 } },
-            
-            // Tier 21-30
-            { level: 21, xpRequired: 3200, freeReward: { coins: 450 }, premiumReward: { ship: 'stealth' } },
-            { level: 22, xpRequired: 3600, freeReward: { darkMatter: 2 }, premiumReward: { coins: 1000, gems: 45 } },
-            { level: 23, xpRequired: 4000, freeReward: { coins: 500 }, premiumReward: { effect: 'lightning' } },
-            { level: 24, xpRequired: 4400, freeReward: { gems: 18 }, premiumReward: { coins: 1200, xp: 1000 } },
-            { level: 25, xpRequired: 4800, freeReward: { xp: 700 }, premiumReward: { ship: 'bomber', gems: 50 } },
-            
-            { level: 26, xpRequired: 5400, freeReward: { coins: 600 }, premiumReward: { skin: 'hologram' } },
-            { level: 27, xpRequired: 6000, freeReward: { gems: 20 }, premiumReward: { coins: 1500, darkMatter: 8 } },
-            { level: 28, xpRequired: 6600, freeReward: { darkMatter: 3 }, premiumReward: { effect: 'galaxy' } },
-            { level: 29, xpRequired: 7200, freeReward: { coins: 700 }, premiumReward: { coins: 1800, gems: 60 } },
-            { level: 30, xpRequired: 8000, freeReward: { gems: 25 }, premiumReward: { ship: 'vortex', darkMatter: 10 } },
-            
-            // Tier 31-40 (Epic Rewards)
-            { level: 31, xpRequired: 9000, freeReward: { coins: 800 }, premiumReward: { ship: 'phoenix' } },
-            { level: 32, xpRequired: 10000, freeReward: { darkMatter: 4 }, premiumReward: { coins: 2000, gems: 70 } },
-            { level: 33, xpRequired: 11000, freeReward: { gems: 30 }, premiumReward: { skin: 'void' } },
-            { level: 34, xpRequired: 12000, freeReward: { coins: 1000 }, premiumReward: { coins: 2500, darkMatter: 15 } },
-            { level: 35, xpRequired: 13000, freeReward: { xp: 1000 }, premiumReward: { ship: 'quantum', gems: 80 } },
-            
-            { level: 36, xpRequired: 14500, freeReward: { gems: 35 }, premiumReward: { coins: 3000, xp: 2000 } },
-            { level: 37, xpRequired: 16000, freeReward: { darkMatter: 5 }, premiumReward: { specialTitle: 'Destruidor Galáctico' } },
-            { level: 38, xpRequired: 17500, freeReward: { coins: 1200 }, premiumReward: { coins: 3500, gems: 90 } },
-            { level: 39, xpRequired: 19000, freeReward: { gems: 40 }, premiumReward: { ship: 'titan' } },
-            { level: 40, xpRequired: 20000, freeReward: { darkMatter: 8 }, premiumReward: { coins: 4000, darkMatter: 25 } },
-            
-            // Tier 41-50 (Legendary Rewards)
-            { level: 41, xpRequired: 22000, freeReward: { coins: 1500 }, premiumReward: { ship: 'void' } },
-            { level: 42, xpRequired: 24000, freeReward: { gems: 45 }, premiumReward: { coins: 4500, gems: 100 } },
-            { level: 43, xpRequired: 26000, freeReward: { darkMatter: 10 }, premiumReward: { exclusiveEffect: 'cosmic_storm' } },
-            { level: 44, xpRequired: 28000, freeReward: { coins: 1800 }, premiumReward: { coins: 5000, xp: 3000 } },
-            { level: 45, xpRequired: 30000, freeReward: { gems: 50 }, premiumReward: { exclusiveSkin: 'cosmic_emperor' } },
-            
-            { level: 46, xpRequired: 33000, freeReward: { darkMatter: 12 }, premiumReward: { coins: 6000, gems: 120 } },
-            { level: 47, xpRequired: 36000, freeReward: { coins: 2000 }, premiumReward: { specialTitle: 'Imperador Cósmico' } },
-            { level: 48, xpRequired: 39000, freeReward: { gems: 60 }, premiumReward: { coins: 7000, darkMatter: 40 } },
-            { level: 49, xpRequired: 42000, freeReward: { darkMatter: 15 }, premiumReward: { exclusiveShip: 'ascension_proto' } },
-            { level: 50, xpRequired: 50000, freeReward: { gems: 100, darkMatter: 20 }, premiumReward: { ship: 'godmode', exclusiveTitle: 'Deus das Galáxias', coins: 10000, gems: 200, darkMatter: 100 } }
-        ];
-        
-        // Battle Pass Exclusive Items
-        const battlePassExclusives = {
-            // Exclusive Ships
-            ascension_proto: {
-                id: 'ascension_proto',
-                name: 'Protótipo Ascensão',
-                description: 'Versão experimental da nave definitiva',
-                rarity: 'exclusive',
-                stats: {
-                    speed: 9,
-                    health: 400,
-                    damage: 90,
-                    fireRate: 60,
-                    shield: 150
-                },
-                abilities: ['Modo Experimental', 'Energia Infinita', 'Transcendência'],
-                sprite: '🌟'
-            },
-            
-            // Exclusive Skins
-            cosmic_emperor: {
-                id: 'cosmic_emperor',
-                name: 'Imperador Cósmico',
-                description: 'Skin exclusiva para os conquistadores das galáxias',
-                rarity: 'exclusive',
-                colors: ['#FFD700', '#FF6B35', '#9B59B6', '#3498DB'],
-                animated: true,
-                holographic: true,
-                exclusive: true
-            },
-            
-            // Exclusive Effects
-            cosmic_storm: {
-                id: 'cosmic_storm',
-                name: 'Tempestade Cósmica',
-                description: 'Tempestade de energia cósmica ao redor da nave',
-                rarity: 'exclusive',
-                exclusive: true
-            }
-        };
-        
         // Player class
         class Player {
             constructor() {
@@ -3370,124 +3175,1167 @@
             }
         }
         
+        // ===== SISTEMA DE IA ADAPTATIVA =====
+        
+        // Padrões de comportamento do jogador que a IA aprende
+        let playerBehaviorData = JSON.parse(localStorage.getItem('waveslayers_player_behavior') || '{}');
+        
+        // Dados padrão de comportamento
+        if (!playerBehaviorData.movementPatterns) {
+            playerBehaviorData = {
+                movementPatterns: { left: 0, right: 0, up: 0, down: 0, staying: 0 },
+                shootingFrequency: 0,
+                preferredPositions: { top: 0, middle: 0, bottom: 0 },
+                evasionPatterns: { zigzag: 0, circular: 0, linear: 0 },
+                powerupPreference: { health: 0, weapon: 0 },
+                averageReactionTime: 500,
+                sessionCount: 0
+            };
+        }
+        
+        // Sistema de formações táticas
+        const formationTypes = {
+            arrow: { name: 'Seta', pattern: [[0,0], [-1,1], [1,1], [-2,2], [2,2]] },
+            diamond: { name: 'Diamante', pattern: [[0,0], [-1,0], [1,0], [0,-1], [0,1]] },
+            line: { name: 'Linha', pattern: [[-2,0], [-1,0], [0,0], [1,0], [2,0]] },
+            circle: { name: 'Círculo', pattern: [[0,0], [1,0], [0,1], [-1,0], [0,-1], [1,1], [-1,1], [1,-1], [-1,-1]] },
+            swarm: { name: 'Enxame', pattern: [[0,0], [-1,-1], [1,-1], [-2,0], [2,0], [-1,1], [1,1], [0,2]] }
+        };
+        
+        // Sistema de ondas de inimigos
+        let currentWave = 1;
+        let waveEnemiesRemaining = 0;
+        let bossActive = false;
+        let waveStartTime = 0;
+        
+        // Enemy AI and Types System
+        const enemyTypes = {
+            // ===== BÁSICOS =====
+            scout: {
+                name: 'Batedor',
+                health: 30, speed: 4, value: 15,
+                color: '#ff6666', size: 16, fireRate: 2000,
+                behavior: 'scout', description: 'Rápido e ágil, coleta informações'
+            },
+            grunt: {
+                name: 'Soldado',
+                health: 50, speed: 2, value: 20,
+                color: '#ff4444', size: 20, fireRate: 1500,
+                behavior: 'basic', description: 'Inimigo básico padrão'
+            },
+            heavy: {
+                name: 'Pesado',
+                health: 120, speed: 1, value: 40,
+                color: '#cc2222', size: 28, fireRate: 1000,
+                behavior: 'tank', description: 'Lento mas resistente'
+            },
+            
+            // ===== ESPECIALISTAS =====
+            sniper: {
+                name: 'Atirador',
+                health: 40, speed: 1.5, value: 35,
+                color: '#ff8844', size: 18, fireRate: 3000,
+                behavior: 'sniper', description: 'Atira com precisão à distância'
+            },
+            bomber: {
+                name: 'Bombardeiro',
+                health: 80, speed: 1.8, value: 50,
+                color: '#ffaa44', size: 24, fireRate: 800,
+                behavior: 'bomber', description: 'Dispara múltiplos projéteis'
+            },
+            interceptor: {
+                name: 'Interceptador',
+                health: 35, speed: 5, value: 30,
+                color: '#ff66aa', size: 16, fireRate: 1200,
+                behavior: 'interceptor', description: 'Persegue diretamente o jogador'
+            },
+            
+            // ===== AVANÇADOS =====
+            stealth: {
+                name: 'Furtivo',
+                health: 25, speed: 3.5, value: 45,
+                color: '#8844ff', size: 18, fireRate: 1800,
+                behavior: 'stealth', description: 'Se torna invisível periodicamente'
+            },
+            shield: {
+                name: 'Escudeiro',
+                health: 90, speed: 2.2, value: 60,
+                color: '#4488ff', size: 22, fireRate: 1400,
+                behavior: 'shield', description: 'Protege outros inimigos'
+            },
+            healer: {
+                name: 'Curandeiro',
+                health: 45, speed: 2, value: 70,
+                color: '#44ff88', size: 20, fireRate: 2500,
+                behavior: 'healer', description: 'Cura inimigos próximos'
+            },
+            teleporter: {
+                name: 'Teletransportador',
+                health: 40, speed: 2.5, value: 55,
+                color: '#aa44ff', size: 18, fireRate: 1600,
+                behavior: 'teleporter', description: 'Teletransporta-se aleatoriamente'
+            },
+            
+            // ===== TÁTICOS =====
+            commander: {
+                name: 'Comandante',
+                health: 150, speed: 1.5, value: 100,
+                color: '#ffaa00', size: 26, fireRate: 1100,
+                behavior: 'commander', description: 'Coordena ataques de outros inimigos'
+            },
+            berserker: {
+                name: 'Berserker',
+                health: 100, speed: 2.8, value: 80,
+                color: '#ff0044', size: 24, fireRate: 800,
+                behavior: 'berserker', description: 'Fica mais forte conforme perde vida'
+            },
+            mimic: {
+                name: 'Mimético',
+                health: 60, speed: 3, value: 90,
+                color: '#ff6600', size: 20, fireRate: 1300,
+                behavior: 'mimic', description: 'Copia padrões de movimento do jogador'
+            },
+            
+            // ===== ESPECIAIS =====
+            spawner: {
+                name: 'Gerador',
+                health: 80, speed: 1, value: 120,
+                color: '#8800ff', size: 30, fireRate: 4000,
+                behavior: 'spawner', description: 'Gera inimigos menores'
+            },
+            vortex: {
+                name: 'Vórtice',
+                health: 70, speed: 2, value: 110,
+                color: '#0088ff', size: 22, fireRate: 1500,
+                behavior: 'vortex', description: 'Puxa o jogador para si'
+            },
+            phaser: {
+                name: 'Faseador',
+                health: 50, speed: 2.5, value: 95,
+                color: '#ff00aa', size: 20, fireRate: 1700,
+                behavior: 'phaser', description: 'Atravessa obstáculos'
+            },
+            
+            // ===== ELITES =====
+            assassin: {
+                name: 'Assassino',
+                health: 30, speed: 6, value: 150,
+                color: '#000088', size: 16, fireRate: 1000,
+                behavior: 'assassin', description: 'Extremamente rápido e letal'
+            },
+            juggernaut: {
+                name: 'Juggernaut',
+                health: 300, speed: 0.8, value: 200,
+                color: '#880000', size: 36, fireRate: 500,
+                behavior: 'juggernaut', description: 'Tanque supremo'
+            },
+            phantom: {
+                name: 'Fantasma',
+                health: 40, speed: 4, value: 180,
+                color: '#aa00aa', size: 18, fireRate: 1200,
+                behavior: 'phantom', description: 'Alterna entre dimensões'
+            },
+            
+            // ===== CHEFES =====
+            mothership: {
+                name: 'Nave-Mãe',
+                health: 2000, speed: 0.5, value: 1000,
+                color: '#ff0000', size: 80, fireRate: 300,
+                behavior: 'boss_mothership', description: 'Chefe colossal com múltiplas fases',
+                isBoss: true, phases: 3
+            },
+            hive_queen: {
+                name: 'Rainha Colmeia',
+                health: 1500, speed: 1, value: 800,
+                color: '#88ff00', size: 60, fireRate: 400,
+                behavior: 'boss_hive', description: 'Gera enxames infinitos',
+                isBoss: true, phases: 2
+            },
+            void_lord: {
+                name: 'Senhor do Vazio',
+                health: 2500, speed: 2, value: 1200,
+                color: '#4400ff', size: 70, fireRate: 200,
+                behavior: 'boss_void', description: 'Manipula o espaço-tempo',
+                isBoss: true, phases: 4
+            }
+        };
+        
         // Enemy class
         class Enemy {
-            constructor(x, y, type = 1) {
+            constructor(x, y, type = 'grunt', formationData = null) {
                 this.x = x;
                 this.y = y;
                 this.type = type;
-                this.width = type === 1 ? 20 : type === 2 ? 30 : 40;
-                this.height = this.width;
-                const world = worlds[currentWorldId];
-                this.speed = (type === 1 ? 2 : type === 2 ? 1.5 : 1) * world.difficulty;
-                this.hp = Math.ceil(type * world.difficulty * 25);
-                this.maxHp = this.hp;
-                this.shootTimer = Math.random() * 2000;
-                this.zigzag = Math.random() * Math.PI * 2;
-                this.coinValue = type * Math.ceil(world.difficulty);
+                this.typeData = enemyTypes[type];
+                
+                // Base stats from type
+                this.width = this.typeData.size;
+                this.height = this.typeData.size;
+                this.speed = this.typeData.speed;
+                this.maxHealth = this.typeData.health;
+                this.health = this.maxHealth;
+                this.value = this.typeData.value;
+                this.baseFireRate = this.typeData.fireRate;
+                this.color = this.typeData.color;
+                this.behavior = this.typeData.behavior;
+                
+                // Formation data
+                this.formation = formationData;
+                this.formationOffsetX = formationData?.offsetX || 0;
+                this.formationOffsetY = formationData?.offsetY || 0;
+                this.formationLeader = formationData?.leader || null;
+                
+                // AI state
+                this.shootTimer = Math.random() * this.baseFireRate;
+                this.behaviorTimer = 0;
+                this.lastPlayerPos = { x: 0, y: 0 };
+                this.patrolTarget = { x: Math.random() * canvas.width, y: Math.random() * 200 };
+                this.aiState = 'patrol';
+                this.stateTimer = 0;
+                this.angle = Math.PI / 2;
+                
+                // Special behavior properties
+                this.invisible = false;
+                this.invisibilityTimer = 0;
+                this.teleportCooldown = 0;
+                this.lastTeleport = 0;
+                this.shieldPower = 0;
+                this.rage = 0;
+                this.spawnCooldown = 0;
+                this.phase = 1;
+                this.phaseCooldown = 0;
+                
+                // Learning system
+                this.adaptiveTimer = 0;
+                this.playerPrediction = { x: 0, y: 0 };
+                this.observationTime = 0;
+                
+                // Boss specific
+                if (this.typeData.isBoss) {
+                    bossActive = true;
+                    this.maxPhases = this.typeData.phases || 1;
+                    this.phaseHealthThresholds = [];
+                    for (let i = 1; i < this.maxPhases; i++) {
+                        this.phaseHealthThresholds.push(this.maxHealth * (1 - i / this.maxPhases));
+                    }
+                }
+                
+                // Initialize AI behavior
+                this.initializeBehavior();
+            }
+            
+            initializeBehavior() {
+                switch(this.behavior) {
+                    case 'scout':
+                        this.speed *= 1.2;
+                        this.detectionRange = 250;
+                        break;
+                    case 'sniper':
+                        this.detectionRange = 300;
+                        this.aimPrecision = 0.9;
+                        break;
+                    case 'stealth':
+                        this.invisibilityDuration = 2000;
+                        this.visibilityDuration = 1500;
+                        break;
+                    case 'berserker':
+                        this.rageThreshold = 0.5; // Fica furioso com 50% de vida
+                        break;
+                    case 'commander':
+                        this.commandRadius = 150;
+                        this.buffPower = 1.3;
+                        break;
+                    case 'mimic':
+                        this.learningRate = 0.1;
+                        break;
+                }
             }
             
             update(deltaTime) {
-                this.y += this.speed;
-                this.x += Math.sin(this.zigzag) * 0.8;
-                this.zigzag += 0.02;
+                this.observationTime += deltaTime;
+                this.behaviorTimer += deltaTime;
+                this.stateTimer += deltaTime;
+                this.adaptiveTimer += deltaTime;
                 
-                this.shootTimer -= deltaTime;
-                if (this.shootTimer <= 0 && this.y > 50 && this.y < canvas.height - 100) {
-                    this.shoot();
-                    this.shootTimer = 1500 + Math.random() * 2000;
+                // Update AI behavior based on type
+                switch(this.behavior) {
+                    case 'scout': this.updateScout(deltaTime); break;
+                    case 'basic': this.updateBasic(deltaTime); break;
+                    case 'tank': this.updateTank(deltaTime); break;
+                    case 'sniper': this.updateSniper(deltaTime); break;
+                    case 'bomber': this.updateBomber(deltaTime); break;
+                    case 'interceptor': this.updateInterceptor(deltaTime); break;
+                    case 'stealth': this.updateStealth(deltaTime); break;
+                    case 'shield': this.updateShield(deltaTime); break;
+                    case 'healer': this.updateHealer(deltaTime); break;
+                    case 'teleporter': this.updateTeleporter(deltaTime); break;
+                    case 'commander': this.updateCommander(deltaTime); break;
+                    case 'berserker': this.updateBerserker(deltaTime); break;
+                    case 'mimic': this.updateMimic(deltaTime); break;
+                    case 'spawner': this.updateSpawner(deltaTime); break;
+                    case 'vortex': this.updateVortex(deltaTime); break;
+                    case 'phaser': this.updatePhaser(deltaTime); break;
+                    case 'assassin': this.updateAssassin(deltaTime); break;
+                    case 'juggernaut': this.updateJuggernaut(deltaTime); break;
+                    case 'phantom': this.updatePhantom(deltaTime); break;
+                    case 'boss_mothership': this.updateBossMothership(deltaTime); break;
+                    case 'boss_hive': this.updateBossHive(deltaTime); break;
+                    case 'boss_void': this.updateBossVoid(deltaTime); break;
                 }
+                
+                // Formation behavior
+                if (this.formation && this.formationLeader) {
+                    this.updateFormationMovement(deltaTime);
+                }
+                
+                // Adaptive AI learning
+                if (this.adaptiveTimer > 1000) {
+                    this.updateAdaptiveAI();
+                    this.adaptiveTimer = 0;
+                }
+                
+                // Update timers
+                if (this.shootTimer > 0) this.shootTimer -= deltaTime;
+                if (this.invisibilityTimer > 0) this.invisibilityTimer -= deltaTime;
+                if (this.teleportCooldown > 0) this.teleportCooldown -= deltaTime;
+                if (this.spawnCooldown > 0) this.spawnCooldown -= deltaTime;
+                if (this.phaseCooldown > 0) this.phaseCooldown -= deltaTime;
+                
+                // Bounds checking
+                this.checkBounds();
+                
+                // Boss phase transitions
+                if (this.typeData.isBoss) {
+                    this.checkPhaseTransition();
+                }
+            }
+            
+            updateAdaptiveAI() {
+                if (!player) return;
+                
+                // Learn player movement patterns
+                const playerMovement = this.analyzePlayerMovement();
+                this.updatePlayerBehaviorData(playerMovement);
+                
+                // Predict player next position
+                this.predictPlayerPosition();
+                
+                // Adapt behavior based on learned patterns
+                this.adaptBehaviorToPlayer();
+            }
+            
+            analyzePlayerMovement() {
+                if (!player) return null;
+                
+                const deltaX = player.x - this.lastPlayerPos.x;
+                const deltaY = player.y - this.lastPlayerPos.y;
+                
+                this.lastPlayerPos = { x: player.x, y: player.y };
+                
+                return {
+                    direction: {
+                        x: deltaX > 0 ? 'right' : deltaX < 0 ? 'left' : 'none',
+                        y: deltaY > 0 ? 'down' : deltaY < 0 ? 'up' : 'none'
+                    },
+                    speed: Math.hypot(deltaX, deltaY),
+                    position: this.getPlayerZone(player)
+                };
+            }
+            
+            getPlayerZone(player) {
+                const third = canvas.height / 3;
+                if (player.y < third) return 'top';
+                if (player.y < third * 2) return 'middle';
+                return 'bottom';
+            }
+            
+            updatePlayerBehaviorData(movement) {
+                if (!movement) return;
+                
+                // Update movement patterns
+                if (movement.direction.x !== 'none') {
+                    playerBehaviorData.movementPatterns[movement.direction.x]++;
+                }
+                if (movement.direction.y !== 'none') {
+                    playerBehaviorData.movementPatterns[movement.direction.y]++;
+                }
+                if (movement.speed < 1) {
+                    playerBehaviorData.movementPatterns.staying++;
+                }
+                
+                // Update position preferences
+                playerBehaviorData.preferredPositions[movement.position]++;
+                
+                // Save periodically
+                if (Math.random() < 0.1) {
+                    localStorage.setItem('waveslayers_player_behavior', JSON.stringify(playerBehaviorData));
+                }
+            }
+            
+            predictPlayerPosition() {
+                if (!player) return;
+                
+                // Use learned patterns to predict where player will be
+                const patterns = playerBehaviorData.movementPatterns;
+                const total = Object.values(patterns).reduce((a, b) => a + b, 1);
+                
+                const leftProbability = patterns.left / total;
+                const rightProbability = patterns.right / total;
+                const upProbability = patterns.up / total;
+                const downProbability = patterns.down / total;
+                
+                // Predict based on probabilities and current velocity
+                let predictedX = player.x;
+                let predictedY = player.y;
+                
+                if (rightProbability > leftProbability) {
+                    predictedX += player.speed * 2;
+                } else if (leftProbability > rightProbability) {
+                    predictedX -= player.speed * 2;
+                }
+                
+                if (upProbability > downProbability) {
+                    predictedY -= player.speed * 2;
+                } else if (downProbability > upProbability) {
+                    predictedY += player.speed * 2;
+                }
+                
+                this.playerPrediction = { x: predictedX, y: predictedY };
+            }
+            
+            adaptBehaviorToPlayer() {
+                // Adjust AI behavior based on learned player patterns
+                const patterns = playerBehaviorData.movementPatterns;
+                const total = Object.values(patterns).reduce((a, b) => a + b, 1);
+                
+                // If player moves a lot, increase tracking
+                const movementTotal = patterns.left + patterns.right + patterns.up + patterns.down;
+                const movementRatio = movementTotal / total;
+                
+                if (movementRatio > 0.7) {
+                    this.speed *= 1.05; // Increase speed for mobile players
+                    this.baseFireRate *= 0.95; // Shoot faster
+                } else {
+                    this.baseFireRate *= 1.05; // Shoot more accurately for stationary players
+                }
+            }
+            
+            // ===== BEHAVIOR UPDATES =====
+            
+            updateScout(deltaTime) {
+                // Fast, erratic movement, reports player position
+                if (this.stateTimer > 1500) {
+                    this.patrolTarget = {
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * 300
+                    };
+                    this.stateTimer = 0;
+                }
+                
+                this.moveTowards(this.patrolTarget.x, this.patrolTarget.y, deltaTime);
+                
+                if (player && Math.hypot(player.x - this.x, player.y - this.y) < this.detectionRange) {
+                    // "Report" player position to other enemies
+                    this.broadcastPlayerPosition();
+                    this.tryShoot();
+                }
+            }
+            
+            updateBasic(deltaTime) {
+                // Standard behavior - move down and shoot
+                this.y += this.speed;
+                
+                if (this.y > 50 && this.y < canvas.height - 200) {
+                    this.tryShoot();
+                }
+                
+                // Slight horizontal movement
+                this.x += Math.sin(this.y * 0.01) * 0.5;
+            }
+            
+            updateTank(deltaTime) {
+                // Slow, steady advance with heavy firepower
+                this.y += this.speed * 0.8;
+                
+                if (this.shootTimer <= 0) {
+                    this.shoot();
+                    this.shootTimer = this.baseFireRate * 0.7; // Faster shooting
+                }
+            }
+            
+            updateSniper(deltaTime) {
+                // Long range precision shooting
+                if (this.stateTimer > 3000) {
+                    this.patrolTarget = {
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * 150
+                    };
+                    this.stateTimer = 0;
+                }
+                
+                this.moveTowards(this.patrolTarget.x, this.patrolTarget.y, deltaTime);
+                
+                if (player && this.shootTimer <= 0) {
+                    const distance = Math.hypot(player.x - this.x, player.y - this.y);
+                    if (distance < 400) {
+                        this.aimAndShoot(this.aimPrecision);
+                        this.shootTimer = this.baseFireRate;
+                    }
+                }
+            }
+            
+            updateBomber(deltaTime) {
+                // Multiple projectile attacks
+                this.y += this.speed;
+                
+                if (this.shootTimer <= 0 && this.y > 100 && this.y < canvas.height - 200) {
+                    // Fire spread shot
+                    for (let i = -2; i <= 2; i++) {
+                        const bullet = new Bullet(
+                            this.x + this.width/2,
+                            this.y + this.height,
+                            i * 2, 4, false
+                        );
+                        enemyBullets.push(bullet);
+                    }
+                    this.shootTimer = this.baseFireRate;
+                }
+            }
+            
+            updateInterceptor(deltaTime) {
+                // Direct pursuit of player
+                if (player) {
+                    const targetX = this.playerPrediction.x || player.x;
+                    const targetY = this.playerPrediction.y || player.y;
+                    this.moveTowards(targetX, targetY, deltaTime);
+                    
+                    if (Math.hypot(player.x - this.x, player.y - this.y) < 100) {
+                        this.tryShoot();
+                    }
+                }
+            }
+            
+            updateStealth(deltaTime) {
+                // Invisibility cycling
+                if (this.invisibilityTimer <= 0) {
+                    this.invisible = !this.invisible;
+                    this.invisibilityTimer = this.invisible ? this.invisibilityDuration : this.visibilityDuration;
+                }
+                
+                if (player && !this.invisible) {
+                    this.moveTowards(player.x, player.y, deltaTime);
+                    this.tryShoot();
+                }
+            }
+            
+            updateShield(deltaTime) {
+                // Protects nearby enemies
+                this.y += this.speed;
+                this.shieldPower = Math.min(100, this.shieldPower + deltaTime * 0.02);
+                
+                // Find nearby enemies to protect
+                enemies.forEach(enemy => {
+                    if (enemy !== this && Math.hypot(enemy.x - this.x, enemy.y - this.y) < 80) {
+                        enemy.shieldProtection = this.shieldPower;
+                    }
+                });
+                
+                this.tryShoot();
+            }
+            
+            updateHealer(deltaTime) {
+                // Heals nearby enemies
+                this.y += this.speed;
+                
+                if (this.behaviorTimer > 2000) {
+                    enemies.forEach(enemy => {
+                        if (enemy !== this && Math.hypot(enemy.x - this.x, enemy.y - this.y) < 100) {
+                            enemy.health = Math.min(enemy.maxHealth, enemy.health + 10);
+                            // Healing effect
+                            particles.push(new Particle(enemy.x + enemy.width/2, enemy.y, 0, -1, '#44ff88', 1000));
+                        }
+                    });
+                    this.behaviorTimer = 0;
+                }
+                
+                this.tryShoot();
+            }
+            
+            updateTeleporter(deltaTime) {
+                // Random teleportation
+                if (this.teleportCooldown <= 0 && Math.random() < 0.01) {
+                    // Teleport effect
+                    createExplosion(this.x + this.width/2, this.y + this.height/2, '#aa44ff', 8);
+                    
+                    this.x = Math.random() * (canvas.width - this.width);
+                    this.y = Math.random() * 300;
+                    
+                    createExplosion(this.x + this.width/2, this.y + this.height/2, '#aa44ff', 8);
+                    this.teleportCooldown = 3000;
+                }
+                
+                this.y += this.speed;
+                this.tryShoot();
+            }
+            
+            updateCommander(deltaTime) {
+                // Coordinates other enemies
+                this.y += this.speed * 0.6;
+                
+                // Buff nearby enemies
+                enemies.forEach(enemy => {
+                    if (enemy !== this && Math.hypot(enemy.x - this.x, enemy.y - this.y) < this.commandRadius) {
+                        enemy.commandBoost = this.buffPower;
+                    }
+                });
+                
+                // Tactical shooting
+                if (this.shootTimer <= 0) {
+                    // Command shot - multiple coordinated bullets
+                    for (let i = 0; i < 3; i++) {
+                        setTimeout(() => {
+                            if (this.health > 0) {
+                                this.aimAndShoot(0.8);
+                            }
+                        }, i * 200);
+                    }
+                    this.shootTimer = this.baseFireRate;
+                }
+            }
+            
+            updateBerserker(deltaTime) {
+                // Gets stronger as health decreases
+                const healthRatio = this.health / this.maxHealth;
+                
+                if (healthRatio < this.rageThreshold) {
+                    this.rage = Math.min(2, 2 - healthRatio);
+                    this.speed = this.typeData.speed * (1 + this.rage);
+                    this.color = `rgb(${255}, ${Math.floor(68 * (1-this.rage))}, ${Math.floor(68 * (1-this.rage))})`;
+                }
+                
+                if (player) {
+                    this.moveTowards(player.x, player.y, deltaTime);
+                }
+                
+                this.tryShoot();
+            }
+            
+            updateMimic(deltaTime) {
+                // Copies player movement patterns
+                if (player && this.observationTime > 1000) {
+                    const patterns = playerBehaviorData.movementPatterns;
+                    const total = Object.values(patterns).reduce((a, b) => a + b, 1);
+                    
+                    // Mimic most common player movement
+                    if (patterns.left / total > 0.3) this.x -= this.speed;
+                    if (patterns.right / total > 0.3) this.x += this.speed;
+                    if (patterns.up / total > 0.3) this.y -= this.speed;
+                    if (patterns.down / total > 0.3) this.y += this.speed;
+                }
+                
+                this.tryShoot();
+            }
+            
+            updateSpawner(deltaTime) {
+                // Generates smaller enemies
+                this.y += this.speed * 0.5;
+                
+                if (this.spawnCooldown <= 0 && enemies.length < 15) {
+                    // Spawn a scout
+                    const spawnX = this.x + (Math.random() - 0.5) * 50;
+                    const spawnY = this.y + this.height;
+                    enemies.push(new Enemy(spawnX, spawnY, 'scout'));
+                    
+                    createExplosion(spawnX, spawnY, '#8800ff', 5);
+                    this.spawnCooldown = 4000;
+                }
+                
+                this.tryShoot();
+            }
+            
+            updateVortex(deltaTime) {
+                // Pulls player towards itself
+                if (player) {
+                    const distance = Math.hypot(player.x - this.x, player.y - this.y);
+                    if (distance < 200) {
+                        const pullStrength = (200 - distance) / 200;
+                        const dx = this.x - player.x;
+                        const dy = this.y - player.y;
+                        const normalizedDx = dx / distance;
+                        const normalizedDy = dy / distance;
+                        
+                        // Apply pull force (this would need to be applied to player movement)
+                        this.vortexPull = {
+                            x: normalizedDx * pullStrength * 2,
+                            y: normalizedDy * pullStrength * 2
+                        };
+                    }
+                }
+                
+                this.y += this.speed;
+                this.tryShoot();
+            }
+            
+            updatePhaser(deltaTime) {
+                // Phases through obstacles
+                this.y += this.speed;
+                this.x += Math.sin(this.y * 0.02) * 2; // Wavy movement
+                
+                // Phase effect
+                this.alpha = 0.3 + 0.7 * Math.abs(Math.sin(Date.now() * 0.005));
+                
+                this.tryShoot();
+            }
+            
+            updateAssassin(deltaTime) {
+                // Ultra-fast, precise attacks
+                if (player) {
+                    // Sudden acceleration towards player
+                    if (Math.random() < 0.02) {
+                        const dx = player.x - this.x;
+                        const dy = player.y - this.y;
+                        const distance = Math.hypot(dx, dy);
+                        
+                        this.velocityX = (dx / distance) * this.speed * 3;
+                        this.velocityY = (dy / distance) * this.speed * 3;
+                    }
+                    
+                    this.x += this.velocityX || 0;
+                    this.y += this.velocityY || 0;
+                    
+                    // Friction
+                    this.velocityX = (this.velocityX || 0) * 0.95;
+                    this.velocityY = (this.velocityY || 0) * 0.95;
+                }
+                
+                this.tryShoot();
+            }
+            
+            updateJuggernaut(deltaTime) {
+                // Slow but unstoppable
+                this.y += this.speed;
+                
+                // Continuous heavy firing
+                if (this.shootTimer <= 0) {
+                    // Heavy barrage
+                    for (let i = -1; i <= 1; i++) {
+                        const bullet = new Bullet(
+                            this.x + this.width/2 + i * 20,
+                            this.y + this.height,
+                            i, 3, false
+                        );
+                        bullet.damage = 40; // Heavy damage
+                        enemyBullets.push(bullet);
+                    }
+                    this.shootTimer = this.baseFireRate * 0.5;
+                }
+            }
+            
+            updatePhantom(deltaTime) {
+                // Dimensional shifting
+                if (this.phaseCooldown <= 0) {
+                    this.phaseShift = !this.phaseShift;
+                    this.phaseCooldown = 2000 + Math.random() * 1000;
+                }
+                
+                if (this.phaseShift) {
+                    this.alpha = 0.3;
+                    this.speed = this.typeData.speed * 2;
+                } else {
+                    this.alpha = 1;
+                    this.speed = this.typeData.speed;
+                }
+                
+                if (player) {
+                    this.moveTowards(player.x, player.y, deltaTime);
+                }
+                
+                this.tryShoot();
+            }
+            
+            // ===== BOSS BEHAVIORS =====
+            
+            updateBossMothership(deltaTime) {
+                // Multi-phase boss behavior
+                this.y = Math.min(100, this.y + this.speed);
+                
+                switch(this.phase) {
+                    case 1:
+                        // Phase 1: Basic attacks
+                        if (this.shootTimer <= 0) {
+                            for (let i = -2; i <= 2; i++) {
+                                const bullet = new Bullet(
+                                    this.x + this.width/2 + i * 15,
+                                    this.y + this.height,
+                                    i * 0.5, 4, false
+                                );
+                                enemyBullets.push(bullet);
+                            }
+                            this.shootTimer = 800;
+                        }
+                        break;
+                        
+                    case 2:
+                        // Phase 2: Spawn escorts
+                        if (this.spawnCooldown <= 0) {
+                            for (let i = 0; i < 2; i++) {
+                                enemies.push(new Enemy(
+                                    this.x + (i - 0.5) * 100,
+                                    this.y + 50,
+                                    'interceptor'
+                                ));
+                            }
+                            this.spawnCooldown = 5000;
+                        }
+                        // Faster shooting
+                        if (this.shootTimer <= 0) {
+                            this.spiralAttack();
+                            this.shootTimer = 400;
+                        }
+                        break;
+                        
+                    case 3:
+                        // Phase 3: Desperate barrage
+                        if (this.shootTimer <= 0) {
+                            this.barrageAttack();
+                            this.shootTimer = 200;
+                        }
+                        break;
+                }
+                
+                // Horizontal movement
+                this.x += Math.sin(Date.now() * 0.001) * 2;
+            }
+            
+            updateBossHive(deltaTime) {
+                // Constant spawning boss
+                this.y = Math.min(80, this.y + this.speed);
+                
+                if (this.spawnCooldown <= 0) {
+                    // Spawn different types based on phase
+                    const spawnTypes = this.phase === 1 ? ['scout', 'grunt'] : ['scout', 'grunt', 'bomber'];
+                    const spawnType = spawnTypes[Math.floor(Math.random() * spawnTypes.length)];
+                    
+                    for (let i = 0; i < (this.phase === 2 ? 3 : 2); i++) {
+                        enemies.push(new Enemy(
+                            this.x + (Math.random() - 0.5) * this.width,
+                            this.y + this.height,
+                            spawnType
+                        ));
+                    }
+                    
+                    this.spawnCooldown = this.phase === 2 ? 2000 : 3000;
+                }
+            }
+            
+            updateBossVoid(deltaTime) {
+                // Space-time manipulation boss
+                this.y = Math.min(60, this.y + this.speed);
+                
+                // Teleportation every few seconds
+                if (this.teleportCooldown <= 0) {
+                    createExplosion(this.x + this.width/2, this.y + this.height/2, '#4400ff', 12);
+                    this.x = Math.random() * (canvas.width - this.width);
+                    createExplosion(this.x + this.width/2, this.y + this.height/2, '#4400ff', 12);
+                    this.teleportCooldown = 4000;
+                }
+                
+                // Phase-based attacks
+                switch(this.phase) {
+                    case 1:
+                        if (this.shootTimer <= 0) {
+                            this.voidBlast();
+                            this.shootTimer = 1000;
+                        }
+                        break;
+                    case 2:
+                        if (this.shootTimer <= 0) {
+                            this.timeDilation();
+                            this.shootTimer = 1500;
+                        }
+                        break;
+                    case 3:
+                        if (this.shootTimer <= 0) {
+                            this.realityRift();
+                            this.shootTimer = 800;
+                        }
+                        break;
+                    case 4:
+                        // Final phase - all attacks
+                        if (this.shootTimer <= 0) {
+                            if (Math.random() < 0.33) this.voidBlast();
+                            else if (Math.random() < 0.66) this.timeDilation();
+                            else this.realityRift();
+                            this.shootTimer = 600;
+                        }
+                        break;
+                }
+            }
+            
+            // ===== SPECIAL ATTACKS =====
+            
+            spiralAttack() {
+                const bullets = 8;
+                for (let i = 0; i < bullets; i++) {
+                    const angle = (i / bullets) * Math.PI * 2 + Date.now() * 0.01;
+                    const bullet = new Bullet(
+                        this.x + this.width/2,
+                        this.y + this.height/2,
+                        Math.cos(angle) * 3,
+                        Math.sin(angle) * 3,
+                        false
+                    );
+                    enemyBullets.push(bullet);
+                }
+            }
+            
+            barrageAttack() {
+                for (let i = 0; i < 5; i++) {
+                    const bullet = new Bullet(
+                        this.x + Math.random() * this.width,
+                        this.y + this.height,
+                        (Math.random() - 0.5) * 4,
+                        4 + Math.random() * 2,
+                        false
+                    );
+                    enemyBullets.push(bullet);
+                }
+            }
+            
+            voidBlast() {
+                // Dark energy blast
+                for (let i = 0; i < 6; i++) {
+                    const angle = (i / 6) * Math.PI * 2;
+                    const bullet = new Bullet(
+                        this.x + this.width/2,
+                        this.y + this.height/2,
+                        Math.cos(angle) * 2,
+                        Math.sin(angle) * 2,
+                        false
+                    );
+                    bullet.color = '#4400ff';
+                    bullet.damage = 30;
+                    enemyBullets.push(bullet);
+                }
+            }
+            
+            timeDilation() {
+                // Slow-moving but homing bullets
+                if (player) {
+                    const dx = player.x - this.x;
+                    const dy = player.y - this.y;
+                    const distance = Math.hypot(dx, dy);
+                    const bullet = new Bullet(
+                        this.x + this.width/2,
+                        this.y + this.height,
+                        (dx/distance) * 1.5,
+                        (dy/distance) * 1.5,
+                        false
+                    );
+                    bullet.color = '#aa00aa';
+                    bullet.homing = true;
+                    enemyBullets.push(bullet);
+                }
+            }
+            
+            realityRift() {
+                // Creates temporary black holes
+                if (player) {
+                    const riftX = player.x + (Math.random() - 0.5) * 200;
+                    const riftY = player.y + (Math.random() - 0.5) * 200;
+                    
+                    // Create visual effect
+                    for (let i = 0; i < 10; i++) {
+                        particles.push(new Particle(
+                            riftX, riftY,
+                            (Math.random() - 0.5) * 4,
+                            (Math.random() - 0.5) * 4,
+                            '#000088',
+                            2000
+                        ));
+                    }
+                }
+            }
+            
+            // ===== UTILITY METHODS =====
+            
+            moveTowards(targetX, targetY, deltaTime) {
+                const dx = targetX - this.x;
+                const dy = targetY - this.y;
+                const distance = Math.hypot(dx, dy);
+                
+                if (distance > 5) {
+                    const moveSpeed = this.speed * (this.commandBoost || 1);
+                    this.x += (dx / distance) * moveSpeed;
+                    this.y += (dy / distance) * moveSpeed;
+                    this.angle = Math.atan2(dy, dx);
+                }
+            }
+            
+            tryShoot() {
+                if (this.shootTimer <= 0) {
+                    this.shoot();
+                    this.shootTimer = this.baseFireRate / (this.commandBoost || 1);
+                }
+            }
+            
+            aimAndShoot(precision = 0.7) {
+                if (!player) return;
+                
+                const targetX = this.playerPrediction.x || player.x;
+                const targetY = this.playerPrediction.y || player.y;
+                
+                const dx = targetX - this.x;
+                const dy = targetY - this.y;
+                const distance = Math.hypot(dx, dy);
+                
+                // Add inaccuracy based on precision
+                const inaccuracy = (1 - precision) * 50;
+                const finalTargetX = targetX + (Math.random() - 0.5) * inaccuracy;
+                const finalTargetY = targetY + (Math.random() - 0.5) * inaccuracy;
+                
+                const finalDx = finalTargetX - this.x;
+                const finalDy = finalTargetY - this.y;
+                const finalDistance = Math.hypot(finalDx, finalDy);
+                
+                const bullet = new Bullet(
+                    this.x + this.width/2,
+                    this.y + this.height,
+                    (finalDx / finalDistance) * 5,
+                    (finalDy / finalDistance) * 5,
+                    false
+                );
+                enemyBullets.push(bullet);
             }
             
             shoot() {
-                const dx = player.x - this.x;
-                const dy = player.y - this.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                const speed = 4;
+                const bullet = new Bullet(this.x + this.width/2, this.y + this.height, 0, 5, false);
+                enemyBullets.push(bullet);
+            }
+            
+            broadcastPlayerPosition() {
+                // Share player location with other enemies
+                enemies.forEach(enemy => {
+                    if (enemy !== this && Math.hypot(enemy.x - this.x, enemy.y - this.y) < 200) {
+                        enemy.lastKnownPlayerPos = { x: player.x, y: player.y };
+                    }
+                });
+            }
+            
+            checkBounds() {
+                if (this.x < -this.width || this.x > canvas.width || this.y > canvas.height + this.height) {
+                    return true; // Should be removed
+                }
                 
-                enemyBullets.push(new Bullet(
-                    this.x + this.width/2,
-                    this.y + this.height,
-                    (dx / dist) * speed,
-                    (dy / dist) * speed,
-                    false
-                ));
+                // Keep bosses in bounds
+                if (this.typeData.isBoss) {
+                    this.x = Math.max(0, Math.min(canvas.width - this.width, this.x));
+                    this.y = Math.max(0, this.y);
+                }
+                
+                return false;
+            }
+            
+            checkPhaseTransition() {
+                if (!this.typeData.isBoss) return;
+                
+                for (let i = 0; i < this.phaseHealthThresholds.length; i++) {
+                    if (this.health <= this.phaseHealthThresholds[i] && this.phase === i + 1) {
+                        this.phase = i + 2;
+                        this.onPhaseTransition();
+                        break;
+                    }
+                }
+            }
+            
+            onPhaseTransition() {
+                // Visual effect for phase transition
+                createExplosion(this.x + this.width/2, this.y + this.height/2, this.color, 20);
+                
+                // Heal slightly on phase transition
+                this.health = Math.min(this.maxHealth, this.health + this.maxHealth * 0.1);
+                
+                // Show phase notification
+                showNotification(`FASE ${this.phase} - ${this.typeData.name.toUpperCase()}!`, '#ff0000');
+            }
+            
+            updateFormationMovement(deltaTime) {
+                if (!this.formationLeader || this.formationLeader.health <= 0) {
+                    this.formation = null;
+                    this.formationLeader = null;
+                    return;
+                }
+                
+                const targetX = this.formationLeader.x + this.formationOffsetX;
+                const targetY = this.formationLeader.y + this.formationOffsetY;
+                
+                this.moveTowards(targetX, targetY, deltaTime);
             }
             
             takeDamage(damage) {
-                this.hp -= damage;
-                return this.hp <= 0;
+                // Apply shield protection
+                const finalDamage = damage * (1 - (this.shieldProtection || 0) * 0.01);
+                this.health -= finalDamage;
+                
+                createExplosion(this.x + this.width/2, this.y + this.height/2, '#ff8800', 6);
+                
+                // Reset shield protection
+                this.shieldProtection = 0;
+                
+                return this.health <= 0;
             }
             
             draw() {
-                if (this.type === 1) {
-                    this.drawType1();
-                } else if (this.type === 2) {
-                    this.drawType2();
-                } else {
-                    this.drawType3();
+                // Skip invisible enemies
+                if (this.invisible && this.behavior === 'stealth') return;
+                
+                const alpha = this.alpha !== undefined ? this.alpha : 1;
+                if (alpha < 1) {
+                    ctx.globalAlpha = alpha;
                 }
                 
-                if (this.hp < this.maxHp) {
-                    const barWidth = this.width;
-                    const barHeight = 4;
-                    ctx.fillStyle = '#ff0000';
-                    ctx.fillRect(this.x, this.y - 10, barWidth, barHeight);
-                    ctx.fillStyle = '#00ff00';
-                    ctx.fillRect(this.x, this.y - 10, (this.hp / this.maxHp) * barWidth, barHeight);
+                // Phaser effect
+                if (this.phaseShift) {
+                    ctx.globalAlpha = 0.3;
                 }
+                
+                this.drawPixelSprite();
+                
+                // Draw health bar for bosses
+                if (this.typeData.isBoss) {
+                    this.drawBossHealthBar();
+                }
+                
+                // Draw shield effect
+                if (this.shieldProtection > 0) {
+                    ctx.strokeStyle = '#4488ff';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(this.x + this.width/2, this.y + this.height/2, this.width/2 + 8, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+                
+                // Reset alpha
+                ctx.globalAlpha = 1;
             }
             
-            drawType1() {
-                const pixels = [
-                    ' *** *** ',
-                    '*********',
-                    '**** ****',
-                    ' ******* ',
-                    '  *****  ',
-                    '   ***   '
-                ];
-                const world = worlds[currentWorldId];
-                this.drawPixels(pixels, world.colors.enemies[0], 2);
-            }
-            
-            drawType2() {
-                const pixels = [
-                    '  *******  ',
-                    ' ********* ',
-                    '***********',
-                    '***  *  ***',
-                    '**  ***  **',
-                    '*  *****  *',
-                    '   *****   ',
-                    '    ***    '
-                ];
-                const world = worlds[currentWorldId];
-                this.drawPixels(pixels, world.colors.enemies[1], 2);
-            }
-            
-            drawType3() {
-                const pixels = [
-                    '    *****    ',
-                    '   *******   ',
-                    '  *********  ',
-                    ' *********** ',
-                    '*************',
-                    '**  *****  **',
-                    '*   *****   *',
-                    '    *****    ',
-                    '   *******   ',
-                    '    *****    '
-                ];
-                const world = worlds[currentWorldId];
-                this.drawPixels(pixels, world.colors.enemies[2], 2);
-            }
-            
-            drawPixels(pixels, color, pixelSize) {
-                ctx.fillStyle = color;
+            drawPixelSprite() {
+                const size = Math.max(8, this.width / 8);
+                const pixels = this.getPixelPattern();
+                
+                const pixelSize = Math.floor(size);
                 for (let y = 0; y < pixels.length; y++) {
                     for (let x = 0; x < pixels[y].length; x++) {
                         if (pixels[y][x] === '*') {
+                            ctx.fillStyle = this.color;
+                            ctx.fillRect(
+                                this.x + x * pixelSize,
+                                this.y + y * pixelSize,
+                                pixelSize,
+                                pixelSize
+                            );
+                        } else if (pixels[y][x] === 'o') {
+                            ctx.fillStyle = this.getSecondaryColor();
                             ctx.fillRect(
                                 this.x + x * pixelSize,
                                 this.y + y * pixelSize,
@@ -3499,8 +4347,92 @@
                 }
             }
             
+            getPixelPattern() {
+                if (this.typeData.isBoss) {
+                    return [
+                        '    ********    ',
+                        '  ************  ',
+                        ' ************** ',
+                        '****************',
+                        '***oooooooooo***',
+                        '***oooooooooo***',
+                        '****************',
+                        '****************',
+                        '***  ******  ***',
+                        '**   ******   **',
+                        '*    ******    *',
+                        '     ******     '
+                    ];
+                }
+                
+                // Standard enemy patterns based on size
+                if (this.width >= 30) {
+                    return [
+                        '  ******  ',
+                        ' ******** ',
+                        '**********',
+                        '****oo****',
+                        '****oo****',
+                        '**********',
+                        '***    ***',
+                        '**      **'
+                    ];
+                } else {
+                    return [
+                        '  ****  ',
+                        ' ****** ',
+                        '********',
+                        '***oo***',
+                        '********',
+                        '**    **'
+                    ];
+                }
+            }
+            
+            getSecondaryColor() {
+                // Generate a lighter/darker version of the main color
+                const hex = this.color.replace('#', '');
+                const r = Math.min(255, parseInt(hex.substr(0,2), 16) + 50);
+                const g = Math.min(255, parseInt(hex.substr(2,2), 16) + 50);
+                const b = Math.min(255, parseInt(hex.substr(4,2), 16) + 50);
+                return `rgb(${r},${g},${b})`;
+            }
+            
+            drawBossHealthBar() {
+                const barWidth = canvas.width * 0.8;
+                const barHeight = 20;
+                const barX = (canvas.width - barWidth) / 2;
+                const barY = 20;
+                
+                // Background
+                ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                ctx.fillRect(barX - 5, barY - 5, barWidth + 10, barHeight + 10);
+                
+                // Border
+                ctx.strokeStyle = '#ff0000';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(barX, barY, barWidth, barHeight);
+                
+                // Health fill
+                const healthPercentage = this.health / this.maxHealth;
+                ctx.fillStyle = healthPercentage > 0.5 ? '#ff4444' : healthPercentage > 0.25 ? '#ff8844' : '#ffaa44';
+                ctx.fillRect(barX, barY, barWidth * healthPercentage, barHeight);
+                
+                // Boss name and phase
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 14px Orbitron';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${this.typeData.name} - FASE ${this.phase}`, canvas.width / 2, barY - 10);
+                
+                // Health text
+                ctx.font = '12px Orbitron';
+                ctx.fillText(`${Math.floor(this.health)}/${this.maxHealth}`, canvas.width / 2, barY + 15);
+                
+                ctx.textAlign = 'left';
+            }
+            
             isOffScreen() {
-                return this.y > canvas.height + 50;
+                return this.y > canvas.height + 50 || this.checkBounds();
             }
         }
         
@@ -3615,16 +4547,327 @@
             }
         }
         
+        // ===== SISTEMA DE APRENDIZADO E INICIALIZAÇÃO =====
+        
+        function initializeAISystem() {
+            // Initialize behavior tracking
+            if (!playerBehaviorData.sessionCount) {
+                playerBehaviorData.sessionCount = 0;
+            }
+            playerBehaviorData.sessionCount++;
+            
+            // Reset temporary data
+            currentWave = 0;
+            waveEnemiesRemaining = 0;
+            bossActive = false;
+            
+            // Save updated session count
+            localStorage.setItem('waveslayers_player_behavior', JSON.stringify(playerBehaviorData));
+        }
+        
+        function trackPlayerBehavior() {
+            if (!player) return;
+            
+            // Track movement in real-time
+            const currentTime = Date.now();
+            if (!this.lastBehaviorTrack) this.lastBehaviorTrack = currentTime;
+            
+            if (currentTime - this.lastBehaviorTrack > 100) { // Track every 100ms
+                const wasMoving = keys['ArrowLeft'] || keys['a'] || keys['A'] || 
+                                keys['ArrowRight'] || keys['d'] || keys['D'] ||
+                                keys['ArrowUp'] || keys['w'] || keys['W'] ||
+                                keys['ArrowDown'] || keys['s'] || keys['S'];
+                
+                if (!wasMoving) {
+                    playerBehaviorData.movementPatterns.staying++;
+                }
+                
+                // Track shooting frequency
+                if (keys[' '] || keys['Space']) {
+                    playerBehaviorData.shootingFrequency++;
+                }
+                
+                // Track position preference
+                const zone = getPlayerZoneForTracking(player);
+                playerBehaviorData.preferredPositions[zone]++;
+                
+                this.lastBehaviorTrack = currentTime;
+            }
+        }
+        
+        function getPlayerZoneForTracking(player) {
+            const third = canvas.height / 3;
+            if (player.y < third) return 'top';
+            if (player.y < third * 2) return 'middle';
+            return 'bottom';
+        }
+        
+        function saveAILearningData() {
+            // Save learning data periodically
+            if (Math.random() < 0.01) { // 1% chance each frame
+                localStorage.setItem('waveslayers_player_behavior', JSON.stringify(playerBehaviorData));
+            }
+        }
+        
+        // ===== SISTEMA INTELIGENTE DE SPAWN =====
+        
         function spawnEnemy() {
-            const world = worlds[currentWorldId];
-            const rand = Math.random();
-            const type = rand < 0.6 ? 1 : rand < 0.8 ? 2 : 3;
-            const enemy = new Enemy(
-                Math.random() * (canvas.width - 50) + 25,
-                -50,
-                type
-            );
+            // Sistema de ondas progressivas
+            if (waveEnemiesRemaining <= 0 && enemies.length === 0 && !bossActive) {
+                startNewWave();
+                return;
+            }
+            
+            // Evita spawn excessivo
+            if (enemies.length >= 15) return;
+            
+            // Determina tipo de spawn baseado na onda atual
+            const spawnType = determineSpawnType();
+            
+            if (spawnType === 'formation') {
+                spawnFormation();
+            } else if (spawnType === 'boss') {
+                spawnBoss();
+            } else {
+                spawnIndividualEnemy();
+            }
+        }
+        
+        function startNewWave() {
+            currentWave++;
+            waveStartTime = Date.now();
+            
+            // Calcula inimigos para esta onda
+            const baseEnemies = 3 + Math.floor(currentWave / 2);
+            waveEnemiesRemaining = Math.min(baseEnemies, 20);
+            
+            // Boss a cada 5 ondas
+            if (currentWave % 5 === 0) {
+                waveEnemiesRemaining += 1; // O boss conta como inimigo da onda
+            }
+            
+            // Notifica nova onda
+            showNotification(`🌊 ONDA ${currentWave} INICIANDO!`, '#00ffff');
+            
+            // Aplica buffs de dificuldade baseados na sessão do jogador
+            applyWaveDifficultyScaling();
+        }
+        
+        function applyWaveDifficultyScaling() {
+            // Aumenta dificuldade baseado no comportamento aprendido do jogador
+            const sessionCount = playerBehaviorData.sessionCount || 0;
+            const difficultyMultiplier = 1 + (sessionCount * 0.1);
+            
+            // Aplica escalamento aos tipos de inimigos
+            Object.values(enemyTypes).forEach(type => {
+                if (!type.isBoss) {
+                    type.health = Math.floor(type.health * difficultyMultiplier);
+                    type.speed = Math.min(type.speed * 1.1, type.speed * 2); // Cap na velocidade
+                }
+            });
+        }
+        
+        function determineSpawnType() {
+            if (currentWave % 5 === 0 && !bossActive) {
+                return 'boss';
+            }
+            
+            if (Math.random() < 0.3 && currentWave >= 3) {
+                return 'formation';
+            }
+            
+            return 'individual';
+        }
+        
+        function spawnIndividualEnemy() {
+            const enemyType = selectEnemyType();
+            const x = Math.random() * (canvas.width - 100) + 50;
+            const y = -50;
+            
+            const enemy = new Enemy(x, y, enemyType);
             enemies.push(enemy);
+            waveEnemiesRemaining--;
+        }
+        
+        function selectEnemyType() {
+            const wave = currentWave;
+            const adaptiveFactors = analyzePlayerBehaviorForSpawn();
+            
+            // Tipos básicos estão sempre disponíveis
+            let availableTypes = ['scout', 'grunt', 'heavy'];
+            
+            // Desbloqueio progressivo baseado na onda
+            if (wave >= 2) availableTypes.push('sniper', 'bomber');
+            if (wave >= 3) availableTypes.push('interceptor', 'stealth');
+            if (wave >= 4) availableTypes.push('shield', 'healer');
+            if (wave >= 5) availableTypes.push('teleporter', 'commander');
+            if (wave >= 7) availableTypes.push('berserker', 'mimic');
+            if (wave >= 8) availableTypes.push('spawner', 'vortex', 'phaser');
+            if (wave >= 10) availableTypes.push('assassin', 'juggernaut', 'phantom');
+            
+            // Seleção adaptativa baseada no comportamento do jogador
+            if (adaptiveFactors.isVeryMobile) {
+                // Player se move muito - mais interceptors e assassins
+                const mobileCounters = availableTypes.filter(type => 
+                    ['interceptor', 'assassin', 'berserker'].includes(type)
+                );
+                if (mobileCounters.length > 0 && Math.random() < 0.4) {
+                    return mobileCounters[Math.floor(Math.random() * mobileCounters.length)];
+                }
+            }
+            
+            if (adaptiveFactors.isStationary) {
+                // Player fica parado - mais snipers e bombers
+                const stationaryCounters = availableTypes.filter(type => 
+                    ['sniper', 'bomber', 'vortex'].includes(type)
+                );
+                if (stationaryCounters.length > 0 && Math.random() < 0.4) {
+                    return stationaryCounters[Math.floor(Math.random() * stationaryCounters.length)];
+                }
+            }
+            
+            if (adaptiveFactors.prefersTopPosition) {
+                // Player gosta da parte superior - spawn inimigos que descem
+                const topCounters = availableTypes.filter(type => 
+                    ['grunt', 'heavy', 'juggernaut'].includes(type)
+                );
+                if (topCounters.length > 0 && Math.random() < 0.3) {
+                    return topCounters[Math.floor(Math.random() * topCounters.length)];
+                }
+            }
+            
+            // Seleção aleatória ponderada
+            const weights = {
+                scout: 0.15, grunt: 0.25, heavy: 0.1,
+                sniper: 0.08, bomber: 0.08, interceptor: 0.1,
+                stealth: 0.05, shield: 0.05, healer: 0.04,
+                teleporter: 0.03, commander: 0.02, berserker: 0.02,
+                mimic: 0.01, spawner: 0.01, vortex: 0.005,
+                phaser: 0.005, assassin: 0.002, juggernaut: 0.001,
+                phantom: 0.001
+            };
+            
+            return weightedRandomSelect(availableTypes, weights);
+        }
+        
+        function analyzePlayerBehaviorForSpawn() {
+            const patterns = playerBehaviorData.movementPatterns;
+            const positions = playerBehaviorData.preferredPositions;
+            const total = Object.values(patterns).reduce((a, b) => a + b, 1);
+            const posTotal = Object.values(positions).reduce((a, b) => a + b, 1);
+            
+            return {
+                isVeryMobile: (patterns.left + patterns.right + patterns.up + patterns.down) / total > 0.7,
+                isStationary: patterns.staying / total > 0.4,
+                prefersTopPosition: positions.top / posTotal > 0.4,
+                prefersMiddlePosition: positions.middle / posTotal > 0.4,
+                prefersBottomPosition: positions.bottom / posTotal > 0.4
+            };
+        }
+        
+        function weightedRandomSelect(items, weights) {
+            const totalWeight = items.reduce((sum, item) => sum + (weights[item] || 0.01), 0);
+            let random = Math.random() * totalWeight;
+            
+            for (const item of items) {
+                random -= weights[item] || 0.01;
+                if (random <= 0) return item;
+            }
+            
+            return items[0]; // Fallback
+        }
+        
+        function spawnFormation() {
+            const formationNames = Object.keys(formationTypes);
+            const formationName = formationNames[Math.floor(Math.random() * formationNames.length)];
+            const formation = formationTypes[formationName];
+            
+            const centerX = Math.random() * (canvas.width - 200) + 100;
+            const centerY = -100;
+            const spacing = 40;
+            
+            // Seleciona tipo de inimigo para a formação
+            const enemyType = selectFormationEnemyType();
+            
+            // Cria líder da formação
+            const leader = new Enemy(centerX, centerY, enemyType);
+            enemies.push(leader);
+            waveEnemiesRemaining--;
+            
+            // Cria membros da formação
+            formation.pattern.slice(1).forEach(([offsetX, offsetY]) => {
+                if (waveEnemiesRemaining > 0) {
+                    const member = new Enemy(
+                        centerX + offsetX * spacing,
+                        centerY + offsetY * spacing,
+                        enemyType,
+                        {
+                            leader: leader,
+                            offsetX: offsetX * spacing,
+                            offsetY: offsetY * spacing
+                        }
+                    );
+                    enemies.push(member);
+                    waveEnemiesRemaining--;
+                }
+            });
+            
+            showNotification(`⚔️ FORMAÇÃO ${formation.name.toUpperCase()} DETECTADA!`, '#ffaa00');
+        }
+        
+        function selectFormationEnemyType() {
+            // Formações usam tipos mais básicos para coordenação
+            const formationTypes = ['grunt', 'heavy', 'bomber', 'shield'];
+            const availableTypes = formationTypes.filter(type => {
+                if (type === 'heavy' || type === 'bomber') return currentWave >= 2;
+                if (type === 'shield') return currentWave >= 4;
+                return true;
+            });
+            
+            return availableTypes[Math.floor(Math.random() * availableTypes.length)];
+        }
+        
+        function spawnBoss() {
+            if (bossActive) return;
+            
+            // Show boss warning first
+            showBossWarning();
+            
+            setTimeout(() => {
+                // Seleciona boss baseado na onda
+                let bossType;
+                if (currentWave < 10) {
+                    bossType = 'mothership';
+                } else if (currentWave < 15) {
+                    bossType = Math.random() < 0.5 ? 'mothership' : 'hive_queen';
+                } else {
+                    const bossTypes = ['mothership', 'hive_queen', 'void_lord'];
+                    bossType = bossTypes[Math.floor(Math.random() * bossTypes.length)];
+                }
+                
+                const boss = new Enemy(
+                    canvas.width / 2 - 40,
+                    -100,
+                    bossType
+                );
+                
+                enemies.push(boss);
+                waveEnemiesRemaining--;
+                
+                // Efeitos especiais para aparição do boss
+                for (let i = 0; i < 20; i++) {
+                    particles.push(new Particle(
+                        boss.x + Math.random() * boss.width,
+                        boss.y + Math.random() * boss.height,
+                        (Math.random() - 0.5) * 8,
+                        (Math.random() - 0.5) * 8,
+                        '#ff0000',
+                        2000
+                    ));
+                }
+                
+                showNotification(`💀 CHEFE ${enemyTypes[bossType].name.toUpperCase()} APARECEU!`, '#ff0000');
+            }, 3000); // Delay to show warning first
         }
         
         function spawnPowerup(x, y) {
@@ -3641,6 +4884,10 @@
                 const bullet = bullets[i];
                 for (let j = enemies.length - 1; j >= 0; j--) {
                     const enemy = enemies[j];
+                    
+                    // Skip invisible stealthed enemies
+                    if (enemy.invisible && enemy.behavior === 'stealth') continue;
+                    
                     if (bullet.x < enemy.x + enemy.width &&
                         bullet.x + bullet.width > enemy.x &&
                         bullet.y < enemy.y + enemy.height &&
@@ -3649,23 +4896,36 @@
                         bullets.splice(i, 1);
                         
                         if (enemy.takeDamage(bullet.damage)) {
-                            const world = worlds[currentWorldId];
-                            createExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, world.colors.enemies[0]);
-                            const scoreGained = enemy.type * 10 * Math.ceil(world.difficulty);
+                            // Enemy defeated
+                            createExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, enemy.color, 10);
+                            
+                            const scoreGained = enemy.value;
                             score += scoreGained;
-                            coins += enemy.coinValue;
-                            coinsThisRound += enemy.coinValue;
+                            coins += enemy.value;
+                            coinsThisRound += enemy.value;
+                            
+                            // Check if boss defeated
+                            if (enemy.typeData.isBoss) {
+                                bossActive = false;
+                                showNotification(`🏆 CHEFE ${enemy.typeData.name.toUpperCase()} DERROTADO!`, '#00ff00');
+                                
+                                // Boss bonus rewards
+                                const bonusCoins = enemy.value * 2;
+                                coins += bonusCoins;
+                                coinsThisRound += bonusCoins;
+                                addXP(scoreGained * 3); // Triple XP for bosses
+                            } else {
+                                addXP(scoreGained);
+                            }
                             
                             // Progression system updates
-                            addXP(scoreGained); // Gain XP equal to score
-                            addBattlePassXP(Math.floor(scoreGained / 2)); // Battle Pass XP = half of score XP
                             achievementProgress.totalKills = (achievementProgress.totalKills || 0) + 1;
-                            achievementProgress.totalCoinsCollected = (achievementProgress.totalCoinsCollected || 0) + enemy.coinValue;
+                            achievementProgress.totalCoinsCollected = (achievementProgress.totalCoinsCollected || 0) + enemy.value;
                             achievementProgress.highScore = Math.max(achievementProgress.highScore || 0, score);
                             
                             // Update challenges
                             updateChallenges('kills', 1);
-                            updateChallenges('coins', enemy.coinValue);
+                            updateChallenges('coins', enemy.value);
                             updateChallenges('score', score);
                             
                             checkAchievements();
@@ -3681,43 +4941,98 @@
             // Enemy bullets vs player
             for (let i = enemyBullets.length - 1; i >= 0; i--) {
                 const bullet = enemyBullets[i];
+                
+                // Homing bullets
+                if (bullet.homing && player) {
+                    const dx = player.x - bullet.x;
+                    const dy = player.y - bullet.y;
+                    const distance = Math.hypot(dx, dy);
+                    const homingStrength = 0.1;
+                    
+                    bullet.vx += (dx / distance) * homingStrength;
+                    bullet.vy += (dy / distance) * homingStrength;
+                    
+                    // Limit speed
+                    const speed = Math.hypot(bullet.vx, bullet.vy);
+                    if (speed > 8) {
+                        bullet.vx = (bullet.vx / speed) * 8;
+                        bullet.vy = (bullet.vy / speed) * 8;
+                    }
+                }
+                
                 if (bullet.x < player.x + player.width &&
                     bullet.x + bullet.width > player.x &&
                     bullet.y < player.y + player.height &&
                     bullet.y + bullet.height > player.y) {
                     
                     enemyBullets.splice(i, 1);
-                    player.takeDamage(bullet.damage);
+                    player.takeDamage(bullet.damage || 25);
                 }
             }
             
-            // Enemies vs player
+            // Enemies vs player (collision damage)
             for (let i = enemies.length - 1; i >= 0; i--) {
                 const enemy = enemies[i];
-                if (player.x < enemy.x + enemy.width &&
-                    player.x + player.width > enemy.x &&
-                    player.y < enemy.y + enemy.height &&
-                    player.y + player.height > enemy.y) {
+                
+                // Skip invisible stealthed enemies
+                if (enemy.invisible && enemy.behavior === 'stealth') continue;
+                
+                if (enemy.x < player.x + player.width &&
+                    enemy.x + enemy.width > player.x &&
+                    enemy.y < player.y + player.height &&
+                    enemy.y + enemy.height > player.y) {
                     
-                    const world = worlds[currentWorldId];
-                    createExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, world.colors.enemies[0]);
-                    enemies.splice(i, 1);
-                    player.takeDamage(40);
+                    // Collision damage
+                    player.takeDamage(enemy.typeData.isBoss ? 50 : 30);
+                    
+                    // Enemy takes collision damage too
+                    if (enemy.takeDamage(50)) {
+                        createExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, enemy.color, 8);
+                        
+                        if (enemy.typeData.isBoss) {
+                            bossActive = false;
+                        }
+                        
+                        enemies.splice(i, 1);
+                    }
                 }
             }
             
             // Player vs powerups
             for (let i = powerups.length - 1; i >= 0; i--) {
                 const powerup = powerups[i];
-                if (player.x < powerup.x + powerup.width &&
-                    player.x + player.width > powerup.x &&
-                    player.y < powerup.y + powerup.height &&
-                    player.y + player.height > powerup.y) {
+                if (powerup.x < player.x + player.width &&
+                    powerup.x + powerup.width > player.x &&
+                    powerup.y < player.y + player.height &&
+                    powerup.y + powerup.height > player.y) {
                     
                     collectPowerup(powerup.type);
                     powerups.splice(i, 1);
+                    
+                    // Update achievements
+                    achievementProgress.powerupsCollected = (achievementProgress.powerupsCollected || 0) + 1;
+                    updateChallenges('powerups', 1);
+                    checkAchievements();
                 }
             }
+            
+            // Apply vortex pulls
+            enemies.forEach(enemy => {
+                if (enemy.vortexPull && player) {
+                    // This would need to be applied to player movement
+                    // For now, just create visual effect
+                    if (Math.random() < 0.1) {
+                        particles.push(new Particle(
+                            player.x + Math.random() * player.width,
+                            player.y + Math.random() * player.height,
+                            enemy.vortexPull.x,
+                            enemy.vortexPull.y,
+                            '#0088ff',
+                            500
+                        ));
+                    }
+                }
+            });
         }
         
         function collectPowerup(type) {
@@ -3745,6 +5060,60 @@
             document.getElementById('coinsUI').textContent = coins;
             document.getElementById('currentWorldName').textContent = worlds[currentWorldId].name;
             updateHealthBar();
+            
+            // Update wave information
+            document.getElementById('waveNumber').textContent = currentWave;
+            document.getElementById('enemiesRemaining').textContent = waveEnemiesRemaining;
+            
+            // Show/hide wave info
+            const waveInfoElement = document.getElementById('waveInfo');
+            if (gameState === 'playing') {
+                waveInfoElement.style.display = 'block';
+            } else {
+                waveInfoElement.style.display = 'none';
+            }
+            
+            // AI learning indicator
+            const aiIndicator = document.getElementById('aiIndicator');
+            if (gameState === 'playing' && Math.random() < 0.02) {
+                aiIndicator.style.display = 'block';
+                aiIndicator.classList.add('active');
+                setTimeout(() => {
+                    aiIndicator.style.display = 'none';
+                    aiIndicator.classList.remove('active');
+                }, 2000);
+            }
+            
+            // Show enemy type information for new enemy types
+            if (enemies.length > 0) {
+                const uniqueEnemyType = enemies.find(enemy => 
+                    enemy.typeData && !['grunt', 'scout', 'heavy'].includes(enemy.type)
+                );
+                
+                if (uniqueEnemyType && Math.random() < 0.005) {
+                    showEnemyTypeInfo(uniqueEnemyType.typeData);
+                }
+            }
+        }
+        
+        function showEnemyTypeInfo(enemyType) {
+            const indicator = document.getElementById('enemyIndicator');
+            document.getElementById('enemyTypeName').textContent = enemyType.name;
+            document.getElementById('enemyTypeDescription').textContent = enemyType.description;
+            
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 4000);
+        }
+        
+        function showBossWarning() {
+            const warning = document.getElementById('bossWarning');
+            warning.style.display = 'block';
+            
+            setTimeout(() => {
+                warning.style.display = 'none';
+            }, 3000);
         }
         
         function drawBackground() {
@@ -3780,254 +5149,11 @@
             saveGameData();
         }
         
-        // Battle Pass Functions
-        function updateBattlePassProgress() {
-            const currentTier = battlePassTiers.find(tier => tier.level === battlePassLevel);
-            const nextTier = battlePassTiers.find(tier => tier.level === battlePassLevel + 1);
-            
-            if (!currentTier) return;
-            
-            // Verifica se pode subir de nível
-            if (nextTier && battlePassXP >= currentTier.xpRequired) {
-                battlePassLevel++;
-                battlePassXP -= currentTier.xpRequired;
-                
-                // Efeito visual de level up
-                showNotification(`🎉 Battle Pass Nível ${battlePassLevel}! Novas recompensas disponíveis!`);
-                updateBattlePassProgress(); // Recursivo para múltiplos níveis
-            }
-        }
-        
-        function addBattlePassXP(amount) {
-            battlePassXP += amount;
-            updateBattlePassProgress();
-            saveGameData();
-        }
-        
-        function claimBattlePassReward(tier, isPremium = false) {
-            const rewardKey = `${tier}-${isPremium ? 'premium' : 'free'}`;
-            
-            if (battlePassClaimedRewards.includes(rewardKey)) {
-                showNotification('❌ Recompensa já coletada!');
-                return false;
-            }
-            
-            const tierData = battlePassTiers.find(t => t.level === tier);
-            if (!tierData || tier > battlePassLevel) {
-                showNotification('❌ Nível não alcançado ainda!');
-                return false;
-            }
-            
-            if (isPremium && !battlePassPremium) {
-                showNotification('❌ Versão Premium necessária!');
-                return false;
-            }
-            
-            const reward = isPremium ? tierData.premiumReward : tierData.freeReward;
-            
-            // Aplicar recompensas
-            if (reward.coins) {
-                coins += reward.coins;
-                showNotification(`💰 +${reward.coins} Moedas!`);
-            }
-            
-            if (reward.gems) {
-                gems += reward.gems;
-                showNotification(`💎 +${reward.gems} Gemas!`);
-            }
-            
-            if (reward.darkMatter) {
-                if (!playerStats.darkMatter) playerStats.darkMatter = 0;
-                playerStats.darkMatter += reward.darkMatter;
-                showNotification(`🌌 +${reward.darkMatter} Matéria Escura!`);
-            }
-            
-            if (reward.xp) {
-                playerStats.experience += reward.xp;
-                showNotification(`⭐ +${reward.xp} XP!`);
-            }
-            
-            if (reward.ship) {
-                if (shipModels[reward.ship]) {
-                    shipModels[reward.ship].unlocked = true;
-                    showNotification(`🚀 Nova nave desbloqueada: ${shipModels[reward.ship].name}!`);
-                }
-            }
-            
-            if (reward.skin) {
-                if (shipSkins[reward.skin]) {
-                    shipSkins[reward.skin].unlocked = true;
-                    showNotification(`🎨 Nova skin desbloqueada: ${shipSkins[reward.skin].name}!`);
-                }
-            }
-            
-            if (reward.effect) {
-                if (visualEffects[reward.effect]) {
-                    visualEffects[reward.effect].unlocked = true;
-                    showNotification(`✨ Novo efeito visual: ${visualEffects[reward.effect].name}!`);
-                }
-            }
-            
-            if (reward.exclusiveShip) {
-                if (battlePassExclusives[reward.exclusiveShip]) {
-                    // Adiciona nave exclusiva ao inventário
-                    if (!playerStats.exclusiveItems) playerStats.exclusiveItems = {};
-                    playerStats.exclusiveItems[reward.exclusiveShip] = true;
-                    showNotification(`🌟 EXCLUSIVA! ${battlePassExclusives[reward.exclusiveShip].name}!`);
-                }
-            }
-            
-            if (reward.exclusiveSkin) {
-                if (battlePassExclusives[reward.exclusiveSkin]) {
-                    if (!playerStats.exclusiveItems) playerStats.exclusiveItems = {};
-                    playerStats.exclusiveItems[reward.exclusiveSkin] = true;
-                    showNotification(`🌟 SKIN EXCLUSIVA! ${battlePassExclusives[reward.exclusiveSkin].name}!`);
-                }
-            }
-            
-            if (reward.specialTitle) {
-                if (!playerStats.titles) playerStats.titles = [];
-                playerStats.titles.push(reward.specialTitle);
-                showNotification(`👑 Novo título: ${reward.specialTitle}!`);
-            }
-            
-            battlePassClaimedRewards.push(rewardKey);
-            saveGameData();
-            return true;
-        }
-        
-        function buyBattlePassPremium() {
-            if (gems >= 500) {
-                gems -= 500;
-                battlePassPremium = true;
-                showNotification('🌟 Battle Pass Premium ativado! Recompensas especiais liberadas!');
-                saveGameData();
-                return true;
-            } else {
-                showNotification('❌ Você precisa de 500 gemas para o Battle Pass Premium!');
-                return false;
-            }
-        }
-        
-        function resetBattlePass() {
-            // Novo season
-            battlePassSeason++;
-            battlePassLevel = 1;
-            battlePassXP = 0;
-            battlePassPremium = false;
-            battlePassClaimedRewards = [];
-            
-            showNotification(`🎊 Nova temporada do Battle Pass! Season ${battlePassSeason}`);
-            saveGameData();
-        }
-        
         function saveGameData() {
             localStorage.setItem('waveslayers_coins', coins.toString());
-            localStorage.setItem('waveslayers_gems', gems.toString());
             localStorage.setItem('waveslayers_current_world', currentWorldId);
             const unlockedWorldIds = Object.keys(worlds).filter(id => worlds[id].unlocked);
             localStorage.setItem('waveslayers_unlocked_worlds', JSON.stringify(unlockedWorldIds));
-            
-            // Save Battle Pass data
-            localStorage.setItem('waveslayers_battlepass_level', battlePassLevel.toString());
-            localStorage.setItem('waveslayers_battlepass_xp', battlePassXP.toString());
-            localStorage.setItem('waveslayers_battlepass_premium', battlePassPremium.toString());
-            localStorage.setItem('waveslayers_battlepass_season', battlePassSeason.toString());
-            localStorage.setItem('waveslayers_battlepass_claimed', JSON.stringify(battlePassClaimedRewards));
-            
-            // Save ship customization data
-            localStorage.setItem('waveslayers_current_ship', currentShip);
-            localStorage.setItem('waveslayers_ship_models', JSON.stringify(shipModels));
-            localStorage.setItem('waveslayers_ship_skins', JSON.stringify(shipSkins));
-            localStorage.setItem('waveslayers_visual_effects', JSON.stringify(visualEffects));
-            localStorage.setItem('waveslayers_ship_upgrades', JSON.stringify(shipUpgrades));
-            localStorage.setItem('waveslayers_current_skin', currentSkin);
-            localStorage.setItem('waveslayers_current_effect', currentEffect);
-            
-            // Save player stats
-            localStorage.setItem('waveslayers_player_stats', JSON.stringify(playerStats));
-        }
-        
-        function loadGameData() {
-            // Load basic data
-            const savedCoins = localStorage.getItem('waveslayers_coins');
-            if (savedCoins) coins = parseInt(savedCoins);
-            
-            const savedGems = localStorage.getItem('waveslayers_gems');
-            if (savedGems) gems = parseInt(savedGems);
-            
-            const savedWorld = localStorage.getItem('waveslayers_current_world');
-            if (savedWorld) currentWorldId = savedWorld;
-            
-            const savedUnlockedWorlds = localStorage.getItem('waveslayers_unlocked_worlds');
-            if (savedUnlockedWorlds) {
-                const unlockedIds = JSON.parse(savedUnlockedWorlds);
-                unlockedIds.forEach(id => {
-                    if (worlds[id]) worlds[id].unlocked = true;
-                });
-            }
-            
-            // Load Battle Pass data
-            const savedBPLevel = localStorage.getItem('waveslayers_battlepass_level');
-            if (savedBPLevel) battlePassLevel = parseInt(savedBPLevel);
-            
-            const savedBPXP = localStorage.getItem('waveslayers_battlepass_xp');
-            if (savedBPXP) battlePassXP = parseInt(savedBPXP);
-            
-            const savedBPPremium = localStorage.getItem('waveslayers_battlepass_premium');
-            if (savedBPPremium) battlePassPremium = savedBPPremium === 'true';
-            
-            const savedBPSeason = localStorage.getItem('waveslayers_battlepass_season');
-            if (savedBPSeason) battlePassSeason = parseInt(savedBPSeason);
-            
-            const savedBPClaimed = localStorage.getItem('waveslayers_battlepass_claimed');
-            if (savedBPClaimed) battlePassClaimedRewards = JSON.parse(savedBPClaimed);
-            
-            // Load ship customization data
-            const savedCurrentShip = localStorage.getItem('waveslayers_current_ship');
-            if (savedCurrentShip) currentShip = savedCurrentShip;
-            
-            const savedShipModels = localStorage.getItem('waveslayers_ship_models');
-            if (savedShipModels) {
-                const loadedModels = JSON.parse(savedShipModels);
-                Object.keys(loadedModels).forEach(key => {
-                    if (shipModels[key]) {
-                        shipModels[key].unlocked = loadedModels[key].unlocked;
-                    }
-                });
-            }
-            
-            const savedShipSkins = localStorage.getItem('waveslayers_ship_skins');
-            if (savedShipSkins) {
-                const loadedSkins = JSON.parse(savedShipSkins);
-                Object.keys(loadedSkins).forEach(key => {
-                    if (shipSkins[key]) {
-                        shipSkins[key].unlocked = loadedSkins[key].unlocked;
-                    }
-                });
-            }
-            
-            const savedVisualEffects = localStorage.getItem('waveslayers_visual_effects');
-            if (savedVisualEffects) {
-                const loadedEffects = JSON.parse(savedVisualEffects);
-                Object.keys(loadedEffects).forEach(key => {
-                    if (visualEffects[key]) {
-                        visualEffects[key].unlocked = loadedEffects[key].unlocked;
-                    }
-                });
-            }
-            
-            const savedUpgrades = localStorage.getItem('waveslayers_ship_upgrades');
-            if (savedUpgrades) shipUpgrades = JSON.parse(savedUpgrades);
-            
-            const savedCurrentSkin = localStorage.getItem('waveslayers_current_skin');
-            if (savedCurrentSkin) currentSkin = savedCurrentSkin;
-            
-            const savedCurrentEffect = localStorage.getItem('waveslayers_current_effect');
-            if (savedCurrentEffect) currentEffect = savedCurrentEffect;
-            
-            const savedPlayerStats = localStorage.getItem('waveslayers_player_stats');
-            if (savedPlayerStats) playerStats = {...playerStats, ...JSON.parse(savedPlayerStats)};
         }
         
         function startGame() {
@@ -4036,6 +5162,9 @@
             isPaused = false;
             score = 0;
             level = 1;
+            
+            // Initialize AI system
+            initializeAISystem();
             
             // Apply skill bonuses
             updatePlayerStats();
@@ -4062,6 +5191,11 @@
             
             // Stop menu animation
             menuAnimationRunning = false;
+            
+            // Start first wave
+            setTimeout(() => {
+                startNewWave();
+            }, 2000);
         }
         
         function restartGame() {
@@ -4356,116 +5490,6 @@ Boa sorte, comandante! 🚀✨`);
             document.getElementById('battlepassMenu').style.display = 'none';
             document.getElementById('mainMenu').style.display = 'flex';
             initMenuAnimation();
-        }
-        
-        function updateBattlepassDisplay() {
-            // Atualizar nível
-            document.getElementById('battlepassLevelDisplay').textContent = battlePassLevel;
-            
-            // Atualizar status premium
-            const statusElement = document.getElementById('battlepassStatus');
-            if (battlePassPremium) {
-                statusElement.textContent = 'PREMIUM';
-                statusElement.style.color = '#FFD700';
-            } else {
-                statusElement.textContent = 'GRÁTIS';
-                statusElement.style.color = '#FFFFFF';
-            }
-            
-            // Atualizar barra de XP
-            const currentTier = battlePassTiers.find(tier => tier.level === battlePassLevel);
-            const nextTier = battlePassTiers.find(tier => tier.level === battlePassLevel + 1);
-            
-            if (currentTier && nextTier) {
-                const xpProgress = (battlePassXP / currentTier.xpRequired) * 100;
-                document.getElementById('battlepassXpFill').style.width = Math.min(xpProgress, 100) + '%';
-                document.getElementById('battlepassXpText').textContent = `${battlePassXP} / ${currentTier.xpRequired}`;
-            } else if (battlePassLevel >= 50) {
-                document.getElementById('battlepassXpFill').style.width = '100%';
-                document.getElementById('battlepassXpText').textContent = 'MÁXIMO';
-            }
-        }
-        
-        function renderBattlepassTiers() {
-            const tiersContainer = document.getElementById('battlepassTiers');
-            tiersContainer.innerHTML = '';
-            
-            battlePassTiers.forEach((tier, index) => {
-                const tierElement = document.createElement('div');
-                tierElement.className = 'battlepass-tier';
-                tierElement.innerHTML = `
-                    <div class="tier-level">${tier.level}</div>
-                    <div class="tier-rewards">
-                        <div class="reward-track free-track">
-                            <div class="reward-header">GRÁTIS</div>
-                            <div class="reward-item ${battlePassLevel >= tier.level ? 'available' : 'locked'}">
-                                ${formatReward(tier.freeReward)}
-                                <button 
-                                    class="claim-button ${battlePassClaimedRewards.includes(`${tier.level}-free`) ? 'claimed' : ''}"
-                                    onclick="claimBattlePassReward(${tier.level}, false)"
-                                    ${battlePassLevel < tier.level || battlePassClaimedRewards.includes(`${tier.level}-free`) ? 'disabled' : ''}
-                                >
-                                    ${battlePassClaimedRewards.includes(`${tier.level}-free`) ? '✓' : 'Coletar'}
-                                </button>
-                            </div>
-                        </div>
-                        <div class="reward-track premium-track ${battlePassPremium ? 'unlocked' : 'locked'}">
-                            <div class="reward-header">PREMIUM</div>
-                            <div class="reward-item ${battlePassLevel >= tier.level ? 'available' : 'locked'}">
-                                ${formatReward(tier.premiumReward)}
-                                <button 
-                                    class="claim-button premium ${battlePassClaimedRewards.includes(`${tier.level}-premium`) ? 'claimed' : ''}"
-                                    onclick="claimBattlePassReward(${tier.level}, true)"
-                                    ${battlePassLevel < tier.level || battlePassClaimedRewards.includes(`${tier.level}-premium`) || !battlePassPremium ? 'disabled' : ''}
-                                >
-                                    ${battlePassClaimedRewards.includes(`${tier.level}-premium`) ? '✓' : 'Coletar'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                // Highlight current level
-                if (tier.level === battlePassLevel) {
-                    tierElement.classList.add('current-tier');
-                }
-                
-                tiersContainer.appendChild(tierElement);
-            });
-            
-            // Add premium upgrade button if not premium
-            if (!battlePassPremium) {
-                const upgradeButton = document.createElement('div');
-                upgradeButton.className = 'premium-upgrade';
-                upgradeButton.innerHTML = `
-                    <button class="upgrade-premium-button" onclick="buyBattlePassPremium()">
-                        🌟 UPGRADE PARA PREMIUM - 500 💎
-                    </button>
-                `;
-                tiersContainer.appendChild(upgradeButton);
-            }
-        }
-        
-        function formatReward(reward) {
-            let rewardText = [];
-            
-            if (reward.coins) rewardText.push(`💰 ${reward.coins}`);
-            if (reward.gems) rewardText.push(`💎 ${reward.gems}`);
-            if (reward.darkMatter) rewardText.push(`🌌 ${reward.darkMatter}`);
-            if (reward.xp) rewardText.push(`⭐ ${reward.xp} XP`);
-            if (reward.ship) rewardText.push(`🚀 ${shipModels[reward.ship]?.name || reward.ship}`);
-            if (reward.skin) rewardText.push(`🎨 ${shipSkins[reward.skin]?.name || reward.skin}`);
-            if (reward.effect) rewardText.push(`✨ ${visualEffects[reward.effect]?.name || reward.effect}`);
-            if (reward.exclusiveShip) rewardText.push(`🌟 ${battlePassExclusives[reward.exclusiveShip]?.name || reward.exclusiveShip}`);
-            if (reward.exclusiveSkin) rewardText.push(`🌟 ${battlePassExclusives[reward.exclusiveSkin]?.name || reward.exclusiveSkin}`);
-            if (reward.specialTitle) rewardText.push(`👑 ${reward.specialTitle}`);
-            if (reward.exclusiveTitle) rewardText.push(`🏆 ${reward.exclusiveTitle}`);
-            
-            return rewardText.join('<br>');
-        }
-        
-        function upgradeBattlepass() {
-            buyBattlePassPremium();
         }
         
         // Ship Customization Menu Functions
@@ -5324,9 +6348,6 @@ Boa sorte, comandante! 🚀✨`);
         function init() {
             player = new Player();
             
-            // Load saved game data
-            loadGameData();
-            
             // Create stars
             for (let i = 0; i < 120; i++) {
                 stars.push(new Star());
@@ -5403,10 +6424,14 @@ Boa sorte, comandante! 🚀✨`);
             });
             
             if (gameState === 'playing' && gameRunning && !isPaused) {
+                // Track player behavior for AI learning
+                trackPlayerBehavior();
+                saveAILearningData();
+                
                 // Update player
                 player.update(deltaTime);
                 
-                // Spawn enemies
+                // Spawn enemies using intelligent system
                 enemySpawnTimer += deltaTime;
                 const world = worlds[currentWorldId];
                 const spawnRate = Math.max(300, 1500 - level * 80) / world.difficulty;
@@ -5428,7 +6453,7 @@ Boa sorte, comandante! 🚀✨`);
                     return !bullet.isOffScreen();
                 });
                 
-                // Update enemies
+                // Update enemies with AI behaviors
                 enemies = enemies.filter(enemy => {
                     enemy.update(deltaTime);
                     enemy.draw();
@@ -5460,6 +6485,10 @@ Boa sorte, comandante! 🚀✨`);
                 if (newLevel > level) {
                     level = newLevel;
                 }
+                
+                // Update survival time for achievements
+                survivalTime = (Date.now() - gameStartTime) / 1000;
+                achievementProgress.bestSurvivalTime = Math.max(achievementProgress.bestSurvivalTime || 0, survivalTime);
                 
                 // Update UI
                 updateUI();
