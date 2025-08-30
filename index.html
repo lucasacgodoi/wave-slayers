@@ -1418,8 +1418,8 @@
         /* Wave and Boss UI */
         #waveInfo {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            bottom: 15px;
+            left: 15px;
             background: rgba(0,0,0,0.8);
             padding: 15px;
             border-radius: 10px;
@@ -1572,6 +1572,38 @@
         .world-select-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(148,0,211,0.3);
+        }
+
+        .world-select-btn-inline {
+            background: linear-gradient(45deg, #9400d3, #4b0082);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .world-select-btn-inline:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(148,0,211,0.3);
+        }
+
+        .enemy-indicator-inline {
+            background: rgba(255,100,100,0.8);
+            padding: 8px 12px;
+            border-radius: 15px;
+            border: 1px solid #ff6666;
+            font-size: 12px;
+            color: #ffffff;
+        }
+
+        .enemy-type-inline {
+            font-weight: 700;
+            color: #ffaaaa;
         }
 
         /* Loading screen */
@@ -1930,6 +1962,12 @@
                     <span>MUNDO: <span id="currentWorldName">Terra</span></span>
                 </div>
             </div>
+            <div class="ui-row">
+                <button class="world-select-btn-inline" id="worldSelectBtn" onclick="openWorldsMenu()">🌍 Mundos</button>
+                <div id="enemyIndicatorInline" class="enemy-indicator-inline">
+                    <div class="enemy-type-inline" id="enemyTypeNameInline">Tipo de Inimigo</div>
+                </div>
+            </div>
         </div>
         
         <!-- Wave Information -->
@@ -1953,8 +1991,6 @@
             <div class="enemy-type" id="enemyTypeName">Tipo de Inimigo</div>
             <div class="enemy-description" id="enemyTypeDescription">Descrição do inimigo</div>
         </div>
-        
-        <button class="world-select-btn" id="worldSelectBtn" onclick="openWorldsMenu()">🌍 Mundos</button>
         
         <div id="gameOver">
             <h2>MISSÃO FALHOU</h2>
