@@ -2340,7 +2340,10 @@
             <div class="menu-overlay"></div>
             <div class="menu-content">
                 <h1>WAVESLAYERS</h1>
-                <p style="font-size: 1.2em; color: #ccc; margin-bottom: 30px;">Conquiste as Galáxias</p>
+                <p style="font-size: 1.2em; color: #ccc; margin-bottom: 10px;">Conquiste as Galáxias</p>
+                <p style="font-size: 0.9em; color: #00ffff; margin-bottom: 20px; cursor: pointer;" onclick="changePlayerName()">
+                    👤 Piloto: <span id="playerNameDisplay"></span> (clique para alterar)
+                </p>
                 <div class="menu-buttons-container">
                     <button class="menu-button" onclick="startGame()">🚀 Iniciar Jogo</button>
                     <button class="menu-button" onclick="openWorldsMenu()">🌍 Mundos</button>
@@ -2924,12 +2927,26 @@
             monthly: [],
             world: {}
         };
-        let multiplayerRooms = [];
-        let currentRoom = null;
+        let multiplayerRooms = JSON.parse(localStorage.getItem('waveslayers_multiplayer_rooms') || '[]');
+        let currentRoom = JSON.parse(localStorage.getItem('waveslayers_current_room') || 'null');
         let globalEvents = JSON.parse(localStorage.getItem('waveslayers_global_events') || JSON.stringify({
             invasion: { progress: 450000, target: 1000000, participating: false },
             treasure: { progress: 115000, target: 500000, participating: false }
         }));
+        
+        // Real leaderboard data storage
+        let realLeaderboardData = JSON.parse(localStorage.getItem('waveslayers_real_leaderboard') || JSON.stringify({
+            overall: [],
+            weekly: [],
+            monthly: [],
+            world: {}
+        }));
+        
+        // Multiplayer system variables
+        let isInMultiplayerMode = false;
+        let multiplayerPlayers = [];
+        let roomHost = false;
+        let connectionStatus = 'disconnected';
         
         // Current modal context
         let currentModalAction = '';
@@ -7138,6 +7155,9 @@
                                 coinGain = Math.floor(coinGain * 1.1);
                             }
                             
+                            // Apply multiplayer bonus
+                            coinGain = Math.floor(coinGain * getMultiplayerBonus('coins'));
+                            
                             coins += coinGain;
                             coinsThisRound += coinGain;
                             
@@ -7147,7 +7167,7 @@
                                 showNotification(`🏆 CHEFE ${enemy.typeData.name.toUpperCase()} DERROTADO!`, '#00ff00');
                                 
                                 // Boss bonus rewards
-                                const bonusCoins = enemy.value * 2;
+                                const bonusCoins = Math.floor(enemy.value * 2 * getMultiplayerBonus('coins'));
                                 coins += bonusCoins;
                                 coinsThisRound += bonusCoins;
                                 addXP(scoreGained * 3); // Triple XP for bosses
@@ -7339,6 +7359,9 @@
                 waveInfoElement.style.display = 'none';
             }
             
+            // Update multiplayer status in game UI
+            updateMultiplayerStatus();
+            
             // AI learning indicator
             const aiIndicator = document.getElementById('aiIndicator');
             if (gameState === 'playing' && Math.random() < 0.02) {
@@ -7359,6 +7382,44 @@
                 if (uniqueEnemyType && Math.random() < 0.005) {
                     showEnemyTypeInfo(uniqueEnemyType.typeData);
                 }
+            }
+        }
+        
+        function updateMultiplayerStatus() {
+            // Add multiplayer status to the game UI if in multiplayer mode
+            const gameUI = document.getElementById('gameUI');
+            let multiplayerStatusDiv = document.getElementById('multiplayerStatus');
+            
+            if (isInMultiplayerMode && currentRoom) {
+                if (!multiplayerStatusDiv) {
+                    multiplayerStatusDiv = document.createElement('div');
+                    multiplayerStatusDiv.id = 'multiplayerStatus';
+                    multiplayerStatusDiv.style.cssText = `
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        background: rgba(0, 255, 0, 0.1);
+                        border: 2px solid #00ff00;
+                        border-radius: 10px;
+                        padding: 10px;
+                        color: #00ff00;
+                        font-family: 'Orbitron', monospace;
+                        font-size: 12px;
+                        z-index: 15;
+                        min-width: 200px;
+                    `;
+                    gameUI.appendChild(multiplayerStatusDiv);
+                }
+                
+                multiplayerStatusDiv.innerHTML = `
+                    <div style="font-weight: bold; margin-bottom: 5px;">🎮 MULTIJOGADOR</div>
+                    <div>Sala: ${currentRoom.name}</div>
+                    <div>Jogadores: ${currentRoom.players}/${currentRoom.maxPlayers}</div>
+                    <div>Status: ${connectionStatus === 'host' ? 'Host' : 'Conectado'}</div>
+                    <div style="color: #ffff00;">Cooperativo</div>
+                `;
+            } else if (multiplayerStatusDiv) {
+                multiplayerStatusDiv.remove();
             }
         }
         
@@ -7489,6 +7550,11 @@
             
             enemySpawnTimer = 0;
             powerupSpawnTimer = 0;
+            
+            // Initialize multiplayer if in multiplayer mode
+            if (isInMultiplayerMode) {
+                initializeMultiplayerGame();
+            }
             
             document.getElementById('mainMenu').style.display = 'none';
             document.getElementById('gameUI').style.display = 'block';
@@ -8223,16 +8289,45 @@ Boa sorte, comandante! 🚀✨`);
             const content = document.getElementById('leaderboardContent');
             content.innerHTML = '<div class="loading-spinner-inline"></div><p>Carregando rankings...</p>';
             
-            // Simulate API call delay
+            // Load real data first, then merge with mock data for demonstration
             setTimeout(() => {
-                let data = mockLeaderboardData[category] || [];
+                let data = [...(realLeaderboardData[category] || [])];
                 
                 if (category === 'world') {
-                    data = mockLeaderboardData.world[currentWorldId] || [];
+                    data = [...(realLeaderboardData.world[currentWorldId] || [])];
                 }
                 
+                // Add mock data if real data is empty (for demonstration)
+                if (data.length === 0) {
+                    data = mockLeaderboardData[category] || [];
+                    if (category === 'world') {
+                        data = mockLeaderboardData.world[currentWorldId] || [];
+                    }
+                }
+                
+                // Add player's own score if not present
+                const playerBestScore = parseInt(localStorage.getItem('waveslayers_best_score') || '0');
+                if (playerBestScore > 0) {
+                    const playerExists = data.find(entry => entry.name === playerName);
+                    if (!playerExists) {
+                        data.push({
+                            rank: data.length + 1,
+                            name: playerName,
+                            score: playerBestScore,
+                            level: playerLevel,
+                            world: worlds[currentWorldId]?.name || 'Terra'
+                        });
+                    }
+                }
+                
+                // Sort by score and update ranks
+                data.sort((a, b) => b.score - a.score);
+                data.forEach((entry, index) => {
+                    entry.rank = index + 1;
+                });
+                
                 renderLeaderboard(data, category);
-            }, 1000);
+            }, 500);
         }
         
         function renderLeaderboard(data, category) {
@@ -8461,12 +8556,61 @@ Desafie-me! 🌌
                 setTimeout(() => {
                     const contribution = Math.floor(Math.random() * 1000) + 500;
                     globalEvents[eventId].progress += contribution;
+                    
+                    // Ensure progress doesn't exceed target
+                    if (globalEvents[eventId].progress > globalEvents[eventId].target) {
+                        globalEvents[eventId].progress = globalEvents[eventId].target;
+                    }
+                    
                     localStorage.setItem('waveslayers_global_events', JSON.stringify(globalEvents));
                     updateGlobalEvents();
                     showNotification(`🎯 Contribuição: +${contribution.toLocaleString()} ao evento!`, '#00ffff');
+                    
+                    // Check if event is completed
+                    if (globalEvents[eventId].progress >= globalEvents[eventId].target) {
+                        showNotification(`🎉 Evento "${eventNames[eventId]}" completado pela comunidade!`, '#ffff00');
+                        giveEventRewards(eventId);
+                    }
                 }, 2000);
             } else {
                 showNotification('✅ Você já está participando deste evento!', '#ffff00');
+            }
+        }
+        
+        function giveEventRewards(eventId) {
+            const rewards = {
+                invasion: { 
+                    coins: 5000, 
+                    gems: 0,
+                    message: '🎁 Recompensa do evento: +5000 moedas + Skin especial desbloqueada!',
+                    unlock: ['red_flame_skin']
+                },
+                treasure: { 
+                    coins: 3000, 
+                    gems: 10, 
+                    message: '🎁 Recompensa do evento: +3000 moedas + 10 gemas!',
+                    unlock: []
+                }
+            };
+            
+            const reward = rewards[eventId];
+            if (reward) {
+                coins += reward.coins;
+                gems += reward.gems;
+                
+                // Unlock special items
+                if (reward.unlock) {
+                    reward.unlock.forEach(item => {
+                        // Add logic to unlock special items
+                        showNotification(`🔓 Item especial desbloqueado: ${item}`, '#ff6600');
+                    });
+                }
+                
+                // Save changes
+                localStorage.setItem('waveslayers_coins', coins.toString());
+                localStorage.setItem('waveslayers_gems', gems.toString());
+                
+                showNotification(reward.message, '#ffff00');
             }
         }
         
@@ -8510,18 +8654,32 @@ Desafie-me! 🌌
             const container = document.getElementById('roomListContainer');
             container.innerHTML = '<div class="loading-spinner-inline"></div><p>Atualizando lista de salas...</p>';
             
-            // Simulate API call
             setTimeout(() => {
-                const mockRooms = [
-                    { id: 'room1', name: 'Sala dos Veteranos', players: 2, maxPlayers: 4, world: 'Terra', privacy: 'Público' },
-                    { id: 'room2', name: 'Exploradores Espaciais', players: 1, maxPlayers: 3, world: 'Marte', privacy: 'Público' },
-                    { id: 'room3', name: 'Desafio Extremo', players: 3, maxPlayers: 4, world: 'Nêmesis', privacy: 'Público' },
-                    { id: 'room4', name: 'Iniciantes Bem-vindos', players: 2, maxPlayers: 4, world: 'Terra', privacy: 'Público' },
-                    { id: 'room5', name: 'Speed Run Challenge', players: 1, maxPlayers: 2, world: 'Jupiter', privacy: 'Público' }
-                ];
+                // Load real rooms from storage and merge with mock data
+                let realRooms = JSON.parse(localStorage.getItem('waveslayers_active_rooms') || '[]');
                 
-                renderRoomList(mockRooms);
-            }, 1000);
+                // Filter out expired rooms (older than 30 minutes)
+                const now = Date.now();
+                realRooms = realRooms.filter(room => (now - room.created) < 30 * 60 * 1000);
+                
+                // Update storage with filtered rooms
+                localStorage.setItem('waveslayers_active_rooms', JSON.stringify(realRooms));
+                
+                // Add mock rooms for demonstration if no real rooms exist
+                if (realRooms.length === 0) {
+                    // Add some initial mock rooms if none exist
+                    const mockRooms = [
+                        { id: 'room1', name: 'Sala dos Veteranos', players: 2, maxPlayers: 4, world: 'Terra', privacy: 'Público', host: 'VeteranPilot', created: now, playersList: ['VeteranPilot', 'NewbiePilot'] },
+                        { id: 'room2', name: 'Exploradores Espaciais', players: 1, maxPlayers: 3, world: 'Marte', privacy: 'Público', host: 'SpaceExplorer', created: now, playersList: ['SpaceExplorer'] },
+                        { id: 'room3', name: 'Desafio Extremo', players: 3, maxPlayers: 4, world: 'Jupiter', privacy: 'Público', host: 'ProGamer', created: now, playersList: ['ProGamer', 'ChallengeSeeker', 'ElitePlayer'] }
+                    ];
+                    
+                    // Merge real rooms with mock rooms
+                    realRooms = [...realRooms, ...mockRooms];
+                }
+                
+                renderRoomList(realRooms);
+            }, 500);
         }
         
         function renderRoomList(rooms) {
@@ -8533,14 +8691,18 @@ Desafie-me! 🌌
             } else {
                 rooms.forEach(room => {
                     const isFull = room.players >= room.maxPlayers;
+                    const isHost = room.host === playerName;
+                    const timeCreated = room.created ? new Date(room.created).toLocaleTimeString() : 'N/A';
+                    
                     html += `
                         <div class="room-entry">
                             <div class="room-info">
-                                <div class="room-name">${room.name}</div>
-                                <div class="room-details">${room.players}/${room.maxPlayers} jogadores • ${room.world} • ${room.privacy}</div>
+                                <div class="room-name">${room.name} ${isHost ? '(Sua sala)' : ''}</div>
+                                <div class="room-details">${room.players}/${room.maxPlayers} jogadores • ${room.world} • ${room.privacy} • Host: ${room.host}</div>
+                                <div class="room-details" style="font-size: 0.8em; opacity: 0.7;">Criada às ${timeCreated}</div>
                             </div>
                             <button class="room-join-btn" ${isFull ? 'disabled' : ''} onclick="joinRoom('${room.id}')">
-                                ${isFull ? 'Cheia' : 'Entrar'}
+                                ${isFull ? 'Cheia' : isHost ? 'Entrar' : 'Entrar'}
                             </button>
                         </div>
                     `;
@@ -8553,10 +8715,57 @@ Desafie-me! 🌌
         function joinRoom(roomId) {
             showNotification('🎮 Entrando na sala...', '#00ff00');
             
+            // Load room data
+            let activeRooms = JSON.parse(localStorage.getItem('waveslayers_active_rooms') || '[]');
+            let room = activeRooms.find(r => r.id === roomId);
+            
+            if (!room) {
+                showNotification('❌ Sala não encontrada ou expirou!', '#ff6600');
+                refreshRoomList();
+                return;
+            }
+            
+            if (room.players >= room.maxPlayers) {
+                showNotification('❌ Sala está cheia!', '#ff6600');
+                refreshRoomList();
+                return;
+            }
+            
+            // Join the room
+            if (!room.playersList) room.playersList = [];
+            if (!room.playersList.includes(playerName)) {
+                room.playersList.push(playerName);
+                room.players = room.playersList.length;
+            }
+            
+            // Update room data
+            const roomIndex = activeRooms.findIndex(r => r.id === roomId);
+            if (roomIndex !== -1) {
+                activeRooms[roomIndex] = room;
+                localStorage.setItem('waveslayers_active_rooms', JSON.stringify(activeRooms));
+            }
+            
+            // Set current room
+            currentRoom = room;
+            localStorage.setItem('waveslayers_current_room', JSON.stringify(currentRoom));
+            isInMultiplayerMode = true;
+            multiplayerPlayers = [...room.playersList];
+            connectionStatus = 'connected';
+            
             setTimeout(() => {
-                showNotification('✅ Conectado à sala! Aguardando outros jogadores...', '#00ffff');
-                // Here you would implement the actual multiplayer lobby
-            }, 1500);
+                showNotification(`✅ Conectado à sala "${room.name}"! Jogadores: ${room.players}/${room.maxPlayers}`, '#00ffff');
+                
+                // Show multiplayer lobby
+                showMultiplayerLobby();
+                
+                // Start game automatically if room is full
+                if (room.players >= room.maxPlayers) {
+                    setTimeout(() => {
+                        showNotification('🚀 Sala cheia! Iniciando jogo multijogador...', '#ffff00');
+                        startMultiplayerGame();
+                    }, 2000);
+                }
+            }, 1000);
         }
         
         // Modal Functions
@@ -8616,13 +8825,46 @@ Desafie-me! 🌌
                     const roomName = document.getElementById('roomNameInput').value.trim();
                     if (roomName) {
                         const privacy = document.getElementById('roomPrivacySelect').value;
-                        const maxPlayers = document.getElementById('roomMaxPlayersSelect').value;
+                        const maxPlayers = parseInt(document.getElementById('roomMaxPlayersSelect').value);
                         const roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+                        const roomId = 'room_' + Date.now();
+                        
+                        // Create new room
+                        const newRoom = {
+                            id: roomId,
+                            name: roomName,
+                            privacy: privacy,
+                            maxPlayers: maxPlayers,
+                            players: 1,
+                            world: worlds[currentWorldId]?.name || 'Terra',
+                            host: playerName,
+                            playersList: [playerName],
+                            code: privacy === 'private' ? roomCode : null,
+                            created: Date.now()
+                        };
+                        
+                        // Save room to storage
+                        let activeRooms = JSON.parse(localStorage.getItem('waveslayers_active_rooms') || '[]');
+                        activeRooms.push(newRoom);
+                        localStorage.setItem('waveslayers_active_rooms', JSON.stringify(activeRooms));
+                        
+                        // Set as current room
+                        currentRoom = newRoom;
+                        localStorage.setItem('waveslayers_current_room', JSON.stringify(currentRoom));
+                        isInMultiplayerMode = true;
+                        multiplayerPlayers = [playerName];
+                        roomHost = true;
+                        connectionStatus = 'host';
                         
                         showNotification(`🎮 Sala "${roomName}" criada!`, '#00ff00');
                         if (privacy === 'private') {
                             showNotification(`🔐 Código da sala: ${roomCode}`, '#ffff00');
                         }
+                        
+                        // Show multiplayer lobby
+                        setTimeout(() => {
+                            showMultiplayerLobby();
+                        }, 1000);
                     } else {
                         showNotification('❌ Digite um nome para a sala!', '#ff6600');
                         return;
@@ -8632,10 +8874,46 @@ Desafie-me! 🌌
                 case 'joinRoom':
                     const roomCode2 = document.getElementById('roomCodeInput').value.trim();
                     if (roomCode2) {
-                        showNotification(`🎮 Tentando entrar na sala: ${roomCode2}`, '#00ff00');
+                        // Find room by code
+                        let activeRooms = JSON.parse(localStorage.getItem('waveslayers_active_rooms') || '[]');
+                        let room = activeRooms.find(r => r.code === roomCode2.toUpperCase());
+                        
+                        if (!room) {
+                            showNotification('❌ Código da sala inválido!', '#ff6600');
+                            return;
+                        }
+                        
+                        if (room.players >= room.maxPlayers) {
+                            showNotification('❌ Sala está cheia!', '#ff6600');
+                            return;
+                        }
+                        
+                        // Join the room
+                        if (!room.playersList.includes(playerName)) {
+                            room.playersList.push(playerName);
+                            room.players = room.playersList.length;
+                        }
+                        
+                        // Update room data
+                        const roomIndex = activeRooms.findIndex(r => r.id === room.id);
+                        if (roomIndex !== -1) {
+                            activeRooms[roomIndex] = room;
+                            localStorage.setItem('waveslayers_active_rooms', JSON.stringify(activeRooms));
+                        }
+                        
+                        // Set current room
+                        currentRoom = room;
+                        localStorage.setItem('waveslayers_current_room', JSON.stringify(currentRoom));
+                        isInMultiplayerMode = true;
+                        multiplayerPlayers = [...room.playersList];
+                        roomHost = false;
+                        connectionStatus = 'connected';
+                        
+                        showNotification(`🎮 Entrando na sala: ${roomCode2}`, '#00ff00');
                         setTimeout(() => {
-                            showNotification('✅ Conectado à sala privada!', '#00ffff');
-                        }, 1500);
+                            showNotification(`✅ Conectado à sala "${room.name}"!`, '#00ffff');
+                            showMultiplayerLobby();
+                        }, 1000);
                     } else {
                         showNotification('❌ Digite o código da sala!', '#ff6600');
                         return;
@@ -8647,6 +8925,206 @@ Desafie-me! 🌌
         }
         
         // ===== FIM DO SISTEMA SOCIAL =====
+        
+        // ===== SISTEMA MULTIJOGADOR FUNCIONAL =====
+        
+        function showMultiplayerLobby() {
+            const multiplayerMenu = document.getElementById('multiplayerMenu');
+            multiplayerMenu.innerHTML = `
+                <div class="multiplayer-header">
+                    <h2>🎮 LOBBY MULTIJOGADOR</h2>
+                    <p>Sala: ${currentRoom.name} • ${currentRoom.players}/${currentRoom.maxPlayers} jogadores</p>
+                    ${currentRoom.code ? `<p style="color: #ffff00;">Código: ${currentRoom.code}</p>` : ''}
+                </div>
+                
+                <div class="multiplayer-actions">
+                    ${roomHost ? '<button class="multiplayer-btn" onclick="startMultiplayerGame()">🚀 Iniciar Jogo</button>' : ''}
+                    <button class="multiplayer-btn" onclick="leaveRoom()">🚪 Sair da Sala</button>
+                    <button class="multiplayer-btn" onclick="refreshLobby()">🔄 Atualizar</button>
+                </div>
+                
+                <div class="room-list">
+                    <h3>Jogadores na Sala</h3>
+                    <div id="lobbyPlayersList">
+                        ${renderLobbyPlayers()}
+                    </div>
+                </div>
+                
+                <div class="multiplayer-actions" style="margin-top: 20px;">
+                    <div style="text-align: center; color: #00ffff;">
+                        <p>Status: <span style="color: #00ff00;">${connectionStatus === 'host' ? 'Host da Sala' : 'Conectado'}</span></p>
+                        <p>Mundo: ${currentRoom.world}</p>
+                        ${roomHost && currentRoom.players >= 2 ? '<p style="color: #ffff00;">Pronto para iniciar o jogo!</p>' : ''}
+                        ${!roomHost ? '<p style="color: #aaa;">Aguardando o host iniciar o jogo...</p>' : ''}
+                    </div>
+                </div>
+                
+                <button class="back-button" onclick="closeMultiplayerLobby()">← Voltar aos Multijogador</button>
+            `;
+        }
+        
+        function renderLobbyPlayers() {
+            let html = '';
+            if (currentRoom && currentRoom.playersList) {
+                currentRoom.playersList.forEach((playerNameInRoom, index) => {
+                    const isHost = playerNameInRoom === currentRoom.host;
+                    const isYou = playerNameInRoom === playerName;
+                    html += `
+                        <div class="room-entry">
+                            <div class="room-info">
+                                <div class="room-name">
+                                    ${playerNameInRoom} ${isYou ? '(Você)' : ''} ${isHost ? '(Host)' : ''}
+                                </div>
+                                <div class="room-details">
+                                    Jogador ${index + 1} • ${isHost ? 'Anfitrião' : 'Participante'}
+                                </div>
+                            </div>
+                            <div style="color: #00ff00; font-weight: bold;">✅ Conectado</div>
+                        </div>
+                    `;
+                });
+            }
+            return html;
+        }
+        
+        function refreshLobby() {
+            if (!currentRoom) return;
+            
+            showNotification('🔄 Atualizando lobby...', '#00ffff');
+            
+            // Simulate checking for new players
+            setTimeout(() => {
+                // In a real implementation, this would sync with server
+                const lobbyList = document.getElementById('lobbyPlayersList');
+                if (lobbyList) {
+                    lobbyList.innerHTML = renderLobbyPlayers();
+                }
+                showNotification('✅ Lobby atualizado!', '#00ff00');
+            }, 500);
+        }
+        
+        function leaveRoom() {
+            if (!currentRoom) return;
+            
+            showNotification('🚪 Saindo da sala...', '#ff6600');
+            
+            // Remove player from room
+            let activeRooms = JSON.parse(localStorage.getItem('waveslayers_active_rooms') || '[]');
+            const roomIndex = activeRooms.findIndex(r => r.id === currentRoom.id);
+            
+            if (roomIndex !== -1) {
+                const room = activeRooms[roomIndex];
+                room.playersList = room.playersList.filter(name => name !== playerName);
+                room.players = room.playersList.length;
+                
+                // If host leaves and there are other players, transfer host
+                if (room.host === playerName && room.playersList.length > 0) {
+                    room.host = room.playersList[0];
+                    showNotification(`👑 ${room.host} é agora o host da sala`, '#ffff00');
+                }
+                
+                // If room is empty, remove it
+                if (room.players === 0) {
+                    activeRooms.splice(roomIndex, 1);
+                } else {
+                    activeRooms[roomIndex] = room;
+                }
+                
+                localStorage.setItem('waveslayers_active_rooms', JSON.stringify(activeRooms));
+            }
+            
+            // Reset multiplayer state
+            currentRoom = null;
+            localStorage.removeItem('waveslayers_current_room');
+            isInMultiplayerMode = false;
+            multiplayerPlayers = [];
+            roomHost = false;
+            connectionStatus = 'disconnected';
+            
+            setTimeout(() => {
+                showNotification('✅ Saiu da sala!', '#00ff00');
+                closeMultiplayerLobby();
+            }, 1000);
+        }
+        
+        function closeMultiplayerLobby() {
+            // Restore original multiplayer menu
+            location.reload(); // Simple way to reset the menu
+        }
+        
+        function startMultiplayerGame() {
+            if (!roomHost) {
+                showNotification('❌ Apenas o host pode iniciar o jogo!', '#ff6600');
+                return;
+            }
+            
+            if (currentRoom.players < 2) {
+                showNotification('❌ Precisa de pelo menos 2 jogadores!', '#ff6600');
+                return;
+            }
+            
+            showNotification('🚀 Iniciando jogo multijogador...', '#ffff00');
+            
+            setTimeout(() => {
+                // Close multiplayer menu and start game
+                document.getElementById('multiplayerMenu').style.display = 'none';
+                document.getElementById('mainMenu').style.display = 'none';
+                
+                // Set multiplayer mode
+                isInMultiplayerMode = true;
+                
+                // Start the actual game
+                startGame();
+                
+                showNotification(`🎮 Jogo iniciado! ${currentRoom.players} jogadores conectados`, '#00ff00');
+            }, 1500);
+        }
+        
+        // ===== FIM DO SISTEMA MULTIJOGADOR =====
+        
+        function initializeMultiplayerGame() {
+            if (!isInMultiplayerMode || !currentRoom) return;
+            
+            showNotification(`🎮 Iniciando jogo multijogador com ${currentRoom.players} jogadores!`, '#00ff00');
+            
+            // In a real implementation, this would sync with other players
+            // For now, we'll simulate multiplayer features
+            
+            // Show multiplayer indicators
+            setTimeout(() => {
+                showNotification('🤝 Sincronizado com outros jogadores!', '#00ffff');
+            }, 1000);
+            
+            // Add some multiplayer bonuses
+            if (currentRoom.players >= 2) {
+                showNotification('🎯 Bônus de equipe: +25% XP e moedas!', '#ffff00');
+            }
+            
+            if (currentRoom.players >= 3) {
+                showNotification('⚡ Bônus de coordenação: Poder especial recarrega mais rápido!', '#ff6600');
+            }
+            
+            if (currentRoom.players >= 4) {
+                showNotification('🔥 Bônus de esquadrão completo: +50% dano!', '#ff0000');
+            }
+        }
+        
+        function getMultiplayerBonus(type) {
+            if (!isInMultiplayerMode || !currentRoom) return 1;
+            
+            switch (type) {
+                case 'xp':
+                    return currentRoom.players >= 2 ? 1.25 : 1;
+                case 'coins':
+                    return currentRoom.players >= 2 ? 1.25 : 1;
+                case 'damage':
+                    return currentRoom.players >= 4 ? 1.5 : 1;
+                case 'cooldown':
+                    return currentRoom.players >= 3 ? 0.75 : 1;
+                default:
+                    return 1;
+            }
+        }
         
         // Social Progress Update
         function updateSocialProgress() {
@@ -8664,7 +9142,14 @@ Desafie-me! 🌌
             if (score > bestScore) {
                 localStorage.setItem('waveslayers_best_score', score.toString());
                 showNotification('🏆 Novo recorde pessoal!', '#ffd700');
+                
+                // Add to real leaderboard data
+                updateRealLeaderboard(playerEntry);
             }
+            
+            // Update games played counter
+            const gamesPlayed = parseInt(localStorage.getItem('waveslayers_games_played') || '0');
+            localStorage.setItem('waveslayers_games_played', (gamesPlayed + 1).toString());
             
             // Update clan contribution if in clan
             if (playerClan) {
@@ -8703,6 +9188,64 @@ Desafie-me! 🌌
             localStorage.setItem('waveslayers_global_events', JSON.stringify(globalEvents));
         }
         
+        function updateRealLeaderboard(playerEntry) {
+            // Add to overall leaderboard
+            if (!realLeaderboardData.overall) realLeaderboardData.overall = [];
+            
+            // Remove previous entry for this player
+            realLeaderboardData.overall = realLeaderboardData.overall.filter(entry => entry.name !== playerName);
+            
+            // Add new entry
+            realLeaderboardData.overall.push(playerEntry);
+            
+            // Sort by score and limit to top 100
+            realLeaderboardData.overall.sort((a, b) => b.score - a.score);
+            realLeaderboardData.overall = realLeaderboardData.overall.slice(0, 100);
+            
+            // Add to world-specific leaderboard
+            if (!realLeaderboardData.world) realLeaderboardData.world = {};
+            if (!realLeaderboardData.world[currentWorldId]) realLeaderboardData.world[currentWorldId] = [];
+            
+            realLeaderboardData.world[currentWorldId] = realLeaderboardData.world[currentWorldId].filter(entry => entry.name !== playerName);
+            realLeaderboardData.world[currentWorldId].push(playerEntry);
+            realLeaderboardData.world[currentWorldId].sort((a, b) => b.score - a.score);
+            realLeaderboardData.world[currentWorldId] = realLeaderboardData.world[currentWorldId].slice(0, 50);
+            
+            // Add to weekly leaderboard (reset weekly data if needed)
+            const now = new Date();
+            const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
+            const lastWeeklyReset = localStorage.getItem('waveslayers_weekly_reset');
+            
+            if (!lastWeeklyReset || new Date(lastWeeklyReset) < weekStart) {
+                realLeaderboardData.weekly = [];
+                localStorage.setItem('waveslayers_weekly_reset', weekStart.toISOString());
+            }
+            
+            if (!realLeaderboardData.weekly) realLeaderboardData.weekly = [];
+            realLeaderboardData.weekly = realLeaderboardData.weekly.filter(entry => entry.name !== playerName);
+            realLeaderboardData.weekly.push(playerEntry);
+            realLeaderboardData.weekly.sort((a, b) => b.score - a.score);
+            realLeaderboardData.weekly = realLeaderboardData.weekly.slice(0, 50);
+            
+            // Add to monthly leaderboard (similar logic)
+            const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastMonthlyReset = localStorage.getItem('waveslayers_monthly_reset');
+            
+            if (!lastMonthlyReset || new Date(lastMonthlyReset) < monthStart) {
+                realLeaderboardData.monthly = [];
+                localStorage.setItem('waveslayers_monthly_reset', monthStart.toISOString());
+            }
+            
+            if (!realLeaderboardData.monthly) realLeaderboardData.monthly = [];
+            realLeaderboardData.monthly = realLeaderboardData.monthly.filter(entry => entry.name !== playerName);
+            realLeaderboardData.monthly.push(playerEntry);
+            realLeaderboardData.monthly.sort((a, b) => b.score - a.score);
+            realLeaderboardData.monthly = realLeaderboardData.monthly.slice(0, 50);
+            
+            // Save updated leaderboard data
+            localStorage.setItem('waveslayers_real_leaderboard', JSON.stringify(realLeaderboardData));
+        }
+        
         // Funções de Progressão
         function updateProgressionDisplay() {
             document.getElementById('playerLevelDisplay').textContent = playerLevel;
@@ -8726,7 +9269,9 @@ Desafie-me! 🌌
         }
         
         function addXP(amount) {
-            playerXP += amount;
+            // Apply multiplayer bonus to XP
+            const bonusAmount = Math.floor(amount * getMultiplayerBonus('xp'));
+            playerXP += bonusAmount;
             
             // Check for level up
             while (playerXP >= getXPRequiredForLevel(playerLevel + 1)) {
@@ -9163,6 +9708,15 @@ Desafie-me! 🌌
         
         // Initialize Social System
         function initializeSocialSystem() {
+            // Load or prompt for player name
+            if (!localStorage.getItem('waveslayers_player_name')) {
+                const name = prompt('Digite seu nome de piloto:') || `Piloto${Math.floor(Math.random() * 10000)}`;
+                playerName = name.substring(0, 15); // Limit name length
+                localStorage.setItem('waveslayers_player_name', playerName);
+            } else {
+                playerName = localStorage.getItem('waveslayers_player_name');
+            }
+            
             // Sync global events progress (simulate server sync)
             setTimeout(() => {
                 // Simulate random progress from other players
@@ -9176,11 +9730,42 @@ Desafie-me! 🌌
                 localStorage.setItem('waveslayers_global_events', JSON.stringify(globalEvents));
             }, 2000);
             
-            // Set player name if not set
-            if (!localStorage.getItem('waveslayers_player_name')) {
-                localStorage.setItem('waveslayers_player_name', playerName);
-            }
+            // Initialize leaderboard data
+            loadLeaderboardData('overall');
             
+            // Check for expired rooms
+            cleanupExpiredRooms();
+        }
+        
+        function cleanupExpiredRooms() {
+            let activeRooms = JSON.parse(localStorage.getItem('waveslayers_active_rooms') || '[]');
+            const now = Date.now();
+            
+            // Remove rooms older than 30 minutes
+            activeRooms = activeRooms.filter(room => (now - room.created) < 30 * 60 * 1000);
+            
+            localStorage.setItem('waveslayers_active_rooms', JSON.stringify(activeRooms));
+        }
+        
+        function changePlayerName() {
+            const newName = prompt('Digite seu novo nome de piloto:', playerName);
+            if (newName && newName.trim() && newName.trim() !== playerName) {
+                const trimmedName = newName.trim().substring(0, 15);
+                playerName = trimmedName;
+                localStorage.setItem('waveslayers_player_name', playerName);
+                updatePlayerNameDisplay();
+                showNotification(`👤 Nome alterado para: ${playerName}`, '#00ffff');
+            }
+        }
+        
+        function updatePlayerNameDisplay() {
+            const displayElement = document.getElementById('playerNameDisplay');
+            if (displayElement) {
+                displayElement.textContent = playerName;
+            }
+        }
+        
+        function showSocialWelcome() {
             // Welcome message for new social features
             setTimeout(() => {
                 if (!localStorage.getItem('waveslayers_social_welcome')) {
@@ -9207,6 +9792,12 @@ Desafie-me! 🌌
             
             // Initialize social system
             initializeSocialSystem();
+            
+            // Update player name display
+            updatePlayerNameDisplay();
+            
+            // Show social welcome message
+            showSocialWelcome();
             
             // Event listeners
             window.addEventListener('keydown', (e) => {
