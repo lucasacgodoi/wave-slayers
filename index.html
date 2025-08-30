@@ -1708,6 +1708,626 @@
                 transform: translate(-50%, -50%) scale(1); 
             }
         }
+
+        /* Social System Menus */
+        #leaderboardMenu, #clanMenu, #communityEventsMenu, #multiplayerMenu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 12, 24, 0.95) 0%, rgba(0, 20, 40, 0.95) 100%);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            z-index: 200;
+            border-radius: 12px;
+            overflow-y: auto;
+        }
+
+        /* Leaderboard Styles */
+        .leaderboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .leaderboard-header h2 {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .leaderboard-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .leaderboard-tab {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: #00ffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .leaderboard-tab.active {
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 20px #00ffff;
+        }
+
+        .leaderboard-tab:hover {
+            background: rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        .leaderboard-content {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 255, 255, 0.05);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .leaderboard-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #00ffff;
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-entry:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .leaderboard-entry.player-entry {
+            border-left-color: #ff6600;
+            background: rgba(255, 102, 0, 0.1);
+        }
+
+        .leaderboard-entry.top-3 {
+            border-left-width: 6px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .entry-rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #00ffff;
+            min-width: 60px;
+        }
+
+        .entry-rank.gold { color: #ffd700; }
+        .entry-rank.silver { color: #c0c0c0; }
+        .entry-rank.bronze { color: #cd7f32; }
+
+        .entry-player {
+            flex: 1;
+            margin: 0 20px;
+        }
+
+        .entry-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .entry-details {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .entry-score {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        /* Clan System Styles */
+        .clan-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .clan-header h2 {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6600, #ffaa00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .clan-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .clan-action-btn {
+            background: rgba(255, 102, 0, 0.1);
+            border: 2px solid #ff6600;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: #ff6600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', monospace;
+            font-weight: bold;
+        }
+
+        .clan-action-btn:hover {
+            background: #ff6600;
+            color: #000;
+            box-shadow: 0 0 20px #ff6600;
+        }
+
+        .clan-info {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 102, 0, 0.05);
+            border: 2px solid #ff6600;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .clan-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #ff6600;
+            margin-bottom: 10px;
+        }
+
+        .clan-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .clan-stat {
+            background: rgba(255, 102, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .clan-stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        .clan-stat-label {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .clan-members {
+            margin-top: 20px;
+        }
+
+        .clan-member {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(255, 102, 0, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #ff6600;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        .member-rank {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .member-contribution {
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        /* Community Events Styles */
+        .events-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .events-header h2 {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .global-progress {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 0, 255, 0.05);
+            border: 2px solid #ff00ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .global-event {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 0, 255, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #ff00ff;
+        }
+
+        .event-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff00ff;
+            margin-bottom: 10px;
+        }
+
+        .event-description {
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .event-progress {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .event-progress-fill {
+            height: 20px;
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .event-reward {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid #ffff00;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            color: #ffff00;
+        }
+
+        .participate-btn {
+            background: rgba(255, 0, 255, 0.1);
+            border: 2px solid #ff00ff;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: #ff00ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', monospace;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .participate-btn:hover {
+            background: #ff00ff;
+            color: #000;
+            box-shadow: 0 0 20px #ff00ff;
+        }
+
+        /* Multiplayer Styles */
+        .multiplayer-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .multiplayer-header h2 {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ff00, #00ffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .multiplayer-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .multiplayer-btn {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: #00ff00;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', monospace;
+            font-weight: bold;
+        }
+
+        .multiplayer-btn:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 20px #00ff00;
+        }
+
+        .room-list {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 255, 0, 0.05);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .room-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(0, 255, 0, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #00ff00;
+            transition: all 0.3s ease;
+        }
+
+        .room-entry:hover {
+            background: rgba(0, 255, 0, 0.2);
+            transform: translateX(5px);
+        }
+
+        .room-info {
+            flex: 1;
+        }
+
+        .room-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #00ff00;
+            margin-bottom: 5px;
+        }
+
+        .room-details {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .room-join-btn {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            padding: 8px 16px;
+            border-radius: 15px;
+            color: #00ff00;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .room-join-btn:hover {
+            background: #00ff00;
+            color: #000;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a0033 50%, #000d1a 100%);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 30px #00ffff;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5em;
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-label {
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .form-input, .form-select {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            padding: 10px;
+            color: #fff;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: #00ffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .modal-btn:hover {
+            background: #00ffff;
+            color: #000;
+        }
+
+        .modal-btn.cancel {
+            border-color: #ff6600;
+            color: #ff6600;
+        }
+
+        .modal-btn.cancel:hover {
+            background: #ff6600;
+            color: #000;
+        }
+
+        /* Share System Styles */
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .share-btn {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: #00ffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', monospace;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .share-btn:hover {
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 15px #00ffff;
+        }
+
+        .share-btn.twitter { border-color: #1da1f2; color: #1da1f2; }
+        .share-btn.twitter:hover { background: #1da1f2; }
+
+        .share-btn.facebook { border-color: #4267B2; color: #4267B2; }
+        .share-btn.facebook:hover { background: #4267B2; }
+
+        .share-btn.discord { border-color: #7289DA; color: #7289DA; }
+        .share-btn.discord:hover { background: #7289DA; }
+
+        /* Loading States */
+        .loading-spinner-inline {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Responsive adjustments for social menus */
+        @media (max-width: 768px) {
+            .leaderboard-tabs, .clan-actions, .multiplayer-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .leaderboard-tab, .clan-action-btn, .multiplayer-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .leaderboard-entry, .room-entry {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .clan-stats {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1728,6 +2348,10 @@
                     <button class="menu-button" onclick="openProgressionMenu()">⭐ Progressão</button>
                     <button class="menu-button" onclick="openAchievementsMenu()">🏆 Conquistas</button>
                     <button class="menu-button" onclick="openBattlepassMenu()">🎯 Battle Pass</button>
+                    <button class="menu-button" onclick="openLeaderboardMenu()">🏆 Rankings</button>
+                    <button class="menu-button" onclick="openClanMenu()">⚔️ Clãs</button>
+                    <button class="menu-button" onclick="openCommunityEventsMenu()">🌟 Eventos</button>
+                    <button class="menu-button" onclick="openMultiplayerMenu()">🎮 Multijogador</button>
                     <button class="menu-button" onclick="showInstructions()">📋 Controles</button>
                 </div>
             </div>
@@ -1928,6 +2552,242 @@
             <button class="back-button" onclick="closeShipCustomizationMenu()">← Voltar ao Menu</button>
         </div>
 
+        <!-- Menu de Rankings -->
+        <div id="leaderboardMenu">
+            <div class="leaderboard-header">
+                <h2>🏆 RANKINGS GLOBAIS</h2>
+                <p>Competição entre os melhores pilotos da galáxia</p>
+            </div>
+            
+            <div class="leaderboard-tabs">
+                <div class="leaderboard-tab active" onclick="switchLeaderboardTab('overall')">Geral</div>
+                <div class="leaderboard-tab" onclick="switchLeaderboardTab('weekly')">Semanal</div>
+                <div class="leaderboard-tab" onclick="switchLeaderboardTab('monthly')">Mensal</div>
+                <div class="leaderboard-tab" onclick="switchLeaderboardTab('world')">Por Mundo</div>
+            </div>
+            
+            <div class="leaderboard-content" id="leaderboardContent">
+                <div class="loading-spinner-inline"></div>
+                <p>Carregando rankings...</p>
+            </div>
+            
+            <div class="player-stats" style="margin: 20px 0;">
+                <div class="stat-card">
+                    <span class="stat-value" id="personalBestScore">0</span>
+                    <div class="stat-label">Melhor Pontuação</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="personalRank">#999</span>
+                    <div class="stat-label">Posição Global</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="personalGamesPlayed">0</span>
+                    <div class="stat-label">Jogos Jogados</div>
+                </div>
+            </div>
+            
+            <div class="share-buttons">
+                <button class="share-btn twitter" onclick="shareScore('twitter')">
+                    🐦 Compartilhar no Twitter
+                </button>
+                <button class="share-btn facebook" onclick="shareScore('facebook')">
+                    📘 Compartilhar no Facebook
+                </button>
+                <button class="share-btn discord" onclick="shareScore('discord')">
+                    💬 Compartilhar no Discord
+                </button>
+            </div>
+            
+            <button class="back-button" onclick="closeLeaderboardMenu()">← Voltar ao Menu</button>
+        </div>
+
+        <!-- Menu de Clãs -->
+        <div id="clanMenu">
+            <div class="clan-header">
+                <h2>⚔️ SISTEMA DE CLÃS</h2>
+                <p>Una-se a outros pilotos e domine a galáxia</p>
+            </div>
+            
+            <div class="clan-actions">
+                <button class="clan-action-btn" onclick="createClan()">Criar Clã</button>
+                <button class="clan-action-btn" onclick="searchClans()">Buscar Clãs</button>
+                <button class="clan-action-btn" onclick="joinClanByCode()">Entrar com Código</button>
+                <button class="clan-action-btn" onclick="generateClanInviteCode()">Gerar Convite</button>
+            </div>
+            
+            <div id="clanInfo" class="clan-info" style="display: none;">
+                <div class="clan-name" id="clanNameDisplay">Sem Clã</div>
+                <div class="clan-stats">
+                    <div class="clan-stat">
+                        <div class="clan-stat-value" id="clanMembers">0</div>
+                        <div class="clan-stat-label">Membros</div>
+                    </div>
+                    <div class="clan-stat">
+                        <div class="clan-stat-value" id="clanLevel">1</div>
+                        <div class="clan-stat-label">Nível do Clã</div>
+                    </div>
+                    <div class="clan-stat">
+                        <div class="clan-stat-value" id="clanTrophies">0</div>
+                        <div class="clan-stat-label">Troféus</div>
+                    </div>
+                    <div class="clan-stat">
+                        <div class="clan-stat-value" id="clanRank">#999</div>
+                        <div class="clan-stat-label">Ranking</div>
+                    </div>
+                </div>
+                
+                <div class="clan-members">
+                    <h3>Membros do Clã</h3>
+                    <div id="clanMembersList"></div>
+                </div>
+            </div>
+            
+            <button class="back-button" onclick="closeClanMenu()">← Voltar ao Menu</button>
+        </div>
+
+        <!-- Menu de Eventos Comunitários -->
+        <div id="communityEventsMenu">
+            <div class="events-header">
+                <h2>🌟 EVENTOS COMUNITÁRIOS</h2>
+                <p>Objetivos globais que toda a comunidade deve alcançar</p>
+            </div>
+            
+            <div class="global-progress">
+                <div id="globalEventsList">
+                    <div class="global-event">
+                        <div class="event-title">🚀 Invasão Galáctica</div>
+                        <div class="event-description">
+                            Todos os jogadores devem eliminar 1.000.000 de inimigos juntos!
+                        </div>
+                        <div class="event-progress">
+                            <div class="event-progress-fill" style="width: 45%" id="globalEvent1Progress">
+                                450.000 / 1.000.000
+                            </div>
+                        </div>
+                        <div class="event-reward">
+                            🎁 Recompensa: 5000 moedas + Skin especial para todos
+                        </div>
+                        <button class="participate-btn" onclick="participateInEvent('invasion')">
+                            Participar do Evento
+                        </button>
+                    </div>
+                    
+                    <div class="global-event">
+                        <div class="event-title">💎 Caça ao Tesouro Cósmico</div>
+                        <div class="event-description">
+                            Colete 500.000 power-ups em conjunto para desbloquear novos mundos!
+                        </div>
+                        <div class="event-progress">
+                            <div class="event-progress-fill" style="width: 23%" id="globalEvent2Progress">
+                                115.000 / 500.000
+                            </div>
+                        </div>
+                        <div class="event-reward">
+                            🎁 Recompensa: Mundo secreto + 10 gemas para todos
+                        </div>
+                        <button class="participate-btn" onclick="participateInEvent('treasure')">
+                            Participar do Evento
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="back-button" onclick="closeCommunityEventsMenu()">← Voltar ao Menu</button>
+        </div>
+
+        <!-- Menu Multijogador -->
+        <div id="multiplayerMenu">
+            <div class="multiplayer-header">
+                <h2>🎮 MULTIJOGADOR</h2>
+                <p>Jogue com até 4 amigos em modo cooperativo</p>
+            </div>
+            
+            <div class="multiplayer-actions">
+                <button class="multiplayer-btn" onclick="createRoom()">Criar Sala</button>
+                <button class="multiplayer-btn" onclick="joinRoomByCode()">Entrar com Código</button>
+                <button class="multiplayer-btn" onclick="refreshRoomList()">Atualizar Salas</button>
+            </div>
+            
+            <div class="room-list">
+                <h3>Salas Públicas Disponíveis</h3>
+                <div id="roomListContainer">
+                    <div class="room-entry">
+                        <div class="room-info">
+                            <div class="room-name">Sala dos Veteranos</div>
+                            <div class="room-details">2/4 jogadores • Terra • Público</div>
+                        </div>
+                        <button class="room-join-btn" onclick="joinRoom('room1')">Entrar</button>
+                    </div>
+                    
+                    <div class="room-entry">
+                        <div class="room-info">
+                            <div class="room-name">Exploradores Espaciais</div>
+                            <div class="room-details">1/3 jogadores • Marte • Público</div>
+                        </div>
+                        <button class="room-join-btn" onclick="joinRoom('room2')">Entrar</button>
+                    </div>
+                    
+                    <div class="room-entry">
+                        <div class="room-info">
+                            <div class="room-name">Desafio Extremo</div>
+                            <div class="room-details">3/4 jogadores • Nêmesis • Público</div>
+                        </div>
+                        <button class="room-join-btn" onclick="joinRoom('room3')">Entrar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="back-button" onclick="closeMultiplayerMenu()">← Voltar ao Menu</button>
+        </div>
+
+        <!-- Modal para criar/entrar em salas -->
+        <div id="modalOverlay" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Criar Nova Sala</h3>
+                </div>
+                
+                <div class="modal-form">
+                    <div class="form-group">
+                        <label class="form-label">Nome da Sala</label>
+                        <input type="text" class="form-input" id="roomNameInput" placeholder="Digite o nome da sala">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Privacidade</label>
+                        <select class="form-select" id="roomPrivacySelect">
+                            <option value="public">Pública</option>
+                            <option value="private">Privada</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Máximo de Jogadores</label>
+                        <select class="form-select" id="roomMaxPlayersSelect">
+                            <option value="2">2 Jogadores</option>
+                            <option value="3">3 Jogadores</option>
+                            <option value="4">4 Jogadores</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="codeInputGroup" style="display: none;">
+                        <label class="form-label">Código da Sala</label>
+                        <input type="text" class="form-input" id="roomCodeInput" placeholder="Digite o código da sala">
+                    </div>
+                    
+                    <div class="form-group" id="clanNameGroup" style="display: none;">
+                        <label class="form-label">Nome do Clã</label>
+                        <input type="text" class="form-input" id="clanNameInput" placeholder="Digite o nome do clã">
+                    </div>
+                </div>
+                
+                <div class="modal-buttons">
+                    <button class="modal-btn" id="modalConfirmBtn" onclick="confirmModalAction()">Confirmar</button>
+                    <button class="modal-btn cancel" onclick="closeModal()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Loading Screen -->
         <div id="loadingScreen">
             <div class="loading-spinner"></div>
@@ -2054,6 +2914,76 @@
         let unlockedSkins = JSON.parse(localStorage.getItem('waveslayers_unlocked_skins') || '["default", "blue", "red"]');
         let currentEffectId = localStorage.getItem('waveslayers_current_effect') || 'none';
         let unlockedEffects = JSON.parse(localStorage.getItem('waveslayers_unlocked_effects') || '["none"]');
+        
+        // Social System Variables
+        let playerName = localStorage.getItem('waveslayers_player_name') || `Piloto${Math.floor(Math.random() * 10000)}`;
+        let playerClan = JSON.parse(localStorage.getItem('waveslayers_player_clan') || 'null');
+        let leaderboardData = {
+            overall: [],
+            weekly: [],
+            monthly: [],
+            world: {}
+        };
+        let multiplayerRooms = [];
+        let currentRoom = null;
+        let globalEvents = JSON.parse(localStorage.getItem('waveslayers_global_events') || JSON.stringify({
+            invasion: { progress: 450000, target: 1000000, participating: false },
+            treasure: { progress: 115000, target: 500000, participating: false }
+        }));
+        
+        // Current modal context
+        let currentModalAction = '';
+        
+        // Mock data for social features (simulated online data)
+        const mockLeaderboardData = {
+            overall: [
+                { rank: 1, name: "CosmicHunter", score: 2580000, level: 47, world: "Nêmesis" },
+                { rank: 2, name: "StarDestroyer", score: 2340000, level: 43, world: "Vórtice" },
+                { rank: 3, name: "GalaxyMaster", score: 2100000, level: 41, world: "Nêmesis" },
+                { rank: 4, name: "NebulaWarrior", score: 1950000, level: 38, world: "Titan" },
+                { rank: 5, name: "VoidSlayer", score: 1800000, level: 36, world: "Titan" },
+                { rank: 6, name: "PhotonBlaster", score: 1650000, level: 34, world: "Jupiter" },
+                { rank: 7, name: "SolarFlare", score: 1500000, level: 32, world: "Jupiter" },
+                { rank: 8, name: "DarkMatter", score: 1350000, level: 30, world: "Marte" },
+                { rank: 9, name: "LunarEclipse", score: 1200000, level: 28, world: "Marte" },
+                { rank: 10, name: "MeteorStorm", score: 1050000, level: 26, world: "Terra" }
+            ],
+            weekly: [
+                { rank: 1, name: "WeeklyChamp", score: 850000, level: 35, world: "Vórtice" },
+                { rank: 2, name: "SpeedRunner", score: 780000, level: 32, world: "Titan" },
+                { rank: 3, name: "FastPilot", score: 720000, level: 30, world: "Jupiter" }
+            ],
+            monthly: [
+                { rank: 1, name: "MonthlyKing", score: 3200000, level: 52, world: "Nêmesis" },
+                { rank: 2, name: "ConsistentPlayer", score: 2900000, level: 48, world: "Vórtice" },
+                { rank: 3, name: "RegularGamer", score: 2600000, level: 44, world: "Titan" }
+            ],
+            world: {
+                earth: [
+                    { rank: 1, name: "EarthDefender", score: 950000, level: 25, world: "Terra" },
+                    { rank: 2, name: "HomePlanet", score: 820000, level: 22, world: "Terra" }
+                ],
+                mars: [
+                    { rank: 1, name: "RedPlanetMaster", score: 1450000, level: 31, world: "Marte" },
+                    { rank: 2, name: "MarsColonist", score: 1280000, level: 29, world: "Marte" }
+                ]
+            }
+        };
+        
+        const mockClanData = {
+            name: "Guardiões da Galáxia",
+            level: 15,
+            members: 42,
+            trophies: 125000,
+            rank: 23,
+            membersList: [
+                { name: "CosmicLeader", rank: "Líder", contribution: 45000 },
+                { name: "StarViceroy", rank: "Vice-Líder", contribution: 38000 },
+                { name: "GalaxyVeteran", rank: "Veterano", contribution: 32000 },
+                { name: "NebulaFighter", rank: "Membro", contribution: 28000 },
+                { name: "VoidExplorer", rank: "Membro", contribution: 25000 }
+            ]
+        };
         
         // Menu animation objects
         let menuStars = [];
@@ -6201,8 +7131,15 @@
                             
                             const scoreGained = enemy.value;
                             score += scoreGained;
-                            coins += enemy.value;
-                            coinsThisRound += enemy.value;
+                            
+                            // Apply clan bonus to coins (10% bonus if in clan)
+                            let coinGain = enemy.value;
+                            if (playerClan) {
+                                coinGain = Math.floor(coinGain * 1.1);
+                            }
+                            
+                            coins += coinGain;
+                            coinsThisRound += coinGain;
                             
                             // Check if boss defeated
                             if (enemy.typeData.isBoss) {
@@ -6469,6 +7406,9 @@
             updateChallenges('survival', survivalTime);
             updateChallenges('score', score);
             
+            // Update social system data
+            updateSocialProgress();
+            
             checkAchievements();
             saveProgressionData();
             
@@ -6517,6 +7457,10 @@
             isPaused = false;
             score = 0;
             level = 1;
+            
+            // Increment games played counter
+            const gamesPlayed = parseInt(localStorage.getItem('waveslayers_games_played') || '0') + 1;
+            localStorage.setItem('waveslayers_games_played', gamesPlayed.toString());
             
             // Reset wave system
             currentWave = 0;
@@ -7246,6 +8190,519 @@ Boa sorte, comandante! 🚀✨`);
             updateHealthBar();
         }
         
+        // ===== SISTEMA SOCIAL - FUNÇÕES =====
+        
+        // Leaderboard Functions
+        function openLeaderboardMenu() {
+            document.getElementById('leaderboardMenu').style.display = 'flex';
+            document.getElementById('mainMenu').style.display = 'none';
+            loadLeaderboardData();
+            updatePersonalStats();
+            menuAnimationRunning = false;
+        }
+        
+        function closeLeaderboardMenu() {
+            document.getElementById('leaderboardMenu').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+            initMenuAnimation();
+        }
+        
+        function switchLeaderboardTab(tabName) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.leaderboard-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            loadLeaderboardData(tabName);
+        }
+        
+        function loadLeaderboardData(category = 'overall') {
+            const content = document.getElementById('leaderboardContent');
+            content.innerHTML = '<div class="loading-spinner-inline"></div><p>Carregando rankings...</p>';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                let data = mockLeaderboardData[category] || [];
+                
+                if (category === 'world') {
+                    data = mockLeaderboardData.world[currentWorldId] || [];
+                }
+                
+                renderLeaderboard(data, category);
+            }, 1000);
+        }
+        
+        function renderLeaderboard(data, category) {
+            const content = document.getElementById('leaderboardContent');
+            let html = '';
+            
+            if (data.length === 0) {
+                html = '<p style="text-align: center; color: #aaa;">Nenhum dado disponível para esta categoria.</p>';
+            } else {
+                data.forEach((entry, index) => {
+                    const isPlayer = entry.name === playerName;
+                    const isTop3 = entry.rank <= 3;
+                    let rankClass = '';
+                    
+                    if (entry.rank === 1) rankClass = 'gold';
+                    else if (entry.rank === 2) rankClass = 'silver';
+                    else if (entry.rank === 3) rankClass = 'bronze';
+                    
+                    html += `
+                        <div class="leaderboard-entry ${isPlayer ? 'player-entry' : ''} ${isTop3 ? 'top-3' : ''}">
+                            <div class="entry-rank ${rankClass}">#${entry.rank}</div>
+                            <div class="entry-player">
+                                <div class="entry-name">${entry.name} ${isPlayer ? '(Você)' : ''}</div>
+                                <div class="entry-details">Nível ${entry.level} • ${entry.world}</div>
+                            </div>
+                            <div class="entry-score">${entry.score.toLocaleString()}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            content.innerHTML = html;
+        }
+        
+        function updatePersonalStats() {
+            const bestScore = parseInt(localStorage.getItem('waveslayers_best_score') || '0');
+            const gamesPlayed = parseInt(localStorage.getItem('waveslayers_games_played') || '0');
+            
+            document.getElementById('personalBestScore').textContent = bestScore.toLocaleString();
+            document.getElementById('personalGamesPlayed').textContent = gamesPlayed;
+            
+            // Calculate approximate rank based on best score
+            let rank = 999;
+            if (bestScore > 2500000) rank = Math.floor(Math.random() * 10) + 1;
+            else if (bestScore > 2000000) rank = Math.floor(Math.random() * 50) + 10;
+            else if (bestScore > 1500000) rank = Math.floor(Math.random() * 100) + 50;
+            else if (bestScore > 1000000) rank = Math.floor(Math.random() * 200) + 150;
+            else if (bestScore > 500000) rank = Math.floor(Math.random() * 300) + 350;
+            else if (bestScore > 100000) rank = Math.floor(Math.random() * 400) + 650;
+            
+            document.getElementById('personalRank').textContent = `#${rank}`;
+        }
+        
+        // Share Functions
+        function shareScore(platform) {
+            const bestScore = Math.max(score, parseInt(localStorage.getItem('waveslayers_best_score') || '0'));
+            const playerLv = playerLevel;
+            const world = worlds[currentWorldId]?.name || 'Terra';
+            
+            const messages = {
+                twitter: `🚀 Acabei de fazer ${bestScore.toLocaleString()} pontos no WaveSlayers! Nível ${playerLv} explorando ${world}! 🌌 #WaveSlayers #SpaceGame`,
+                facebook: `Consegui ${bestScore.toLocaleString()} pontos no WaveSlayers! Já estou no nível ${playerLv} e explorando ${world}. Que tal tentar superar minha pontuação?`,
+                discord: `\`\`\`
+🚀 WAVESLAYERS - SCORE REPORT 🚀
+Jogador: ${playerName}
+Pontuação: ${bestScore.toLocaleString()}
+Nível: ${playerLv}
+Mundo: ${world}
+Desafie-me! 🌌
+\`\`\``
+            };
+            
+            const urls = {
+                twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(messages.twitter)}`,
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=https://github.com&quote=${encodeURIComponent(messages.facebook)}`,
+                discord: '' // Discord doesn't support direct sharing URLs
+            };
+            
+            if (platform === 'discord') {
+                navigator.clipboard.writeText(messages.discord).then(() => {
+                    showNotification('✅ Mensagem copiada para Discord!', '#7289DA');
+                }).catch(() => {
+                    showNotification('❌ Erro ao copiar mensagem', '#ff6600');
+                });
+            } else {
+                window.open(urls[platform], '_blank', 'width=600,height=400');
+                showNotification(`📤 Compartilhado no ${platform.charAt(0).toUpperCase() + platform.slice(1)}!`, '#00ffff');
+            }
+        }
+        
+        // Clan Functions
+        function openClanMenu() {
+            document.getElementById('clanMenu').style.display = 'flex';
+            document.getElementById('mainMenu').style.display = 'none';
+            loadClanInfo();
+            menuAnimationRunning = false;
+        }
+        
+        function closeClanMenu() {
+            document.getElementById('clanMenu').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+            initMenuAnimation();
+        }
+        
+        function loadClanInfo() {
+            if (playerClan) {
+                // Show clan info
+                document.getElementById('clanInfo').style.display = 'block';
+                document.getElementById('clanNameDisplay').textContent = playerClan.name;
+                document.getElementById('clanMembers').textContent = playerClan.members;
+                document.getElementById('clanLevel').textContent = playerClan.level;
+                document.getElementById('clanTrophies').textContent = playerClan.trophies.toLocaleString();
+                document.getElementById('clanRank').textContent = `#${playerClan.rank}`;
+                
+                renderClanMembers();
+            } else {
+                document.getElementById('clanInfo').style.display = 'none';
+            }
+        }
+        
+        function renderClanMembers() {
+            const container = document.getElementById('clanMembersList');
+            let html = '';
+            
+            if (playerClan && playerClan.membersList) {
+                playerClan.membersList.forEach(member => {
+                    html += `
+                        <div class="clan-member">
+                            <div class="member-info">
+                                <div class="member-name">${member.name}</div>
+                                <div class="member-rank">${member.rank}</div>
+                            </div>
+                            <div class="member-contribution">${member.contribution.toLocaleString()}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function createClan() {
+            currentModalAction = 'createClan';
+            document.getElementById('modalTitle').textContent = 'Criar Novo Clã';
+            document.getElementById('clanNameGroup').style.display = 'block';
+            document.getElementById('codeInputGroup').style.display = 'none';
+            document.getElementById('roomNameInput').style.display = 'none';
+            document.getElementById('roomPrivacySelect').style.display = 'none';
+            document.getElementById('roomMaxPlayersSelect').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+        
+        function generateClanInviteCode() {
+            if (playerClan) {
+                const inviteCode = playerClan.name.substring(0, 3).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
+                navigator.clipboard.writeText(inviteCode).then(() => {
+                    showNotification(`📋 Código de convite copiado: ${inviteCode}`, '#ff6600');
+                }).catch(() => {
+                    showNotification(`📋 Código de convite: ${inviteCode}`, '#ff6600');
+                });
+            } else {
+                showNotification('❌ Você precisa estar em um clã para gerar códigos!', '#ff6600');
+            }
+        }
+        
+        function searchClans() {
+            showNotification('🔍 Buscando clãs disponíveis...', '#ff6600');
+            // Simulate search
+            setTimeout(() => {
+                showNotification('📋 3 clãs encontrados! (Feature em desenvolvimento)', '#00ffff');
+            }, 1500);
+        }
+        
+        function joinClanByCode() {
+            currentModalAction = 'joinClan';
+            document.getElementById('modalTitle').textContent = 'Entrar em Clã';
+            document.getElementById('codeInputGroup').style.display = 'block';
+            document.getElementById('clanNameGroup').style.display = 'none';
+            document.getElementById('roomNameInput').style.display = 'none';
+            document.getElementById('roomPrivacySelect').style.display = 'none';
+            document.getElementById('roomMaxPlayersSelect').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+        
+        // Community Events Functions
+        function openCommunityEventsMenu() {
+            document.getElementById('communityEventsMenu').style.display = 'flex';
+            document.getElementById('mainMenu').style.display = 'none';
+            updateGlobalEvents();
+            menuAnimationRunning = false;
+        }
+        
+        function closeCommunityEventsMenu() {
+            document.getElementById('communityEventsMenu').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+            initMenuAnimation();
+        }
+        
+        function updateGlobalEvents() {
+            // Update progress bars based on stored data
+            const event1Progress = (globalEvents.invasion.progress / globalEvents.invasion.target) * 100;
+            const event2Progress = (globalEvents.treasure.progress / globalEvents.treasure.target) * 100;
+            
+            document.getElementById('globalEvent1Progress').style.width = `${event1Progress}%`;
+            document.getElementById('globalEvent1Progress').textContent = 
+                `${globalEvents.invasion.progress.toLocaleString()} / ${globalEvents.invasion.target.toLocaleString()}`;
+                
+            document.getElementById('globalEvent2Progress').style.width = `${event2Progress}%`;
+            document.getElementById('globalEvent2Progress').textContent = 
+                `${globalEvents.treasure.progress.toLocaleString()} / ${globalEvents.treasure.target.toLocaleString()}`;
+        }
+        
+        function participateInEvent(eventId) {
+            if (!globalEvents[eventId].participating) {
+                globalEvents[eventId].participating = true;
+                localStorage.setItem('waveslayers_global_events', JSON.stringify(globalEvents));
+                
+                const eventNames = {
+                    invasion: 'Invasão Galáctica',
+                    treasure: 'Caça ao Tesouro Cósmico'
+                };
+                
+                showNotification(`🌟 Participando do evento: ${eventNames[eventId]}!`, '#ff00ff');
+                
+                // Simulate contributing to global progress
+                setTimeout(() => {
+                    const contribution = Math.floor(Math.random() * 1000) + 500;
+                    globalEvents[eventId].progress += contribution;
+                    localStorage.setItem('waveslayers_global_events', JSON.stringify(globalEvents));
+                    updateGlobalEvents();
+                    showNotification(`🎯 Contribuição: +${contribution.toLocaleString()} ao evento!`, '#00ffff');
+                }, 2000);
+            } else {
+                showNotification('✅ Você já está participando deste evento!', '#ffff00');
+            }
+        }
+        
+        // Multiplayer Functions
+        function openMultiplayerMenu() {
+            document.getElementById('multiplayerMenu').style.display = 'flex';
+            document.getElementById('mainMenu').style.display = 'none';
+            refreshRoomList();
+            menuAnimationRunning = false;
+        }
+        
+        function closeMultiplayerMenu() {
+            document.getElementById('multiplayerMenu').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+            initMenuAnimation();
+        }
+        
+        function createRoom() {
+            currentModalAction = 'createRoom';
+            document.getElementById('modalTitle').textContent = 'Criar Nova Sala';
+            document.getElementById('roomNameInput').style.display = 'block';
+            document.getElementById('roomPrivacySelect').style.display = 'block';
+            document.getElementById('roomMaxPlayersSelect').style.display = 'block';
+            document.getElementById('codeInputGroup').style.display = 'none';
+            document.getElementById('clanNameGroup').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+        
+        function joinRoomByCode() {
+            currentModalAction = 'joinRoom';
+            document.getElementById('modalTitle').textContent = 'Entrar em Sala';
+            document.getElementById('codeInputGroup').style.display = 'block';
+            document.getElementById('roomNameInput').style.display = 'none';
+            document.getElementById('roomPrivacySelect').style.display = 'none';
+            document.getElementById('roomMaxPlayersSelect').style.display = 'none';
+            document.getElementById('clanNameGroup').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+        
+        function refreshRoomList() {
+            const container = document.getElementById('roomListContainer');
+            container.innerHTML = '<div class="loading-spinner-inline"></div><p>Atualizando lista de salas...</p>';
+            
+            // Simulate API call
+            setTimeout(() => {
+                const mockRooms = [
+                    { id: 'room1', name: 'Sala dos Veteranos', players: 2, maxPlayers: 4, world: 'Terra', privacy: 'Público' },
+                    { id: 'room2', name: 'Exploradores Espaciais', players: 1, maxPlayers: 3, world: 'Marte', privacy: 'Público' },
+                    { id: 'room3', name: 'Desafio Extremo', players: 3, maxPlayers: 4, world: 'Nêmesis', privacy: 'Público' },
+                    { id: 'room4', name: 'Iniciantes Bem-vindos', players: 2, maxPlayers: 4, world: 'Terra', privacy: 'Público' },
+                    { id: 'room5', name: 'Speed Run Challenge', players: 1, maxPlayers: 2, world: 'Jupiter', privacy: 'Público' }
+                ];
+                
+                renderRoomList(mockRooms);
+            }, 1000);
+        }
+        
+        function renderRoomList(rooms) {
+            const container = document.getElementById('roomListContainer');
+            let html = '';
+            
+            if (rooms.length === 0) {
+                html = '<p style="text-align: center; color: #aaa;">Nenhuma sala pública disponível no momento.</p>';
+            } else {
+                rooms.forEach(room => {
+                    const isFull = room.players >= room.maxPlayers;
+                    html += `
+                        <div class="room-entry">
+                            <div class="room-info">
+                                <div class="room-name">${room.name}</div>
+                                <div class="room-details">${room.players}/${room.maxPlayers} jogadores • ${room.world} • ${room.privacy}</div>
+                            </div>
+                            <button class="room-join-btn" ${isFull ? 'disabled' : ''} onclick="joinRoom('${room.id}')">
+                                ${isFull ? 'Cheia' : 'Entrar'}
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function joinRoom(roomId) {
+            showNotification('🎮 Entrando na sala...', '#00ff00');
+            
+            setTimeout(() => {
+                showNotification('✅ Conectado à sala! Aguardando outros jogadores...', '#00ffff');
+                // Here you would implement the actual multiplayer lobby
+            }, 1500);
+        }
+        
+        // Modal Functions
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+            currentModalAction = '';
+            
+            // Reset form fields
+            document.getElementById('roomNameInput').value = '';
+            document.getElementById('roomCodeInput').value = '';
+            document.getElementById('clanNameInput').value = '';
+            document.getElementById('roomPrivacySelect').value = 'public';
+            document.getElementById('roomMaxPlayersSelect').value = '4';
+        }
+        
+        function confirmModalAction() {
+            switch (currentModalAction) {
+                case 'createClan':
+                    const clanName = document.getElementById('clanNameInput').value.trim();
+                    if (clanName) {
+                        playerClan = {
+                            name: clanName,
+                            level: 1,
+                            members: 1,
+                            trophies: 0,
+                            rank: 9999,
+                            membersList: [
+                                { name: playerName, rank: 'Líder', contribution: 0 }
+                            ]
+                        };
+                        localStorage.setItem('waveslayers_player_clan', JSON.stringify(playerClan));
+                        showNotification(`⚔️ Clã "${clanName}" criado com sucesso!`, '#ff6600');
+                        loadClanInfo();
+                    } else {
+                        showNotification('❌ Digite um nome para o clã!', '#ff6600');
+                        return;
+                    }
+                    break;
+                    
+                case 'joinClan':
+                    const clanCode = document.getElementById('roomCodeInput').value.trim();
+                    if (clanCode) {
+                        // Simulate joining clan with mock data
+                        playerClan = { ...mockClanData };
+                        playerClan.membersList.push({ name: playerName, rank: 'Membro', contribution: 0 });
+                        playerClan.members++;
+                        localStorage.setItem('waveslayers_player_clan', JSON.stringify(playerClan));
+                        showNotification(`⚔️ Entrou no clã "${playerClan.name}"!`, '#ff6600');
+                        loadClanInfo();
+                    } else {
+                        showNotification('❌ Digite o código do clã!', '#ff6600');
+                        return;
+                    }
+                    break;
+                    
+                case 'createRoom':
+                    const roomName = document.getElementById('roomNameInput').value.trim();
+                    if (roomName) {
+                        const privacy = document.getElementById('roomPrivacySelect').value;
+                        const maxPlayers = document.getElementById('roomMaxPlayersSelect').value;
+                        const roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+                        
+                        showNotification(`🎮 Sala "${roomName}" criada!`, '#00ff00');
+                        if (privacy === 'private') {
+                            showNotification(`🔐 Código da sala: ${roomCode}`, '#ffff00');
+                        }
+                    } else {
+                        showNotification('❌ Digite um nome para a sala!', '#ff6600');
+                        return;
+                    }
+                    break;
+                    
+                case 'joinRoom':
+                    const roomCode2 = document.getElementById('roomCodeInput').value.trim();
+                    if (roomCode2) {
+                        showNotification(`🎮 Tentando entrar na sala: ${roomCode2}`, '#00ff00');
+                        setTimeout(() => {
+                            showNotification('✅ Conectado à sala privada!', '#00ffff');
+                        }, 1500);
+                    } else {
+                        showNotification('❌ Digite o código da sala!', '#ff6600');
+                        return;
+                    }
+                    break;
+            }
+            
+            closeModal();
+        }
+        
+        // ===== FIM DO SISTEMA SOCIAL =====
+        
+        // Social Progress Update
+        function updateSocialProgress() {
+            // Update leaderboard entry (simulate sending to server)
+            const playerEntry = {
+                name: playerName,
+                score: score,
+                level: playerLevel,
+                world: worlds[currentWorldId].name,
+                timestamp: Date.now()
+            };
+            
+            // Store best score for sharing
+            const bestScore = parseInt(localStorage.getItem('waveslayers_best_score') || '0');
+            if (score > bestScore) {
+                localStorage.setItem('waveslayers_best_score', score.toString());
+                showNotification('🏆 Novo recorde pessoal!', '#ffd700');
+            }
+            
+            // Update clan contribution if in clan
+            if (playerClan) {
+                const contribution = Math.floor(score / 100);
+                const memberIndex = playerClan.membersList.findIndex(m => m.name === playerName);
+                if (memberIndex !== -1) {
+                    playerClan.membersList[memberIndex].contribution += contribution;
+                    playerClan.trophies += contribution;
+                    localStorage.setItem('waveslayers_player_clan', JSON.stringify(playerClan));
+                }
+            }
+            
+            // Update global events if participating
+            Object.keys(globalEvents).forEach(eventId => {
+                if (globalEvents[eventId].participating) {
+                    const eventContribution = Math.floor(score / 50);
+                    globalEvents[eventId].progress += eventContribution;
+                    
+                    // Check if event completed
+                    if (globalEvents[eventId].progress >= globalEvents[eventId].target) {
+                        globalEvents[eventId].progress = globalEvents[eventId].target;
+                        const rewards = {
+                            invasion: { coins: 5000, message: '🎁 Evento completo! +5000 moedas + Skin especial!' },
+                            treasure: { coins: 3000, gems: 10, message: '🎁 Evento completo! +3000 moedas + 10 gemas!' }
+                        };
+                        
+                        if (rewards[eventId]) {
+                            coins += rewards[eventId].coins || 0;
+                            gems += rewards[eventId].gems || 0;
+                            showNotification(rewards[eventId].message, '#ffff00');
+                        }
+                    }
+                }
+            });
+            
+            localStorage.setItem('waveslayers_global_events', JSON.stringify(globalEvents));
+        }
+        
         // Funções de Progressão
         function updateProgressionDisplay() {
             document.getElementById('playerLevelDisplay').textContent = playerLevel;
@@ -7672,6 +9129,17 @@ Boa sorte, comandante! 🚀✨`);
                 }
             });
             
+            // Update global events if participating
+            if (type === 'kills' && globalEvents.invasion.participating) {
+                globalEvents.invasion.progress += amount;
+                localStorage.setItem('waveslayers_global_events', JSON.stringify(globalEvents));
+            }
+            
+            if (type === 'powerups' && globalEvents.treasure.participating) {
+                globalEvents.treasure.progress += amount;
+                localStorage.setItem('waveslayers_global_events', JSON.stringify(globalEvents));
+            }
+            
             saveProgressionData();
         }
         
@@ -7693,6 +9161,35 @@ Boa sorte, comandante! 🚀✨`);
             }, 2000);
         }
         
+        // Initialize Social System
+        function initializeSocialSystem() {
+            // Sync global events progress (simulate server sync)
+            setTimeout(() => {
+                // Simulate random progress from other players
+                globalEvents.invasion.progress += Math.floor(Math.random() * 5000);
+                globalEvents.treasure.progress += Math.floor(Math.random() * 2500);
+                
+                // Cap at target
+                globalEvents.invasion.progress = Math.min(globalEvents.invasion.progress, globalEvents.invasion.target);
+                globalEvents.treasure.progress = Math.min(globalEvents.treasure.progress, globalEvents.treasure.target);
+                
+                localStorage.setItem('waveslayers_global_events', JSON.stringify(globalEvents));
+            }, 2000);
+            
+            // Set player name if not set
+            if (!localStorage.getItem('waveslayers_player_name')) {
+                localStorage.setItem('waveslayers_player_name', playerName);
+            }
+            
+            // Welcome message for new social features
+            setTimeout(() => {
+                if (!localStorage.getItem('waveslayers_social_welcome')) {
+                    showNotification('🌟 Sistema Social ativado! Rankings, Clãs e Eventos disponíveis!', '#ff00ff');
+                    localStorage.setItem('waveslayers_social_welcome', 'true');
+                }
+            }, 3000);
+        }
+        
         // Initialize game
         function init() {
             player = new Player();
@@ -7707,6 +9204,9 @@ Boa sorte, comandante! 🚀✨`);
             
             // Initialize menu animation
             initMenuAnimation();
+            
+            // Initialize social system
+            initializeSocialSystem();
             
             // Event listeners
             window.addEventListener('keydown', (e) => {
@@ -7765,6 +9265,35 @@ Boa sorte, comandante! 🚀✨`);
             }
         }
         
+        // Social Data Synchronization
+        function syncSocialData() {
+            // Simulate getting updates from server
+            const oldInvasionProgress = globalEvents.invasion.progress;
+            const oldTreasureProgress = globalEvents.treasure.progress;
+            
+            // Add random progress from other players
+            globalEvents.invasion.progress += Math.floor(Math.random() * 2000);
+            globalEvents.treasure.progress += Math.floor(Math.random() * 1000);
+            
+            // Cap at target
+            globalEvents.invasion.progress = Math.min(globalEvents.invasion.progress, globalEvents.invasion.target);
+            globalEvents.treasure.progress = Math.min(globalEvents.treasure.progress, globalEvents.treasure.target);
+            
+            // Notify if significant progress was made
+            const invasionDiff = globalEvents.invasion.progress - oldInvasionProgress;
+            const treasureDiff = globalEvents.treasure.progress - oldTreasureProgress;
+            
+            if (invasionDiff > 0) {
+                showNotification(`🚀 Evento Global: +${invasionDiff.toLocaleString()} progresso de outros jogadores!`, '#ff00ff');
+            }
+            
+            if (treasureDiff > 0) {
+                showNotification(`💎 Evento Global: +${treasureDiff.toLocaleString()} progresso de outros jogadores!`, '#00ffff');
+            }
+            
+            localStorage.setItem('waveslayers_global_events', JSON.stringify(globalEvents));
+        }
+        
         // Game loop
         function gameLoop(currentTime) {
             const deltaTime = currentTime - lastTime;
@@ -7781,6 +9310,11 @@ Boa sorte, comandante! 🚀✨`);
                 star.update();
                 star.draw();
             });
+            
+            // Sync social data periodically (every 30 seconds during gameplay)
+            if (gameState === 'playing' && currentTime % 30000 < deltaTime) {
+                syncSocialData();
+            }
             
             if (gameState === 'playing' && gameRunning && !isPaused) {
                 // Track player behavior for AI learning
