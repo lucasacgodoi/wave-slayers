@@ -5740,50 +5740,146 @@
             currentWave++;
             waveStartTime = Date.now();
             
-            // Calcula inimigos para esta onda
-            const baseEnemies = 3 + Math.floor(currentWave / 2);
-            waveEnemiesRemaining = Math.min(baseEnemies, 20);
-            
-            // Boss a cada 5 ondas
-            if (currentWave % 5 === 0) {
-                waveEnemiesRemaining += 1; // O boss conta como inimigo da onda
+            // Sistema de progressão balanceado
+            let baseEnemies;
+            if (currentWave <= 5) {
+                // Ondas iniciais: crescimento gradual
+                baseEnemies = 2 + currentWave;
+            } else if (currentWave <= 10) {
+                // Ondas médias: crescimento moderado
+                baseEnemies = 6 + Math.floor((currentWave - 5) * 1.5);
+            } else if (currentWave <= 20) {
+                // Ondas avançadas: crescimento controlado
+                baseEnemies = 12 + Math.floor((currentWave - 10) * 0.8);
+            } else {
+                // Ondas finais: máximo controlado
+                baseEnemies = Math.min(20 + Math.floor((currentWave - 20) * 0.3), 30);
             }
             
-            // Notifica nova onda
-            showNotification(`🌊 ONDA ${currentWave} INICIANDO!`, '#00ffff');
+            waveEnemiesRemaining = baseEnemies;
+            
+            // Sistema de chefes mais estruturado
+            let bossWave = false;
+            if (currentWave === 5) {
+                // Primeiro chefe na onda 5
+                bossWave = true;
+                waveEnemiesRemaining += 1;
+                showNotification(`⚠️ CHEFE SE APROXIMANDO NA ONDA ${currentWave}!`, '#ff6600');
+            } else if (currentWave === 10) {
+                // Segundo chefe na onda 10
+                bossWave = true;
+                waveEnemiesRemaining += 1;
+                showNotification(`⚠️ CHEFE MAIS PODEROSO NA ONDA ${currentWave}!`, '#ff4400');
+            } else if (currentWave === 15) {
+                // Terceiro chefe na onda 15
+                bossWave = true;
+                waveEnemiesRemaining += 1;
+                showNotification(`⚠️ CHEFE SUPREMO NA ONDA ${currentWave}!`, '#ff0000');
+            } else if (currentWave >= 20 && currentWave % 10 === 0) {
+                // Chefes a cada 10 ondas após a 20
+                bossWave = true;
+                waveEnemiesRemaining += 1;
+                showNotification(`💀 CHEFE LENDÁRIO NA ONDA ${currentWave}!`, '#8800ff');
+            }
+            
+            // Notificações especiais para marcos importantes
+            if (currentWave === 1) {
+                showNotification(`🚀 BOA SORTE, COMANDANTE!`, '#00ff00');
+            } else if (currentWave === 10) {
+                showNotification(`⭐ VETERANO! ONDA ${currentWave}`, '#ffff00');
+            } else if (currentWave === 20) {
+                showNotification(`🏆 ELITE! ONDA ${currentWave}`, '#ff6600');
+            } else if (currentWave === 30) {
+                showNotification(`👑 LENDA! ONDA ${currentWave}`, '#aa00ff');
+            } else if (!bossWave) {
+                showNotification(`🌊 ONDA ${currentWave}`, '#00ffff');
+            }
             
             // Aplica buffs de dificuldade baseados na sessão do jogador
             applyWaveDifficultyScaling();
         }
         
         function applyWaveDifficultyScaling() {
-            // Aumenta dificuldade baseado no comportamento aprendido do jogador
+            // Escalamento suave baseado na onda atual
+            const waveMultiplier = 1 + (currentWave * 0.05); // 5% por onda
             const sessionCount = playerBehaviorData.sessionCount || 0;
-            const difficultyMultiplier = 1 + (sessionCount * 0.1);
+            const sessionMultiplier = 1 + (sessionCount * 0.02); // 2% por sessão
             
-            // Aplica escalamento aos tipos de inimigos
-            Object.values(enemyTypes).forEach(type => {
+            // Escalamento progressivo para diferentes tipos
+            Object.keys(enemyTypes).forEach(typeKey => {
+                const type = enemyTypes[typeKey];
                 if (!type.isBoss) {
-                    type.health = Math.floor(type.health * difficultyMultiplier);
-                    type.speed = Math.min(type.speed * 1.1, type.speed * 2); // Cap na velocidade
+                    // Aplica scaling mais controlado para inimigos normais
+                    const baseHealth = type.health / (type.lastMultiplier || 1); // Reset to base
+                    const baseSpeed = type.speed / (type.lastSpeedMultiplier || 1); // Reset to base
+                    
+                    // Escala vida progressivamente
+                    type.health = Math.floor(baseHealth * Math.min(waveMultiplier, 3.0)); // Cap em 300%
+                    
+                    // Escala velocidade mais conservadoramente
+                    const speedIncrease = 1 + ((currentWave - 1) * 0.02); // 2% por onda
+                    type.speed = Math.min(baseSpeed * speedIncrease, baseSpeed * 2); // Cap em 200%
+                    
+                    // Armazena multiplicadores para próximo reset
+                    type.lastMultiplier = Math.min(waveMultiplier, 3.0);
+                    type.lastSpeedMultiplier = Math.min(speedIncrease, 2.0);
+                } else {
+                    // Chefes têm scaling mais controlado
+                    if (currentWave > 15) {
+                        const bossMultiplier = 1 + ((currentWave - 15) * 0.1);
+                        const baseHealth = type.health / (type.lastMultiplier || 1);
+                        type.health = Math.floor(baseHealth * Math.min(bossMultiplier, 5.0)); // Cap em 500%
+                        type.lastMultiplier = Math.min(bossMultiplier, 5.0);
+                    }
                 }
             });
         }
         
         function determineSpawnType() {
-            if (currentWave % 5 === 0 && !bossActive) {
+            // Sistema de chefes estruturado
+            if ((currentWave === 5 || currentWave === 10 || currentWave === 15 || 
+                (currentWave >= 20 && currentWave % 10 === 0)) && !bossActive) {
                 return 'boss';
             }
             
-            if (Math.random() < 0.3 && currentWave >= 3) {
-                return 'formation';
+            // Formações começam na onda 4 e se tornam mais frequentes
+            if (currentWave >= 4) {
+                let formationChance;
+                if (currentWave <= 10) {
+                    formationChance = 0.15; // 15% nas ondas médias
+                } else if (currentWave <= 20) {
+                    formationChance = 0.25; // 25% nas ondas avançadas
+                } else {
+                    formationChance = 0.35; // 35% nas ondas finais
+                }
+                
+                if (Math.random() < formationChance) {
+                    return 'formation';
+                }
             }
             
             return 'individual';
         }
         
         function spawnIndividualEnemy() {
+            // Verifica se ainda há inimigos para spawnar
+            if (waveEnemiesRemaining <= 0) return;
+            
             const enemyType = selectEnemyType();
+            
+            // Fallback se não conseguir selecionar tipo válido
+            if (!enemyType || !enemyTypes[enemyType]) {
+                console.warn('Tipo de inimigo inválido:', enemyType);
+                const fallbackType = currentWave <= 3 ? 'grunt' : 'heavy';
+                const x = Math.random() * (canvas.width - 100) + 50;
+                const y = -50;
+                
+                const enemy = new Enemy(x, y, fallbackType);
+                enemies.push(enemy);
+                waveEnemiesRemaining--;
+                return;
+            }
+            
             const x = Math.random() * (canvas.width - 100) + 50;
             const y = -50;
             
@@ -5796,59 +5892,103 @@
             const wave = currentWave;
             const adaptiveFactors = analyzePlayerBehaviorForSpawn();
             
-            // Tipos básicos estão sempre disponíveis
-            let availableTypes = ['scout', 'grunt', 'heavy'];
+            // Sistema de desbloqueio progressivo mais balanceado
+            let availableTypes = [];
             
-            // Desbloqueio progressivo baseado na onda
-            if (wave >= 2) availableTypes.push('sniper', 'bomber');
-            if (wave >= 3) availableTypes.push('interceptor', 'stealth');
-            if (wave >= 4) availableTypes.push('shield', 'healer');
-            if (wave >= 5) availableTypes.push('teleporter', 'commander');
-            if (wave >= 7) availableTypes.push('berserker', 'mimic');
-            if (wave >= 8) availableTypes.push('spawner', 'vortex', 'phaser');
-            if (wave >= 10) availableTypes.push('assassin', 'juggernaut', 'phantom');
+            // ONDAS 1-3: Apenas tipos básicos para aprendizado
+            if (wave <= 3) {
+                availableTypes = ['scout', 'grunt'];
+                // Heavy só depois da onda 2
+                if (wave >= 2) availableTypes.push('heavy');
+            }
+            // ONDAS 4-6: Introdução de especialistas
+            else if (wave <= 6) {
+                availableTypes = ['scout', 'grunt', 'heavy', 'sniper', 'bomber'];
+                // Interceptor na onda 5
+                if (wave >= 5) availableTypes.push('interceptor');
+            }
+            // ONDAS 7-9: Inimigos avançados
+            else if (wave <= 9) {
+                availableTypes = ['grunt', 'heavy', 'sniper', 'bomber', 'interceptor', 'stealth', 'shield'];
+                // Healer na onda 8
+                if (wave >= 8) availableTypes.push('healer');
+            }
+            // ONDAS 10-14: Táticos aparecem
+            else if (wave <= 14) {
+                availableTypes = ['heavy', 'bomber', 'interceptor', 'stealth', 'shield', 'healer', 'teleporter'];
+                // Commander na onda 12
+                if (wave >= 12) availableTypes.push('commander');
+                // Berserker na onda 13
+                if (wave >= 13) availableTypes.push('berserker');
+            }
+            // ONDAS 15-19: Tipos especiais
+            else if (wave <= 19) {
+                availableTypes = ['stealth', 'shield', 'healer', 'teleporter', 'commander', 'berserker', 'mimic'];
+                // Spawner na onda 17
+                if (wave >= 17) availableTypes.push('spawner');
+                // Vortex na onda 18
+                if (wave >= 18) availableTypes.push('vortex');
+            }
+            // ONDAS 20+: Elites entram em cena
+            else {
+                availableTypes = ['commander', 'berserker', 'mimic', 'spawner', 'vortex', 'phaser'];
+                // Assassin na onda 22
+                if (wave >= 22) availableTypes.push('assassin');
+                // Juggernaut na onda 25
+                if (wave >= 25) availableTypes.push('juggernaut');
+                // Phantom na onda 30
+                if (wave >= 30) availableTypes.push('phantom');
+            }
             
-            // Seleção adaptativa baseada no comportamento do jogador
-            if (adaptiveFactors.isVeryMobile) {
-                // Player se move muito - mais interceptors e assassins
+            // Seleção adaptativa mais balanceada
+            if (wave >= 8 && adaptiveFactors.isVeryMobile) {
                 const mobileCounters = availableTypes.filter(type => 
                     ['interceptor', 'assassin', 'berserker'].includes(type)
                 );
-                if (mobileCounters.length > 0 && Math.random() < 0.4) {
+                if (mobileCounters.length > 0 && Math.random() < 0.25) {
                     return mobileCounters[Math.floor(Math.random() * mobileCounters.length)];
                 }
             }
             
-            if (adaptiveFactors.isStationary) {
-                // Player fica parado - mais snipers e bombers
+            if (wave >= 6 && adaptiveFactors.isStationary) {
                 const stationaryCounters = availableTypes.filter(type => 
                     ['sniper', 'bomber', 'vortex'].includes(type)
                 );
-                if (stationaryCounters.length > 0 && Math.random() < 0.4) {
+                if (stationaryCounters.length > 0 && Math.random() < 0.25) {
                     return stationaryCounters[Math.floor(Math.random() * stationaryCounters.length)];
                 }
             }
             
-            if (adaptiveFactors.prefersTopPosition) {
-                // Player gosta da parte superior - spawn inimigos que descem
-                const topCounters = availableTypes.filter(type => 
-                    ['grunt', 'heavy', 'juggernaut'].includes(type)
-                );
-                if (topCounters.length > 0 && Math.random() < 0.3) {
-                    return topCounters[Math.floor(Math.random() * topCounters.length)];
-                }
-            }
+            // Sistema de pesos balanceado baseado na progressão
+            let weights = {};
             
-            // Seleção aleatória ponderada
-            const weights = {
-                scout: 0.15, grunt: 0.25, heavy: 0.1,
-                sniper: 0.08, bomber: 0.08, interceptor: 0.1,
-                stealth: 0.05, shield: 0.05, healer: 0.04,
-                teleporter: 0.03, commander: 0.02, berserker: 0.02,
-                mimic: 0.01, spawner: 0.01, vortex: 0.005,
-                phaser: 0.005, assassin: 0.002, juggernaut: 0.001,
-                phantom: 0.001
-            };
+            // Pesos para ondas iniciais (1-5)
+            if (wave <= 5) {
+                weights = {
+                    scout: 0.4, grunt: 0.45, heavy: 0.15,
+                    sniper: 0.05, bomber: 0.05, interceptor: 0.02
+                };
+            }
+            // Pesos para ondas médias (6-15)
+            else if (wave <= 15) {
+                weights = {
+                    scout: 0.1, grunt: 0.2, heavy: 0.15,
+                    sniper: 0.15, bomber: 0.15, interceptor: 0.15,
+                    stealth: 0.08, shield: 0.08, healer: 0.05,
+                    teleporter: 0.04, commander: 0.03, berserker: 0.02
+                };
+            }
+            // Pesos para ondas avançadas (16+)
+            else {
+                weights = {
+                    heavy: 0.05, bomber: 0.1, interceptor: 0.1,
+                    stealth: 0.1, shield: 0.08, healer: 0.07,
+                    teleporter: 0.08, commander: 0.1, berserker: 0.1,
+                    mimic: 0.08, spawner: 0.06, vortex: 0.05,
+                    phaser: 0.04, assassin: 0.03, juggernaut: 0.02,
+                    phantom: 0.01
+                };
+            }
             
             return weightedRandomSelect(availableTypes, weights);
         }
@@ -5881,6 +6021,12 @@
         }
         
         function spawnFormation() {
+            // Verifica se há inimigos suficientes para uma formação
+            if (waveEnemiesRemaining <= 1) {
+                spawnIndividualEnemy();
+                return;
+            }
+            
             const formationNames = Object.keys(formationTypes);
             const formationName = formationNames[Math.floor(Math.random() * formationNames.length)];
             const formation = formationTypes[formationName];
@@ -5891,6 +6037,12 @@
             
             // Seleciona tipo de inimigo para a formação
             const enemyType = selectFormationEnemyType();
+            
+            // Verifica se o tipo é válido
+            if (!enemyType || !enemyTypes[enemyType]) {
+                spawnIndividualEnemy();
+                return;
+            }
             
             // Cria líder da formação
             const leader = new Enemy(centerX, centerY, enemyType);
@@ -5919,15 +6071,24 @@
         }
         
         function selectFormationEnemyType() {
-            // Formações usam tipos mais básicos para coordenação
-            const formationTypes = ['grunt', 'heavy', 'bomber', 'shield'];
-            const availableTypes = formationTypes.filter(type => {
-                if (type === 'heavy' || type === 'bomber') return currentWave >= 2;
-                if (type === 'shield') return currentWave >= 4;
-                return true;
-            });
+            // Formações usam tipos coordenados baseados na onda atual
+            let formationTypes = [];
             
-            return availableTypes[Math.floor(Math.random() * availableTypes.length)];
+            if (currentWave <= 6) {
+                // Formações básicas
+                formationTypes = ['grunt', 'heavy'];
+            } else if (currentWave <= 10) {
+                // Formações intermediárias
+                formationTypes = ['grunt', 'heavy', 'bomber'];
+            } else if (currentWave <= 15) {
+                // Formações avançadas
+                formationTypes = ['heavy', 'bomber', 'shield'];
+            } else {
+                // Formações especializadas
+                formationTypes = ['shield', 'commander', 'berserker'];
+            }
+            
+            return formationTypes[Math.floor(Math.random() * formationTypes.length)];
         }
         
         function spawnBoss() {
@@ -5937,15 +6098,32 @@
             showBossWarning();
             
             setTimeout(() => {
-                // Seleciona boss baseado na onda
+                // Sistema de seleção de chefe baseado na progressão
                 let bossType;
-                if (currentWave < 10) {
+                
+                if (currentWave === 5) {
+                    // Primeiro chefe - sempre Mothership
                     bossType = 'mothership';
-                } else if (currentWave < 15) {
-                    bossType = Math.random() < 0.5 ? 'mothership' : 'hive_queen';
-                } else {
+                    showNotification(`💀 NAVE-MÃE DETECTADA!`, '#ff0000');
+                } else if (currentWave === 10) {
+                    // Segundo chefe - sempre Hive Queen
+                    bossType = 'hive_queen';
+                    showNotification(`👑 RAINHA COLMEIA APARECEU!`, '#88ff00');
+                } else if (currentWave === 15) {
+                    // Terceiro chefe - sempre Void Lord
+                    bossType = 'void_lord';
+                    showNotification(`🌌 SENHOR DO VAZIO EMERGIU!`, '#4400ff');
+                } else if (currentWave >= 20) {
+                    // Chefes aleatórios em ondas avançadas, mas com escalamento
                     const bossTypes = ['mothership', 'hive_queen', 'void_lord'];
                     bossType = bossTypes[Math.floor(Math.random() * bossTypes.length)];
+                    
+                    // Escalamento de dificuldade para chefes em ondas avançadas
+                    const difficultyMultiplier = 1 + ((currentWave - 20) * 0.2);
+                    const bossData = enemyTypes[bossType];
+                    bossData.health = Math.floor(bossData.health * difficultyMultiplier);
+                    
+                    showNotification(`💀 CHEFE ${bossData.name.toUpperCase()} FORTALECIDO!`, '#ff0000');
                 }
                 
                 const boss = new Enemy(
@@ -5957,19 +6135,24 @@
                 enemies.push(boss);
                 waveEnemiesRemaining--;
                 
-                // Efeitos especiais para aparição do boss
-                for (let i = 0; i < 20; i++) {
+                // Efeitos especiais intensificados para aparição do boss
+                const particleCount = currentWave >= 15 ? 30 : currentWave >= 10 ? 25 : 20;
+                for (let i = 0; i < particleCount; i++) {
                     particles.push(new Particle(
                         boss.x + Math.random() * boss.width,
                         boss.y + Math.random() * boss.height,
-                        (Math.random() - 0.5) * 8,
-                        (Math.random() - 0.5) * 8,
-                        '#ff0000',
-                        2000
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10,
+                        boss.color,
+                        3000
                     ));
                 }
                 
-                showNotification(`💀 CHEFE ${enemyTypes[bossType].name.toUpperCase()} APARECEU!`, '#ff0000');
+                // Efeito de distorção espacial para chefes avançados
+                if (currentWave >= 15) {
+                    createWarpEffect(boss.x + boss.width/2, boss.y + boss.height/2);
+                }
+                
             }, 3000); // Delay to show warning first
         }
         
@@ -6302,12 +6485,46 @@
             localStorage.setItem('waveslayers_unlocked_worlds', JSON.stringify(unlockedWorldIds));
         }
         
+        function resetEnemyStats() {
+            // Armazena os stats base originais na primeira execução
+            if (!window.baseEnemyStats) {
+                window.baseEnemyStats = {};
+                Object.keys(enemyTypes).forEach(typeKey => {
+                    const type = enemyTypes[typeKey];
+                    window.baseEnemyStats[typeKey] = {
+                        health: type.health,
+                        speed: type.speed
+                    };
+                });
+            }
+            
+            // Reset stats to base values
+            Object.keys(enemyTypes).forEach(typeKey => {
+                const type = enemyTypes[typeKey];
+                const baseStats = window.baseEnemyStats[typeKey];
+                if (baseStats) {
+                    type.health = baseStats.health;
+                    type.speed = baseStats.speed;
+                    type.lastMultiplier = 1;
+                    type.lastSpeedMultiplier = 1;
+                }
+            });
+        }
+        
         function startGame() {
             gameState = 'playing';
             gameRunning = true;
             isPaused = false;
             score = 0;
             level = 1;
+            
+            // Reset wave system
+            currentWave = 0;
+            waveEnemiesRemaining = 0;
+            bossActive = false;
+            
+            // Reset enemy stats to base values
+            resetEnemyStats();
             
             // Initialize AI system
             initializeAISystem();
