@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="landscape" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="852" height="393"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LaunchScreenBackground">
+                                <rect key="frame" x="0.0" y="0.0" width="852" height="393"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WAVE SLAYERS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GameTitle">
+                                        <rect key="frame" x="326" y="171.66666666666666" width="200" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="title-width"/>
+                                            <constraint firstAttribute="height" constant="50" id="title-height"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                        <color key="textColor" red="0.0" green="0.8" blue="1.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🚀" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RocketIcon">
+                                        <rect key="frame" x="401" y="121.66666666666666" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="rocket-width"/>
+                                            <constraint firstAttribute="height" constant="50" id="rocket-height"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Carregando..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LoadingLabel">
+                                        <rect key="frame" x="376" y="241.66666666666666" width="100" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="loading-width"/>
+                                            <constraint firstAttribute="height" constant="20" id="loading-height"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" red="0.8" green="0.8" blue="0.8" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="LoadingProgress">
+                                        <rect key="frame" x="276" y="281.66666666666669" width="300" height="4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="300" id="progress-width"/>
+                                        </constraints>
+                                        <color key="progressTintColor" red="0.0" green="0.8" blue="1.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="trackTintColor" red="0.2" green="0.2" blue="0.2" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </progressView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v1.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VersionLabel">
+                                        <rect key="frame" x="411" y="353" width="30" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="version-width"/>
+                                            <constraint firstAttribute="height" constant="20" id="version-height"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.05" green="0.05" blue="0.15" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <!-- Game Title Constraints -->
+                                    <constraint firstItem="GameTitle" firstAttribute="centerX" secondItem="LaunchScreenBackground" secondAttribute="centerX" id="title-center-x"/>
+                                    <constraint firstItem="GameTitle" firstAttribute="centerY" secondItem="LaunchScreenBackground" secondAttribute="centerY" id="title-center-y"/>
+                                    
+                                    <!-- Rocket Icon Constraints -->
+                                    <constraint firstItem="RocketIcon" firstAttribute="centerX" secondItem="LaunchScreenBackground" secondAttribute="centerX" id="rocket-center-x"/>
+                                    <constraint firstItem="GameTitle" firstAttribute="top" secondItem="RocketIcon" secondAttribute="bottom" id="rocket-to-title"/>
+                                    
+                                    <!-- Loading Label Constraints -->
+                                    <constraint firstItem="LoadingLabel" firstAttribute="centerX" secondItem="LaunchScreenBackground" secondAttribute="centerX" id="loading-center-x"/>
+                                    <constraint firstItem="LoadingLabel" firstAttribute="top" secondItem="GameTitle" secondAttribute="bottom" constant="20" id="loading-below-title"/>
+                                    
+                                    <!-- Progress View Constraints -->
+                                    <constraint firstItem="LoadingProgress" firstAttribute="centerX" secondItem="LaunchScreenBackground" secondAttribute="centerX" id="progress-center-x"/>
+                                    <constraint firstItem="LoadingProgress" firstAttribute="top" secondItem="LoadingLabel" secondAttribute="bottom" constant="20" id="progress-below-loading"/>
+                                    
+                                    <!-- Version Label Constraints -->
+                                    <constraint firstItem="VersionLabel" firstAttribute="centerX" secondItem="LaunchScreenBackground" secondAttribute="centerX" id="version-center-x"/>
+                                    <constraint firstItem="LaunchScreenBackground" firstAttribute="bottom" secondItem="VersionLabel" secondAttribute="bottom" constant="20" id="version-bottom"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="LaunchScreenBackground" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="bg-top"/>
+                            <constraint firstItem="LaunchScreenBackground" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="bg-leading"/>
+                            <constraint firstAttribute="bottom" secondItem="LaunchScreenBackground" secondAttribute="bottom" id="bg-bottom"/>
+                            <constraint firstAttribute="trailing" secondItem="LaunchScreenBackground" secondAttribute="trailing" id="bg-trailing"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
